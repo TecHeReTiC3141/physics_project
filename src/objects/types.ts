@@ -13,7 +13,7 @@ export type GameObject = {
     width: number
     height: number
     color: string
-    static?: boolean
+    isStatic?: boolean
     onlyX?: boolean
     onlyY?: boolean
 }

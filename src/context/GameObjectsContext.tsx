@@ -1,9 +1,11 @@
 import { GameObject, GameObjectId } from "../objects/types.ts";
-import { createContext, useContext, useState } from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 
 type ContextValue = {
     gameObjects: GameObject[]
     setGameObjects: React.Dispatch<React.SetStateAction<GameObject[]>>
+    updateGameObject: (id: GameObjectId, data: Partial<GameObject>) => void
+    getGameObject: (id: GameObjectId) => GameObject
     isDragging: boolean
     setIsDragging: React.Dispatch<React.SetStateAction<boolean>>
     draggedObjectId: GameObjectId | null
@@ -25,10 +27,17 @@ export const GameObjectsProvider: React.FC = ({ children }) => {
     const [isDragging, setIsDragging] = useState(false);
     const [draggedObjectId, setDraggedObjectId] = useState<GameObjectId>(null);
     const [gameObjects, setGameObjects] = useState<GameObject[]>([
-        { id: GameObjectId.GATE_LEFT, x: 50, y: 50, width: 50, height: 50, color: 'blue' },
-        { id: GameObjectId.GATE_RIGHT, x: 150, y: 100, width: 50, height: 50, color: 'red' },
+        { id: GameObjectId.RAIL, x: 100, y: 600, width: 900, height: 100, color: 'black', isStatic: true },
+        { id: GameObjectId.GATE_LEFT, x: 200, y: 550, width: 15, height: 50, color: 'blue', onlyX: true },
+        { id: GameObjectId.GATE_RIGHT, x: 700, y: 550, width: 15, height: 50, color: 'red', onlyX: true },
     ]);
     const [offset, setOffset] = useState({ x: 0, y: 0 });
+
+    const getGameObject = useCallback((id: GameObjectId) => gameObjects.find(object => object.id === id), [gameObjects])
+
+    const updateGameObject = useCallback((id: GameObjectId, data: Partial<GameObject>) => {
+        setGameObjects(gameObjects.map(obj => obj.id === id ? { ...obj, ...data } : obj))
+    }, [gameObjects])
 
     const value = {
         isDragging,
@@ -39,6 +48,8 @@ export const GameObjectsProvider: React.FC = ({ children }) => {
         setGameObjects,
         offset,
         setOffset,
+        getGameObject,
+        updateGameObject
     }
 
     return (
