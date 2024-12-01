@@ -1,21 +1,23 @@
 import { useEffect, useRef, useState } from 'react'
 import clsx from "clsx";
 import { GameObjectsProvider, useGameObjects } from "./context";
-import { useGates } from "./objects";
+import { useCart, useGates, usePump, useTablo } from "./objects";
 
-type MouseState = 'idle' | 'grab' | 'grabbing'
+type MouseState = 'idle' | 'grab' | 'grabbing' | 'click'
 
 const mouseStateClassnames = {
     idle: 'cursor-default',
     grab: 'cursor-grab',
     grabbing: 'cursor-grabbing',
+    click: 'cursor-pointer',
 }
 
 function App() {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const [ mouseState, setMouseState ] = useState<MouseState>('idle');
 
-    const {gameObjects, 
+    const {
+        gameObjects,
         setGameObjects, 
         offset, 
         setOffset, 
@@ -40,7 +42,8 @@ function App() {
             }
             gameObjects.forEach((obj) => {
                 ctx.fillStyle = obj.color;
-                ctx.fillRect(obj.x, obj.y, obj.width, obj.height);
+                if (obj.draw) obj.draw(ctx)
+                else ctx.fillRect(obj.x, obj.y, obj.width, obj.height)
             });
         };
 
@@ -65,12 +68,14 @@ function App() {
                 mousePos.y >= obj.y &&
                 mousePos.y <= obj.y + obj.height
         );
-        if (object && !object.isStatic) {
+        if (!object) return
+        if (!object.isStatic) {
             setIsDragging(true);
             setMouseState('grabbing')
             setDraggedObjectId(object.id);
             setOffset({ x: mousePos.x - object.x, y: mousePos.y - object.y });
         }
+        object.onClick?.()
     };
 
     const onMouseMove = (event) => {
@@ -83,7 +88,15 @@ function App() {
                     mousePos.y >= obj.y &&
                     mousePos.y <= obj.y + obj.height
             );
-            setMouseState(object && !object.isStatic ? 'grab' : 'idle');
+            if (!object) {
+                setMouseState('idle');
+            } else if (object.onClick) {
+                setMouseState('click')
+            } else if (!object.isStatic) {
+                setMouseState('grab');
+            } else {
+                setMouseState('idle');
+            }
         }
         if (!isDragging || !draggedObjectId) return;
 
@@ -108,6 +121,9 @@ function App() {
     };
 
     useGates()
+    useCart()
+    usePump()
+    useTablo()
 
     return (
         <div className="container mx-auto flex items-center justify-center">

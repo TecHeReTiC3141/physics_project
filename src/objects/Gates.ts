@@ -1,30 +1,34 @@
 import { GameObjectId } from "./types.ts";
 import { useGameObjects } from "../context";
 import { useEffect } from "react";
+import { RAIL_X_RIGHT, RAIL_X_LEFT } from "./constants.ts";
 
-const MAX_RIGHT = 1000
-const MIN_LEFT = 100
 export const useGates = () => {
     const { draggedObjectId, gameObjects, getGameObject, updateGameObject } = useGameObjects()
 
     useEffect(() => {
         const left = getGameObject(GameObjectId.GATE_LEFT)
         const right = getGameObject(GameObjectId.GATE_RIGHT)
-        console.log(left, right, draggedObjectId)
+        const cart = getGameObject(GameObjectId.CART)
         if (draggedObjectId === GameObjectId.GATE_LEFT) {
-            if (left.x < MIN_LEFT) {
-                updateGameObject(GameObjectId.GATE_LEFT, { x: MIN_LEFT })
+            if (left.x < RAIL_X_LEFT) {
+                updateGameObject(GameObjectId.GATE_LEFT, { x: RAIL_X_LEFT })
             }
             if (left.x + left.width > right.x) {
                 updateGameObject(GameObjectId.GATE_LEFT, { x: right.x - left.width })
             }
         } else if (draggedObjectId === GameObjectId.GATE_RIGHT) {
-            if (right.x + right.width > MAX_RIGHT) {
-                updateGameObject(GameObjectId.GATE_RIGHT, { x: MAX_RIGHT - right.width })
+            if (right.x + right.width > RAIL_X_RIGHT) {
+                updateGameObject(GameObjectId.GATE_RIGHT, { x: RAIL_X_RIGHT - right.width })
             }
             if (right.x < left.x + left.width) {
                 updateGameObject(GameObjectId.GATE_RIGHT, { x: left.x + left.width })
             }
+        }
+        if (cart.x + cart.width / 2 === left.x) {
+            console.log("PASSED LEFT")
+        } else if (cart.x + cart.width / 2 === right.x) {
+            console.log("PASSED RIGHT")
         }
     }, [draggedObjectId, gameObjects, getGameObject, updateGameObject]);
 }
