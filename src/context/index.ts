@@ -1,0 +1,1 @@
+export { GameObjectsProvider, useGameObjects } from './GameObjectsContext.tsx';
