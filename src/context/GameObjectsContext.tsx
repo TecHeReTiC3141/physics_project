@@ -3,7 +3,6 @@ import { createContext, useCallback, useContext, useState, Dispatch, SetStateAct
 
 type ContextValue = {
     gameObjects: GameObject[]
-    setGameObjects: Dispatch<SetStateAction<GameObject[]>>
     updateGameObject: (id: GameObjectId, data: Partial<GameObject>) => void
     getGameObject: (id: GameObjectId) => GameObject
     isDragging: boolean
@@ -58,15 +57,25 @@ export const GameObjectsProvider: React.FC = ({ children }) => {
                 ctx.font = '12px Arial'
                 ctx.fillText('PUMP\n' + (isPumpTurnedOn ? 'ON' : 'OFF'), this.x + 10, this.y + 30)
             }
+        },
+        { id: GameObjectId.TABLO, x: 750, y: 300, width: 300, height: 100, color: 'blue', isStatic: true,
+            draw(ctx) {
+                ctx.fillStyle = this.color;
+                ctx.fillRect(this.x, this.y, this.width, this.height)
+                ctx.fillStyle = 'black'
+                ctx.font = '12px Arial'
+                ctx.fillText('PUMP\n' + (isPumpTurnedOn ? 'ON' : 'OFF'), this.x + 10, this.y + 30)
+            }
         }
     ]);
+
     const [offset, setOffset] = useState({ x: 0, y: 0 });
 
     const getGameObject = useCallback((id: GameObjectId) => gameObjects.find(object => object.id === id), [gameObjects])
 
     const updateGameObject = useCallback((id: GameObjectId, data: Partial<GameObject>) => {
-        setGameObjects(gameObjects.map(obj => obj.id === id ? { ...obj, ...data } : obj))
-    }, [gameObjects])
+        setGameObjects(prev => prev.map(obj => obj.id === id ? { ...obj, ...data } : obj))
+    }, [])
 
     const value = {
         isDragging,
@@ -74,7 +83,6 @@ export const GameObjectsProvider: React.FC = ({ children }) => {
         draggedObjectId,
         setDraggedObjectId,
         gameObjects,
-        setGameObjects,
         offset,
         setOffset,
         getGameObject,
