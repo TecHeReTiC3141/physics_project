@@ -4,12 +4,15 @@ import { useEffect } from "react";
 import { RAIL_X_RIGHT, RAIL_X_LEFT } from "./constants.ts";
 
 export const useGates = () => {
-    const { draggedObjectId, gameObjects, getGameObject, updateGameObject } = useGameObjects()
+    const { draggedObjectId, bufferedGameObjects, getGameObject, updateGameObject } = useGameObjects()
 
     useEffect(() => {
         const left = getGameObject(GameObjectId.GATE_LEFT)
         const right = getGameObject(GameObjectId.GATE_RIGHT)
         const cart = getGameObject(GameObjectId.CART)
+        console.log(bufferedGameObjects)
+        console.log("left", left)
+        console.log("right", right)
         if (draggedObjectId === GameObjectId.GATE_LEFT) {
             if (left.x < RAIL_X_LEFT) {
                 updateGameObject(GameObjectId.GATE_LEFT, { x: RAIL_X_LEFT })
@@ -30,5 +33,5 @@ export const useGates = () => {
         } else if (cart.x + cart.width / 2 === right.x) {
             console.log("PASSED RIGHT")
         }
-    }, [draggedObjectId, gameObjects, getGameObject, updateGameObject]);
+    }, [draggedObjectId, bufferedGameObjects, getGameObject, updateGameObject]);
 }
