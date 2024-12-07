@@ -18,13 +18,14 @@ function App() {
 
     const {
         gameObjects,
-        setGameObjects, 
+        getGameObject,
         offset, 
         setOffset, 
         draggedObjectId,
         setDraggedObjectId,
         isDragging,
         setIsDragging,
+        updateGameObject
     } = useGameObjects()
 
     useEffect(() => {
@@ -33,21 +34,17 @@ function App() {
         canvas.width = 1200;
         canvas.height = 800;
 
-        const draw = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            if (draggedObjectId) {
-                const { x, y, width, height } = gameObjects.find((obj) => obj.id === draggedObjectId);
-                ctx.fillStyle = 'yellow';
-                ctx.fillRect(x - 5, y - 5, width + 10, height + 10);
-            }
-            gameObjects.forEach((obj) => {
-                ctx.fillStyle = obj.color;
-                if (obj.draw) obj.draw(ctx)
-                else ctx.fillRect(obj.x, obj.y, obj.width, obj.height)
-            });
-        };
-
-        draw();
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if (draggedObjectId) {
+            const { x, y, width, height } = gameObjects.find((obj) => obj.id === draggedObjectId);
+            ctx.fillStyle = 'yellow';
+            ctx.fillRect(x - 5, y - 5, width + 10, height + 10);
+        }
+        gameObjects.forEach((obj) => {
+            ctx.fillStyle = obj.color;
+            if (obj.draw) obj.draw(ctx)
+            else ctx.fillRect(obj.x, obj.y, obj.width, obj.height)
+        });
     }, [gameObjects, draggedObjectId]);
 
     const getMousePosition = (event) => {
@@ -101,18 +98,15 @@ function App() {
         if (!isDragging || !draggedObjectId) return;
 
         const mousePos = getMousePosition(event);
-        const newObjects = gameObjects.map((obj) => {
-            if (obj.id !== draggedObjectId) return obj
-            const newObject = {...obj}
-            if (!newObject.onlyY) {
-                newObject.x = mousePos.x - offset.x
-            }
-            if (!newObject.onlyX) {
-                newObject.y = mousePos.y - offset.y
-            }
-            return newObject
-        });
-        setGameObjects(newObjects);
+        const newObject = getGameObject(draggedObjectId);
+
+        if (!newObject.onlyY) {
+            newObject.x = mousePos.x - offset.x
+        }
+        if (!newObject.onlyX) {
+            newObject.y = mousePos.y - offset.y
+        }
+        updateGameObject(draggedObjectId, newObject)
     };
 
     const onMouseUp = () => {

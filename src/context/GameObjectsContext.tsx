@@ -1,9 +1,10 @@
 import { GameObject, GameObjectId } from "../objects/types.ts";
-import { createContext, useCallback, useContext, useState, Dispatch, SetStateAction } from "react";
+import { createContext, useCallback, useContext, useState, Dispatch, SetStateAction, useRef, useEffect } from "react";
+import { FPS } from "../objects/constants.ts";
 
 type ContextValue = {
     gameObjects: GameObject[]
-    setGameObjects: Dispatch<SetStateAction<GameObject[]>>
+    bufferedGameObjects: GameObject[]
     updateGameObject: (id: GameObjectId, data: Partial<GameObject>) => void
     getGameObject: (id: GameObjectId) => GameObject
     isDragging: boolean
@@ -29,6 +30,8 @@ export const GameObjectsProvider: React.FC = ({ children }) => {
     const [isDragging, setIsDragging] = useState(false);
     const [draggedObjectId, setDraggedObjectId] = useState<GameObjectId>(null);
     const [ isPumpTurnedOn, setIsPumpTurnedOn ] = useState(false);
+
+    const lastRenderRef = useRef(0);
 
     const [gameObjects, setGameObjects] = useState<GameObject[]>([
         { id: GameObjectId.RAIL, x: 150, y: 600, width: 900, height: 60, color: 'black', isStatic: true,
@@ -58,15 +61,40 @@ export const GameObjectsProvider: React.FC = ({ children }) => {
                 ctx.font = '12px Arial'
                 ctx.fillText('PUMP\n' + (isPumpTurnedOn ? 'ON' : 'OFF'), this.x + 10, this.y + 30)
             }
+        },
+        { id: GameObjectId.TABLO, x: 750, y: 300, width: 300, height: 100, color: 'blue', isStatic: true,
+            draw(ctx) {
+                ctx.fillStyle = this.color;
+                ctx.fillRect(this.x, this.y, this.width, this.height)
+                ctx.fillStyle = 'black'
+                ctx.font = '12px Arial'
+                ctx.fillText('PUMP\n' + (isPumpTurnedOn ? 'ON' : 'OFF'), this.x + 10, this.y + 30)
+            }
         }
     ]);
+
+    const [ bufferedGameObjects, setBufferedGameObjects ] = useState<GameObject[]>([...gameObjects]);
     const [offset, setOffset] = useState({ x: 0, y: 0 });
 
-    const getGameObject = useCallback((id: GameObjectId) => gameObjects.find(object => object.id === id), [gameObjects])
+    const getGameObject = useCallback((id: GameObjectId) => bufferedGameObjects.find(object => object.id === id), [bufferedGameObjects])
 
     const updateGameObject = useCallback((id: GameObjectId, data: Partial<GameObject>) => {
-        setGameObjects(gameObjects.map(obj => obj.id === id ? { ...obj, ...data } : obj))
-    }, [gameObjects])
+        setBufferedGameObjects(bufferedGameObjects.map(obj => obj.id === id ? { ...obj, ...data } : obj))
+    }, [bufferedGameObjects])
+
+    const updateGameLoop = useCallback(() => {
+        const now = performance.now();
+        const delta = now - lastRenderRef.current;
+        if (delta >= 1000 / FPS) {
+            setGameObjects(bufferedGameObjects);
+            lastRenderRef.current = now;
+        }
+        setGameObjects(bufferedGameObjects);
+    }, [bufferedGameObjects]);
+
+    useEffect(() => {
+        requestAnimationFrame(updateGameLoop);
+    }, [updateGameLoop]);
 
     const value = {
         isDragging,
@@ -74,7 +102,7 @@ export const GameObjectsProvider: React.FC = ({ children }) => {
         draggedObjectId,
         setDraggedObjectId,
         gameObjects,
-        setGameObjects,
+        bufferedGameObjects,
         offset,
         setOffset,
         getGameObject,
