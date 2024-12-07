@@ -25,9 +25,10 @@ export const useGates = () => {
                 updateGameObject(GameObjectId.GATE_RIGHT, { x: left.x + left.width })
             }
         }
-        if (cart.x + cart.width / 2 === left.x) {
+        const RANGE = 2
+        if (cart.x + cart.width / 2 >= left.x - RANGE && cart.x + cart.width / 2 <= left.x + RANGE) {
             console.log("PASSED LEFT")
-        } else if (cart.x + cart.width / 2 === right.x) {
+        } else if (cart.x + cart.width / 2 >= right.x - RANGE && cart.x + cart.width / 2 <= right.x + RANGE) {
             console.log("PASSED RIGHT")
         }
     }, [draggedObjectId, bufferedGameObjects, getGameObject, updateGameObject]);

@@ -1,6 +1,23 @@
 import { GameObject, GameObjectId } from "../objects/types.ts";
-import { createContext, useCallback, useContext, useState, Dispatch, SetStateAction, FC } from "react";
+import {
+    createContext,
+    useCallback,
+    useContext,
+    useState,
+    Dispatch,
+    SetStateAction,
+    FC,
+    useEffect,
+    useMemo
+} from "react";
 import { RAIL_WIDTH, RAIL_X_LEFT } from "../objects/constants.ts";
+import rel from '../assets/rel.png'
+import opticalGate from '../assets/optical_door.png'
+import pumpOn from '../assets/pump_on.png'
+import pumpOff from '../assets/pump_off.png'
+import surface from '../assets/surface.png'
+import tableau from '../assets/tableau.png'
+import trolley from '../assets/trolley.png'
 
 type ContextValue = {
     gameObjects: GameObject[]
@@ -16,6 +33,7 @@ type ContextValue = {
     setIsPumpTurnedOn: Dispatch<SetStateAction<boolean>>
     boardsCount: number
     setBoardsCount: Dispatch<SetStateAction<number>>
+    sprites: Record<GameObjectId, (HTMLImageElement | null)>
 }
 
 const GameObjectsContext = createContext<ContextValue | null>(null)
@@ -28,41 +46,102 @@ export const useGameObjects = (): ContextValue => {
     return context;
 }
 export const GameObjectsProvider: FC = ({ children }) => {
-    const [isDragging, setIsDragging] = useState(false);
-    const [draggedObjectId, setDraggedObjectId] = useState<GameObjectId>(null);
+    const [ sprites, setSprites ] = useState<Record<GameObjectId, (HTMLImageElement | null)>>({});
+
+    const [ isDragging, setIsDragging ] = useState(false);
+    const [ draggedObjectId, setDraggedObjectId ] = useState<GameObjectId>(null);
     const [ isPumpTurnedOn, setIsPumpTurnedOn ] = useState(false);
     const [ boardsCount, setBoardsCount ] = useState(0);
 
-    const [gameObjects, setGameObjects] = useState<GameObject[]>([
-        { id: GameObjectId.RAIL, x: RAIL_X_LEFT, y: 600, width: RAIL_WIDTH, height: 60, color: 'black', isStatic: true, affectedByRotation: true,
-        draw(ctx) {
-            ctx.fillStyle = this.color;
-            ctx.fillRect(this.x, this.y, this.width, this.height)
-            for (let i = 1; i < 3; ++i) {
-                ctx.fillRect(this.x + this.width / 3 * i, this.y + this.height, 30, 100)
-            }for (let i = 1; i < 10; ++i) {
-                ctx.fillStyle = 'white'
-                ctx.font = '12px Arial'
-                ctx.fillRect(this.x + this.width / 10 * i, this.y, 10, 10)
-                ctx.fillText(i.toString(), this.x + this.width / 10 * i, this.y + 30)
-            }
-        }},
-        { id: GameObjectId.GATE_LEFT, x: 250, y: 550, width: 15, height: 50, color: 'blue', onlyX: true, affectedByRotation: true },
-        { id: GameObjectId.GATE_RIGHT, x: 750, y: 550, width: 15, height: 50, color: 'red', onlyX: true, affectedByRotation: true },
-        { id: GameObjectId.CART, x: RAIL_X_LEFT, y: 570, width: 60, height: 30, color: 'gray', onlyX: true, isStatic: false, affectedByRotation: true },
-        { id: GameObjectId.PUMP, x: 30, y: 700, width: 80, height: 60, color: 'green', isStatic: true,
+    const data = useMemo(() => (
+        [
+            {
+                id: GameObjectId.RAIL,
+                src: rel
+            },
+            {
+                id: GameObjectId.CART,
+                src: trolley
+            },
+            {
+                id: GameObjectId.GATE_LEFT,
+                src: opticalGate
+            },
+            {
+                id: GameObjectId.GATE_RIGHT,
+                src: opticalGate
+            },
+            {
+                id: GameObjectId.TABLO,
+                src: tableau
+            },
+            {
+                id: GameObjectId.PUMP,
+                src: isPumpTurnedOn ? pumpOn : pumpOff
+            },
+        ]
+    ), [isPumpTurnedOn])
+
+    useEffect(() => {
+        data.forEach(({ id, src }) => {
+            const img = new Image();
+            img.src = src;
+            img.onload = () => setSprites(prev => ({ ...prev, [ id ]: img }));
+        })
+        console.log(data)
+    }, [data]);
+
+    const [ gameObjects, setGameObjects ] = useState<GameObject[]>([
+        { id: GameObjectId.TABLO, x: 600, y: 370, width: 300, height: 360, color: 'blue', isStatic: true },
+        {
+            id: GameObjectId.RAIL,
+            x: RAIL_X_LEFT,
+            y: 580,
+            width: RAIL_WIDTH,
+            height: 120,
+            color: 'black',
+            isStatic: true,
+            affectedByRotation: true
+        },
+        {
+            id: GameObjectId.GATE_LEFT,
+            x: 250,
+            y: 550,
+            width: 15,
+            height: 75,
+            color: 'blue',
+            onlyX: true,
+            affectedByRotation: true
+        },
+        {
+            id: GameObjectId.GATE_RIGHT,
+            x: 750,
+            y: 550,
+            width: 15,
+            height: 75,
+            color: 'red',
+            onlyX: true,
+            affectedByRotation: true
+        },
+        {
+            id: GameObjectId.CART,
+            x: RAIL_X_LEFT,
+            y: 570,
+            width: 60,
+            height: 30,
+            color: 'gray',
+            onlyX: true,
+            isStatic: false,
+            affectedByRotation: true
+        },
+        {
+            id: GameObjectId.PUMP, x: 35, y: 620, width: 120, height: 60, color: 'green', isStatic: true,
             onClick() {
                 setIsPumpTurnedOn((prev) => !prev)
             },
-            draw(ctx) {
-                ctx.fillStyle = this.color;
-                ctx.fillRect(this.x, this.y, this.width, this.height)
-                ctx.fillStyle = 'black'
-                ctx.font = '12px Arial'
-                ctx.fillText('PUMP\n' + (isPumpTurnedOn ? 'ON' : 'OFF'), this.x + 10, this.y + 30)
-            }
         },
-        { id: GameObjectId.REMOVE_BOARD, x: 400, y: 720, width: 30, height: 30, color: 'black', isStatic: true,
+        {
+            id: GameObjectId.REMOVE_BOARD, x: 400, y: 720, width: 30, height: 30, color: 'black', isStatic: true,
             onClick() {
                 setBoardsCount((prev) => Math.max(0, prev - 1))
             },
@@ -70,13 +149,14 @@ export const GameObjectsProvider: FC = ({ children }) => {
                 ctx.fillStyle = this.color;
                 ctx.beginPath();
                 ctx.moveTo(this.x, this.y)
-                ctx.lineTo(this.x + 30 , this.y)
+                ctx.lineTo(this.x + 30, this.y)
                 ctx.lineTo(this.x + 15, this.y + 20)
                 ctx.closePath()
                 ctx.fill()
             }
         },
-        { id: GameObjectId.ADD_BOARD, x: 500, y: 720, width: 30, height: 30, color: 'black', isStatic: true,
+        {
+            id: GameObjectId.ADD_BOARD, x: 500, y: 720, width: 30, height: 30, color: 'black', isStatic: true,
             onClick() {
                 setBoardsCount((prev) => Math.min(5, prev + 1))
             },
@@ -84,13 +164,14 @@ export const GameObjectsProvider: FC = ({ children }) => {
                 ctx.fillStyle = this.color;
                 ctx.beginPath();
                 ctx.moveTo(this.x, this.y + 20)
-                ctx.lineTo(this.x + 30 , this.y + 20)
+                ctx.lineTo(this.x + 30, this.y + 20)
                 ctx.lineTo(this.x + 15, this.y)
                 ctx.closePath()
                 ctx.fill()
             }
         },
-        { id: GameObjectId.BOARDS, x: 465, y: 750, width: 50, height: 5, color: 'black', isStatic: true,
+        {
+            id: GameObjectId.BOARDS, x: 465, y: 750, width: 50, height: 5, color: 'black', isStatic: true,
             draw(ctx) {
                 ctx.fillStyle = this.color;
                 for (let i = 0; i < boardsCount; ++i) {
@@ -98,20 +179,11 @@ export const GameObjectsProvider: FC = ({ children }) => {
                 }
             }
         },
-        { id: GameObjectId.TABLO, x: 750, y: 300, width: 300, height: 100, color: 'blue', isStatic: true,
-            draw(ctx) {
-                ctx.fillStyle = this.color;
-                ctx.fillRect(this.x, this.y, this.width, this.height)
-                ctx.fillStyle = 'black'
-                ctx.font = '12px Arial'
-                ctx.fillText('PUMP\n' + (isPumpTurnedOn ? 'ON' : 'OFF'), this.x + 10, this.y + 30)
-            }
-        }
     ]);
 
-    const [offset, setOffset] = useState({ x: 0, y: 0 });
+    const [ offset, setOffset ] = useState({ x: 0, y: 0 });
 
-    const getGameObject = useCallback((id: GameObjectId) => gameObjects.find(object => object.id === id), [gameObjects])
+    const getGameObject = useCallback((id: GameObjectId) => gameObjects.find(object => object.id === id), [ gameObjects ])
 
     const updateGameObject = useCallback((id: GameObjectId, data: Partial<GameObject>) => {
         setGameObjects(prev => prev.map(obj => obj.id === id ? { ...obj, ...data } : obj))
@@ -130,7 +202,8 @@ export const GameObjectsProvider: FC = ({ children }) => {
         isPumpTurnedOn,
         setIsPumpTurnedOn,
         boardsCount,
-        setBoardsCount
+        setBoardsCount,
+        sprites
     }
 
     return (

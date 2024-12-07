@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { GameObjectsProvider, useGameObjects } from "./context";
 import { useCart, useGates, usePump, useTablo } from "./objects";
 import { GameObject, GameObjectId } from "./objects/types.ts";
-import { RAIL_WIDTH, RAIL_X_LEFT, RAIL_X_RIGHT } from "./objects/constants.ts";
+import { RAIL_X_LEFT, RAIL_X_RIGHT } from "./objects/constants.ts";
 import { useBoards } from "./objects/Boards.ts";
 
 type MouseState = 'idle' | 'grab' | 'grabbing' | 'click'
@@ -30,7 +30,8 @@ function App() {
         setIsDragging,
         updateGameObject,
         isPumpTurnedOn,
-        boardsCount
+        boardsCount,
+        sprites
     } = useGameObjects()
 
     const render = useCallback(() => {
@@ -48,7 +49,7 @@ function App() {
 
         gameObjects.forEach((obj) => {
             if (obj.affectedByRotation) {
-                const angle = boardsCount / 1 * Math.PI / 180;
+                const angle = boardsCount * Math.PI / 180;
                 const originX = RAIL_X_RIGHT - 200;
                 const originY = 600;
 
@@ -73,6 +74,8 @@ function App() {
             ctx.fillStyle = obj.color;
             if (obj.draw) {
                 obj.draw(ctx);
+            } else if (sprites[obj.id]) {
+                ctx.drawImage(sprites[obj.id]!, obj.x, obj.y, obj.width, obj.height)
             } else {
                 ctx.fillRect(obj.x, obj.y, obj.width, obj.height);
             }
@@ -82,7 +85,7 @@ function App() {
                 ctx.restore();
             }
         });
-    }, [ gameObjects, boardsCount, isPumpTurnedOn, draggedObjectId ])
+    }, [ gameObjects, sprites, boardsCount, isPumpTurnedOn, draggedObjectId ])
 
     useEffect(() => {
         let animationFrameId: number;
@@ -107,6 +110,7 @@ function App() {
     };
 
     const checkObjectClicked = (obj: GameObject, mousePos: {x: number, y: number}) => {
+        if (obj.isStatic && !obj.onClick) return false
         if (obj.affectedByRotation) {
             const angle = boardsCount / 1 * Math.PI / 180;
             const originX = RAIL_X_RIGHT - 200;
@@ -184,7 +188,6 @@ function App() {
 
     useGates()
     useCart()
-    usePump()
     useTablo()
     useBoards()
 
