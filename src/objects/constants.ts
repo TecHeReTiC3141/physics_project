@@ -1,7 +1,6 @@
 const RAIL_X_LEFT = 150
 const RAIL_X_RIGHT = 1050
+const RAIL_WIDTH = RAIL_X_RIGHT - RAIL_X_LEFT
 
-const FPS = 60
-
-export { RAIL_X_RIGHT, RAIL_X_LEFT, FPS }
+export { RAIL_X_RIGHT, RAIL_X_LEFT, RAIL_WIDTH }
 

@@ -10,9 +10,6 @@ export const useGates = () => {
         const left = getGameObject(GameObjectId.GATE_LEFT)
         const right = getGameObject(GameObjectId.GATE_RIGHT)
         const cart = getGameObject(GameObjectId.CART)
-        console.log(bufferedGameObjects)
-        console.log("left", left)
-        console.log("right", right)
         if (draggedObjectId === GameObjectId.GATE_LEFT) {
             if (left.x < RAIL_X_LEFT) {
                 updateGameObject(GameObjectId.GATE_LEFT, { x: RAIL_X_LEFT })

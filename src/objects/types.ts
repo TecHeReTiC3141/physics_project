@@ -4,7 +4,10 @@ export enum GameObjectId {
     'RAIL' = 'RAIL',
     'CART' = 'CART',
     'TABLO' = 'TABLO',
-    'PUMP' = 'PUMP'
+    'PUMP' = 'PUMP',
+    'ADD_BOARD' = 'ADD_BOARD',
+    'REMOVE_BOARD' = 'REMOVE_BOARD',
+    'BOARDS' = 'BOARDS'
 }
 
 export type GameObject = {
@@ -16,7 +19,8 @@ export type GameObject = {
     color: string
     isStatic?: boolean
     onlyX?: boolean
-    onlyY?: boolean,
+    onlyY?: boolean
+    affectedByRotation?: boolean
     onClick?: () => void
     draw?: (ctx: CanvasRenderingContext2D) => void
 }

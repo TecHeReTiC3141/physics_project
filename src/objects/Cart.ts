@@ -15,9 +15,6 @@ export const useCart = () => {
                 updateGameObject(GameObjectId.CART, { x: RAIL_X_RIGHT - cart.width })
             }
         }
-        // if (isPumpTurnedOn && cart.x < RAIL_X_RIGHT - cart.width) {
-        //     updateGameObject(GameObjectId.CART, { x: cart.x + 1 })
-        // }
         if (isPumpTurnedOn !== cart.isStatic) {
             updateGameObject(GameObjectId.CART, { isStatic: isPumpTurnedOn })
         }
