@@ -3,7 +3,14 @@ import clsx from "clsx";
 import { GameObjectsProvider, useGameObjects } from "./context";
 import { useCart, useGates, useTablo } from "./objects";
 import { GameObject, GameObjectId } from "./objects/types.ts";
-import { CANVAS_HEIGHT, CANVAS_WIDTH, RAIL_X_LEFT, RAIL_X_RIGHT } from "./objects/constants.ts";
+import {
+    CANVAS_HEIGHT,
+    CANVAS_WIDTH,
+    RAIL_X_LEFT,
+    RAIL_X_RIGHT,
+    RAIL_X_LEFT_OFFSET,
+    RAIL_X_RIGHT_OFFSET
+} from "./constants.ts";
 import { useBoards } from "./objects/Boards.ts";
 
 type MouseState = 'idle' | 'grab' | 'grabbing' | 'click'
@@ -184,7 +191,8 @@ function Simulator() {
         const newObject = getGameObject(draggedObjectId);
 
         if (!newObject.onlyY) {
-            newObject.x = Math.min(Math.max(mousePos.x - offset.x, RAIL_X_LEFT), RAIL_X_RIGHT - newObject.width)
+            newObject.x = Math.min(Math.max(mousePos.x - offset.x, RAIL_X_LEFT + RAIL_X_LEFT_OFFSET),
+                RAIL_X_RIGHT - newObject.width - RAIL_X_RIGHT_OFFSET )
         }
         if (!newObject.onlyX) {
             newObject.y = mousePos.y - offset.y

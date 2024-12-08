@@ -1,7 +1,7 @@
 import { GameObjectId } from "./types.ts";
 import { useGameObjects } from "../context";
 import { useEffect } from "react";
-import { RAIL_X_RIGHT, RAIL_X_LEFT } from "./constants.ts";
+import { RAIL_X_RIGHT, RAIL_X_LEFT } from "../constants.ts";
 
 export const useGates = () => {
     const { draggedObjectId, bufferedGameObjects, getGameObject, updateGameObject } = useGameObjects()
