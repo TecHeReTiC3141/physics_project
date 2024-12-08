@@ -1,7 +1,7 @@
 import { useGameObjects } from "../context";
 import { useEffect } from "react";
 import { GameObjectId } from "./types.ts";
-import {RAIL_X_LEFT, RAIL_X_LEFT_OFFSET, RAIL_X_RIGHT, RAIL_X_RIGHT_OFFSET} from "../constants.ts";
+import {RAIL_X_LEFT, RAIL_X_RIGHT, RAIL_X_RIGHT_OFFSET} from "../constants.ts";
 
 export const useCart = () => {
     const { draggedObjectId, getGameObject, updateGameObject, isPumpTurnedOn, gameObjects } = useGameObjects()

@@ -1,17 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import clsx from "clsx";
-import { GameObjectsProvider, useGameObjects } from "./context";
-import { useCart, useGates, useTablo } from "./objects";
-import { GameObject, GameObjectId } from "./objects/types.ts";
-import {
-    CANVAS_HEIGHT,
-    CANVAS_WIDTH,
-    RAIL_X_LEFT,
-    RAIL_X_RIGHT,
-    RAIL_X_LEFT_OFFSET,
-    RAIL_X_RIGHT_OFFSET
-} from "./constants.ts";
-import { useBoards } from "./objects/Boards.ts";
+import { useGameObjects } from "../context";
+import { useCart, useGates, useTablo } from "../objects";
+import { GameObject, GameObjectId } from "../objects/types.ts";
+import { CANVAS_HEIGHT, CANVAS_WIDTH, RAIL_X_LEFT, RAIL_X_RIGHT } from "../constants.ts";
+import { useBoards } from "../objects/Boards.ts";
+import { RAIL_X_LEFT_OFFSET, RAIL_X_RIGHT_OFFSET } from "../constants.ts";
 
 type MouseState = 'idle' | 'grab' | 'grabbing' | 'click'
 
@@ -60,7 +54,9 @@ function Simulator() {
 
         const cart = getGameObject(GameObjectId.CART);
         if (isPumpTurnedOn && cart && cart.x < RAIL_X_RIGHT - cart.width) {
-            updateGameObject(GameObjectId.CART, { x: cart.x + 2.5 });
+
+            const CARD_SPEED_PER_FRAME = 2 * (1 + boardsCount * .3)
+            updateGameObject(GameObjectId.CART, { x: cart.x + CARD_SPEED_PER_FRAME });
         }
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -211,23 +207,19 @@ function Simulator() {
     useBoards()
 
     return (
-        <div className="container mx-auto flex items-center justify-center">
-            <div className={clsx("border border-primary border-2 rounded-xl w-[1200px] h-[500px]",
-                mouseStateClassnames[ mouseState ])}>
-                <canvas
-                    ref={canvasRef}
-                    onMouseDown={onMouseDown}
-                    onMouseMove={onMouseMove}
-                    onMouseUp={onMouseUp}
-                />
-            </div>
+        <div className={clsx("w-full border-primary border-2 rounded-xl h-[500px] relative",
+            mouseStateClassnames[ mouseState ])}>
+            <button className="button-filled absolute top-3 left-3">Подсказка</button>
+            <canvas
+                ref={canvasRef}
+                onMouseDown={onMouseDown}
+                onMouseMove={onMouseMove}
+                onMouseUp={onMouseUp}
+                className="mx-auto"
+            />
         </div>
     );
 }
 
-const withWrap = () =>
-    <GameObjectsProvider>
-        <Simulator/>
-    </GameObjectsProvider>
 
-export { withWrap as Simulator }
+export { Simulator }

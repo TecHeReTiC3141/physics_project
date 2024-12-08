@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.button {
+    @apply btn h-12 w-40  border-accent text-accent hover:shadow-xl;
+}
+
+.button-outline {
+    @apply button btn-outline hover:bg-accent;
+    @apply bg-background;
+}
+
+.button-filled {
+    @apply button;
+    @apply bg-accent text-background hover:bg-background hover:text-accent hover:border-accent;
+}
