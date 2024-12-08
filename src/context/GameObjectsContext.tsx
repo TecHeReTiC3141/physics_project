@@ -11,7 +11,7 @@ import {
     useMemo
 } from "react";
 import { RAIL_WIDTH, RAIL_X_LEFT } from "../objects/constants.ts";
-import rel from '../assets/rel.png'
+import rel from '../assets/rel.svg'
 import opticalGate from '../assets/optical_door.png'
 import pumpOn from '../assets/pump_on.png'
 import pumpOff from '../assets/pump_off.png'
