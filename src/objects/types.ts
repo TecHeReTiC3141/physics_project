@@ -7,7 +7,8 @@ export enum GameObjectId {
     'PUMP' = 'PUMP',
     'ADD_BOARD' = 'ADD_BOARD',
     'REMOVE_BOARD' = 'REMOVE_BOARD',
-    'BOARDS' = 'BOARDS'
+    'BOARDS' = 'BOARDS',
+    'GROUND' = 'GROUND'
 }
 
 export type GameObject = {

@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import clsx from "clsx";
 import { GameObjectsProvider, useGameObjects } from "./context";
-import { useCart, useGates, usePump, useTablo } from "./objects";
+import { useCart, useGates, useTablo } from "./objects";
 import { GameObject, GameObjectId } from "./objects/types.ts";
-import { RAIL_X_LEFT, RAIL_X_RIGHT } from "./objects/constants.ts";
+import { CANVAS_HEIGHT, CANVAS_WIDTH, RAIL_X_LEFT, RAIL_X_RIGHT } from "./objects/constants.ts";
 import { useBoards } from "./objects/Boards.ts";
 
 type MouseState = 'idle' | 'grab' | 'grabbing' | 'click'
@@ -15,7 +15,7 @@ const mouseStateClassnames = {
     click: 'cursor-pointer',
 }
 
-function App() {
+function Simulator() {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const [ mouseState, setMouseState ] = useState<MouseState>('idle');
 
@@ -34,11 +34,22 @@ function App() {
         sprites
     } = useGameObjects()
 
+    const rotateCanvas = useCallback((ctx) => {
+        const angle = boardsCount * Math.PI / 180;
+        const originX = RAIL_X_RIGHT - 200;
+        const originY = 600;
+
+        ctx.save();
+        ctx.translate(originX, originY);
+        ctx.rotate(angle);
+        ctx.translate(-originX, -originY);
+    }, [boardsCount])
+
     const render = useCallback(() => {
         const canvas = canvasRef.current as HTMLCanvasElement;
         const ctx = canvas.getContext('2d');
-        canvas.width = 1200;
-        canvas.height = 800;
+        canvas.width = CANVAS_WIDTH;
+        canvas.height = CANVAS_HEIGHT;
 
         const cart = getGameObject(GameObjectId.CART);
         if (isPumpTurnedOn && cart && cart.x < RAIL_X_RIGHT - cart.width) {
@@ -47,30 +58,29 @@ function App() {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+        if (draggedObjectId) {
+            const activeObject = getGameObject(draggedObjectId)
+            if (activeObject.affectedByRotation) {
+                rotateCanvas(ctx)
+            }
+
+            ctx.fillStyle = '#B8E0F2';
+            ctx.fillRect(
+                activeObject.x - 5,
+                activeObject.y - 5,
+                activeObject.width + 10,
+                activeObject.height + 10
+            );
+            if (activeObject.affectedByRotation) {
+                ctx.restore();
+            }
+        }
+
         gameObjects.forEach((obj) => {
             if (obj.affectedByRotation) {
-                const angle = boardsCount * Math.PI / 180;
-                const originX = RAIL_X_RIGHT - 200;
-                const originY = 600;
-
-                ctx.save();
-                ctx.translate(originX, originY);
-                ctx.rotate(angle);
-                ctx.translate(-originX, -originY);
+                rotateCanvas(ctx)
             }
 
-            // Draw outline for the dragged object, considering rotation
-            if (draggedObjectId === obj.id) {
-                ctx.fillStyle = 'yellow';
-                ctx.fillRect(
-                    obj.x - 5,
-                    obj.y - 5,
-                    obj.width + 10,
-                    obj.height + 10
-                );
-            }
-
-            // Draw the object
             ctx.fillStyle = obj.color;
             if (obj.draw) {
                 obj.draw(ctx);
@@ -79,8 +89,6 @@ function App() {
             } else {
                 ctx.fillRect(obj.x, obj.y, obj.width, obj.height);
             }
-
-            // Restore the original transform state
             if (obj.affectedByRotation) {
                 ctx.restore();
             }
@@ -193,7 +201,7 @@ function App() {
 
     return (
         <div className="container mx-auto flex items-center justify-center">
-            <div className={clsx("border border-gray-800 w-[1200px] h-[800px]",
+            <div className={clsx("border border-primary border-2 rounded-xl w-[1200px] h-[500px]",
                 mouseStateClassnames[ mouseState ])}>
                 <canvas
                     ref={canvasRef}
@@ -208,7 +216,7 @@ function App() {
 
 const withWrap = () =>
     <GameObjectsProvider>
-        <App/>
+        <Simulator/>
     </GameObjectsProvider>
 
-export { withWrap as App }
+export { withWrap as Simulator }
