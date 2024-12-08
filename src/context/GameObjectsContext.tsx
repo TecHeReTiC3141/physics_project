@@ -13,11 +13,17 @@ import {
 import { CANVAS_WIDTH, RAIL_WIDTH, RAIL_X_LEFT } from "../objects/constants.ts";
 import rel from '../assets/rel.svg'
 import opticalGate from '../assets/optical_door.png'
-import pumpOn from '../assets/pump_on.png'
-import pumpOff from '../assets/pump_off.png'
+import pumpOn from '../assets/pump_off.png'
+import pumpOff from '../assets/pump_on.png'
 import surface from '../assets/surface.png'
 import tableau from '../assets/tableau.png'
 import trolley from '../assets/trolley.png'
+import buttonMinusBlock from '../assets/button_minus_block.png'
+import buttonPlusBlock from '../assets/button_plus_block.png'
+import buttonReset from '../assets/button_reset.png'
+import buttonStart from '../assets/button_start.png'
+import block from '../assets/block.png'
+import { useGameObjectsData } from "../hooks/useGameObject.ts";
 
 type ContextValue = {
     gameObjects: GameObject[]
@@ -83,6 +89,26 @@ export const GameObjectsProvider: FC = ({ children }) => {
                 id: GameObjectId.GROUND,
                 src: surface
             },
+            {
+                id: GameObjectId.ADD_BOARD,
+                src: buttonPlusBlock
+            },
+            {
+                id: GameObjectId.REMOVE_BOARD,
+                src: buttonMinusBlock
+            },
+            {
+                id: GameObjectId.RESET_BUTTON,
+                src: buttonReset
+            },
+            {
+                id: GameObjectId.START_BUTTON,
+                src: buttonStart
+            },
+            {
+                id: GameObjectId.BOARDS,
+                src: block
+            },
         ]
     ), [isPumpTurnedOn])
 
@@ -95,96 +121,7 @@ export const GameObjectsProvider: FC = ({ children }) => {
         console.log(data)
     }, [data]);
 
-    const [ gameObjects, setGameObjects ] = useState<GameObject[]>([
-        { id: GameObjectId.TABLO, x: 600, y: 70, width: 300, height: 360, color: 'blue', isStatic: true },
-        { id: GameObjectId.GROUND, x: 0, y: 400, width: CANVAS_WIDTH, height: 25, color: 'blue', isStatic: true },
-        {
-            id: GameObjectId.RAIL,
-            x: RAIL_X_LEFT,
-            y: 280,
-            width: RAIL_WIDTH,
-            height: 120,
-            color: 'black',
-            isStatic: true,
-            affectedByRotation: true
-        },
-        {
-            id: GameObjectId.GATE_LEFT,
-            x: 250,
-            y: 250,
-            width: 15,
-            height: 75,
-            color: 'blue',
-            onlyX: true,
-            affectedByRotation: true
-        },
-        {
-            id: GameObjectId.GATE_RIGHT,
-            x: 750,
-            y: 250,
-            width: 15,
-            height: 75,
-            color: 'red',
-            onlyX: true,
-            affectedByRotation: true
-        },
-        {
-            id: GameObjectId.CART,
-            x: RAIL_X_LEFT,
-            y: 270,
-            width: 60,
-            height: 30,
-            color: 'gray',
-            onlyX: true,
-            isStatic: false,
-            affectedByRotation: true
-        },
-        {
-            id: GameObjectId.PUMP, x: 35, y: 320, width: 120, height: 60, color: 'green', isStatic: true,
-            onClick() {
-                setIsPumpTurnedOn((prev) => !prev)
-            },
-        },
-        {
-            id: GameObjectId.REMOVE_BOARD, x: 400, y: 420, width: 30, height: 30, color: 'black', isStatic: true,
-            onClick() {
-                setBoardsCount((prev) => Math.max(0, prev - 1))
-            },
-            draw(ctx) {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.moveTo(this.x, this.y)
-                ctx.lineTo(this.x + 30, this.y)
-                ctx.lineTo(this.x + 15, this.y + 20)
-                ctx.closePath()
-                ctx.fill()
-            }
-        },
-        {
-            id: GameObjectId.ADD_BOARD, x: 500, y: 420, width: 30, height: 30, color: 'black', isStatic: true,
-            onClick() {
-                setBoardsCount((prev) => Math.min(5, prev + 1))
-            },
-            draw(ctx) {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.moveTo(this.x, this.y + 20)
-                ctx.lineTo(this.x + 30, this.y + 20)
-                ctx.lineTo(this.x + 15, this.y)
-                ctx.closePath()
-                ctx.fill()
-            }
-        },
-        {
-            id: GameObjectId.BOARDS, x: 465, y: 450, width: 50, height: 5, color: 'black', isStatic: true,
-            draw(ctx) {
-                ctx.fillStyle = this.color;
-                for (let i = 0; i < boardsCount; ++i) {
-                    ctx.fillRect(this.x - this.width / 2, this.y - i * (this.height + 2), this.width, this.height)
-                }
-            }
-        },
-    ]);
+    const [ gameObjects, setGameObjects ] = useState<GameObject[]>(useGameObjectsData({ setBoardsCount, setIsPumpTurnedOn }));
 
     const [ offset, setOffset ] = useState({ x: 0, y: 0 });
 

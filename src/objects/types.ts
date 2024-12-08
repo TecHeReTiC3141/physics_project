@@ -8,7 +8,9 @@ export enum GameObjectId {
     'ADD_BOARD' = 'ADD_BOARD',
     'REMOVE_BOARD' = 'REMOVE_BOARD',
     'BOARDS' = 'BOARDS',
-    'GROUND' = 'GROUND'
+    'GROUND' = 'GROUND',
+    'RESET_BUTTON' = 'RESET_BUTTON',
+    'START_BUTTON' = 'START_BUTTON',
 }
 
 export type GameObject = {

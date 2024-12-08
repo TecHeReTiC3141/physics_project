@@ -65,12 +65,15 @@ function Simulator() {
             }
 
             ctx.fillStyle = '#B8E0F2';
-            ctx.fillRect(
+            ctx.beginPath()
+            ctx.roundRect(
                 activeObject.x - 5,
                 activeObject.y - 5,
                 activeObject.width + 10,
-                activeObject.height + 10
+                activeObject.height + 10,
+                10
             );
+            ctx.fill()
             if (activeObject.affectedByRotation) {
                 ctx.restore();
             }
