@@ -9,7 +9,7 @@ function Modal({ id, children }: Props) {
         <dialog id={id} className="modal">
             <div className="modal-box">
                 <form method="dialog">
-                    <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 bg-accent text-text font-bold">✕</button>
+                    <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 bg-primary hover:bg-background text-text font-bold">✕</button>
                 </form>
                 {children}
             </div>

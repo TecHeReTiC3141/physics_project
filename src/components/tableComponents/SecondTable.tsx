@@ -6,7 +6,7 @@ function SecondTable() {
     return (
         <div className="w-full flex flex-col gap-y-3 items-center">
             <div className="w-full flex justify-between items-center">
-                <h3 className="text-2xl">Задание 1</h3>
+                <h3 className="text-2xl select-none">Задание 1</h3>
                 <button className="btn bg-background hover:bg-background border-accent hover:border-accent
                     text-accent font-bold btn-circle p-1.5 text-xl flex items-center justify-center"
                         onClick={() => (document.getElementById('second-table-instruction-modal') as HTMLDialogElement).showModal()}><FaQuestion/>

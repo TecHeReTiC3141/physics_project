@@ -8,7 +8,7 @@ export function normalizeGatesForSecondTable(
     leftGate: number,
     rightGate: number
 ): { normalizedLeftGate: number; normalizedRightGate: number } {
-    const validRightGates = [0.40, 0.50, 0.70, 0.90, 1.10];
+    const validRightGates = [ 0.40, 0.50, 0.70, 0.90, 1.10 ];
     const validLeftGate = 0.15; // Единственное допустимое значение для leftGate
 
     // Нормируем значение rightGate к ближайшему из допустимых
@@ -23,8 +23,8 @@ export function calculateSecondTableDto(leftGate: number, rightGate: number): Se
     // Нормализуем gates
     const { normalizedLeftGate, normalizedRightGate } = normalizeGatesForSecondTable(leftGate, rightGate);
 
-    const randomOffset = () => Math.random() * 0.3;
-    const t1New = normalizedLeftGate+ randomOffset();  // Значение t1 с добавлением случайного смещения
+    const randomOffset = () => (-.3 + Math.random() * 0.6);
+    const t1New = normalizedLeftGate + randomOffset();  // Значение t1 с добавлением случайного смещения
     const t2New = normalizedRightGate + randomOffset();  // Значение t2 с добавлением случайного смещения
 
     // Вычисление отклонения

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .button {
-    @apply btn h-12 w-40  border-accent text-accent hover:shadow-xl;
+    @apply btn h-12 w-40  border-accent text-accent hover:shadow-xl focus:outline-none;
 }
 
 .button-outline {
