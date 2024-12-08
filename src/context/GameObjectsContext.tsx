@@ -10,7 +10,7 @@ import {
     useEffect,
     useMemo
 } from "react";
-import { RAIL_WIDTH, RAIL_X_LEFT } from "../objects/constants.ts";
+import { CANVAS_WIDTH, RAIL_WIDTH, RAIL_X_LEFT } from "../objects/constants.ts";
 import rel from '../assets/rel.svg'
 import opticalGate from '../assets/optical_door.png'
 import pumpOn from '../assets/pump_on.png'
@@ -46,7 +46,7 @@ export const useGameObjects = (): ContextValue => {
     return context;
 }
 export const GameObjectsProvider: FC = ({ children }) => {
-    const [ sprites, setSprites ] = useState<Record<GameObjectId, (HTMLImageElement | null)>>({});
+    const [ sprites, setSprites ] = useState<Record<GameObjectId, (HTMLImageElement | null)>>({} as Record<GameObjectId, (HTMLImageElement | null)>);
 
     const [ isDragging, setIsDragging ] = useState(false);
     const [ draggedObjectId, setDraggedObjectId ] = useState<GameObjectId>(null);
@@ -79,6 +79,10 @@ export const GameObjectsProvider: FC = ({ children }) => {
                 id: GameObjectId.PUMP,
                 src: isPumpTurnedOn ? pumpOn : pumpOff
             },
+            {
+                id: GameObjectId.GROUND,
+                src: surface
+            },
         ]
     ), [isPumpTurnedOn])
 
@@ -92,11 +96,12 @@ export const GameObjectsProvider: FC = ({ children }) => {
     }, [data]);
 
     const [ gameObjects, setGameObjects ] = useState<GameObject[]>([
-        { id: GameObjectId.TABLO, x: 600, y: 370, width: 300, height: 360, color: 'blue', isStatic: true },
+        { id: GameObjectId.TABLO, x: 600, y: 70, width: 300, height: 360, color: 'blue', isStatic: true },
+        { id: GameObjectId.GROUND, x: 0, y: 400, width: CANVAS_WIDTH, height: 25, color: 'blue', isStatic: true },
         {
             id: GameObjectId.RAIL,
             x: RAIL_X_LEFT,
-            y: 580,
+            y: 280,
             width: RAIL_WIDTH,
             height: 120,
             color: 'black',
@@ -106,7 +111,7 @@ export const GameObjectsProvider: FC = ({ children }) => {
         {
             id: GameObjectId.GATE_LEFT,
             x: 250,
-            y: 550,
+            y: 250,
             width: 15,
             height: 75,
             color: 'blue',
@@ -116,7 +121,7 @@ export const GameObjectsProvider: FC = ({ children }) => {
         {
             id: GameObjectId.GATE_RIGHT,
             x: 750,
-            y: 550,
+            y: 250,
             width: 15,
             height: 75,
             color: 'red',
@@ -126,7 +131,7 @@ export const GameObjectsProvider: FC = ({ children }) => {
         {
             id: GameObjectId.CART,
             x: RAIL_X_LEFT,
-            y: 570,
+            y: 270,
             width: 60,
             height: 30,
             color: 'gray',
@@ -135,13 +140,13 @@ export const GameObjectsProvider: FC = ({ children }) => {
             affectedByRotation: true
         },
         {
-            id: GameObjectId.PUMP, x: 35, y: 620, width: 120, height: 60, color: 'green', isStatic: true,
+            id: GameObjectId.PUMP, x: 35, y: 320, width: 120, height: 60, color: 'green', isStatic: true,
             onClick() {
                 setIsPumpTurnedOn((prev) => !prev)
             },
         },
         {
-            id: GameObjectId.REMOVE_BOARD, x: 400, y: 720, width: 30, height: 30, color: 'black', isStatic: true,
+            id: GameObjectId.REMOVE_BOARD, x: 400, y: 420, width: 30, height: 30, color: 'black', isStatic: true,
             onClick() {
                 setBoardsCount((prev) => Math.max(0, prev - 1))
             },
@@ -156,7 +161,7 @@ export const GameObjectsProvider: FC = ({ children }) => {
             }
         },
         {
-            id: GameObjectId.ADD_BOARD, x: 500, y: 720, width: 30, height: 30, color: 'black', isStatic: true,
+            id: GameObjectId.ADD_BOARD, x: 500, y: 420, width: 30, height: 30, color: 'black', isStatic: true,
             onClick() {
                 setBoardsCount((prev) => Math.min(5, prev + 1))
             },
@@ -171,7 +176,7 @@ export const GameObjectsProvider: FC = ({ children }) => {
             }
         },
         {
-            id: GameObjectId.BOARDS, x: 465, y: 750, width: 50, height: 5, color: 'black', isStatic: true,
+            id: GameObjectId.BOARDS, x: 465, y: 450, width: 50, height: 5, color: 'black', isStatic: true,
             draw(ctx) {
                 ctx.fillStyle = this.color;
                 for (let i = 0; i < boardsCount; ++i) {
