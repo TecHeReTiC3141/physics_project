@@ -1,4 +1,5 @@
 import logo from '../../public/favicon/logo.png'
+import { Modal } from "./Modal.tsx";
 
 function Header() {
     return (
@@ -15,15 +16,10 @@ function Header() {
                    className="button-outline">Методичка</a>
                 <button className="button-outline" onClick={() => (document.getElementById('instruction-modal') as HTMLDialogElement).showModal()}>Инструкция
                 </button>
-                <dialog id="instruction-modal" className="modal">
-                    <div className="modal-box">
-                        <h3 className="font-bold text-lg">Какая-то инструкция!</h3>
-                        <p className="py-4">Press ESC key or click outside to close</p>
-                    </div>
-                    <form method="dialog" className="modal-backdrop">
-                        <button>close</button>
-                    </form>
-                </dialog>
+                <Modal id="instruction-modal">
+                    <h3 className="font-bold text-lg">Какая-то инструкция!</h3>
+                    <p className="py-4">Press ESC key or click outside to close</p>
+                </Modal>
             </div>
         </header>
     )

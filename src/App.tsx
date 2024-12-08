@@ -1,4 +1,4 @@
-import { Header, Simulator, Tables } from "./components";
+import { Header, Simulator, Tables, Footer } from "./components";
 import { GameObjectsProvider } from "./context";
 
 function App() {
@@ -8,6 +8,7 @@ function App() {
                 <Header/>
                 <Simulator/>
                 <Tables/>
+                <Footer/>
             </div>
         </GameObjectsProvider>
     )
