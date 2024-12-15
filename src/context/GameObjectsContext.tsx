@@ -1,4 +1,4 @@
-import { GameObject, GameObjectId } from "../objects/types.ts";
+import { GameObject, GameObjectId } from "../objectsHooks/types.ts";
 import {
     createContext,
     useCallback,
@@ -8,22 +8,9 @@ import {
     SetStateAction,
     FC,
     useEffect,
-    useMemo
 } from "react";
-import { CANVAS_WIDTH, RAIL_WIDTH, RAIL_X_LEFT } from "../objects/constants.ts";
-import rel from '../assets/rel.svg'
-import opticalGate from '../assets/optical_door.png'
-import pumpOn from '../assets/pump_on.png'
-import pumpOff from '../assets/pump_off.png'
-import surface from '../assets/surface.png'
-import tableau from '../assets/tableau.png'
-import trolley from '../assets/trolley.png'
-import buttonMinusBlock from '../assets/button_minus_block.png'
-import buttonPlusBlock from '../assets/button_plus_block.png'
-import buttonReset from '../assets/button_reset.png'
-import buttonStart from '../assets/button_start.png'
-import block from '../assets/block.png'
-import { useGameObjectsData } from "../hooks/useGameObject.ts";
+import { useGameObjectsData } from "../hooks";
+import { useGameAssets } from "../hooks/useGameAssets.ts";
 
 type ContextValue = {
     gameObjects: GameObject[]
@@ -37,6 +24,12 @@ type ContextValue = {
     setOffset: Dispatch<SetStateAction<{ x: number, y: number }>>
     isPumpTurnedOn: boolean
     setIsPumpTurnedOn: Dispatch<SetStateAction<boolean>>
+    isMagnetReleased: boolean
+    setIsMagnetReleased: Dispatch<SetStateAction<boolean>>
+    leftTime: number | null
+    setLeftTime: Dispatch<SetStateAction<number | null>>
+    rightTime: number | null
+    setRightTime: Dispatch<SetStateAction<number | null>>
     boardsCount: number
     setBoardsCount: Dispatch<SetStateAction<number>>
     sprites: Record<GameObjectId, (HTMLImageElement | null)>
@@ -51,77 +44,29 @@ export const useGameObjects = (): ContextValue => {
     }
     return context;
 }
+
 export const GameObjectsProvider: FC = ({ children }) => {
     const [ sprites, setSprites ] = useState<Record<GameObjectId, (HTMLImageElement | null)>>({} as Record<GameObjectId, (HTMLImageElement | null)>);
 
     const [ isDragging, setIsDragging ] = useState(false);
     const [ draggedObjectId, setDraggedObjectId ] = useState<GameObjectId>(null);
     const [ isPumpTurnedOn, setIsPumpTurnedOn ] = useState(false);
+    const [ isMagnetReleased, setIsMagnetReleased ] = useState(false);
+    const [ leftTime, setLeftTime ] = useState<number | null>(null);
+    const [ rightTime, setRightTime ] = useState<number | null>(null);
     const [ boardsCount, setBoardsCount ] = useState(0);
 
-    const data = useMemo(() => (
-        [
-            {
-                id: GameObjectId.RAIL,
-                src: rel
-            },
-            {
-                id: GameObjectId.CART,
-                src: trolley
-            },
-            {
-                id: GameObjectId.GATE_LEFT,
-                src: opticalGate
-            },
-            {
-                id: GameObjectId.GATE_RIGHT,
-                src: opticalGate
-            },
-            {
-                id: GameObjectId.TABLO,
-                src: tableau
-            },
-            {
-                id: GameObjectId.PUMP,
-                src: isPumpTurnedOn ? pumpOn : pumpOff
-            },
-            {
-                id: GameObjectId.GROUND,
-                src: surface
-            },
-            {
-                id: GameObjectId.ADD_BOARD,
-                src: buttonPlusBlock
-            },
-            {
-                id: GameObjectId.REMOVE_BOARD,
-                src: buttonMinusBlock
-            },
-            {
-                id: GameObjectId.RESET_BUTTON,
-                src: buttonReset
-            },
-            {
-                id: GameObjectId.START_BUTTON,
-                src: buttonStart
-            },
-            {
-                id: GameObjectId.BOARDS,
-                src: block
-            },
-        ]
-    ), [isPumpTurnedOn])
+    const gameAssets = useGameAssets(isPumpTurnedOn)
 
     useEffect(() => {
-        data.forEach(({ id, src }) => {
+        gameAssets.forEach(({ id, src }) => {
             const img = new Image();
-            img.src = src;
+            img.src = src as string;
             img.onload = () => setSprites(prev => ({ ...prev, [ id ]: img }));
         })
-        console.log(data)
-    }, [data]);
+    }, [gameAssets]);
 
-    const [ gameObjects, setGameObjects ] = useState<GameObject[]>(useGameObjectsData({ setBoardsCount, setIsPumpTurnedOn }));
+    const [ gameObjects, setGameObjects ] = useState<GameObject[]>(useGameObjectsData({ setBoardsCount, setIsPumpTurnedOn, setIsMagnetReleased }));
 
     const [ offset, setOffset ] = useState({ x: 0, y: 0 });
 
@@ -143,6 +88,12 @@ export const GameObjectsProvider: FC = ({ children }) => {
         updateGameObject,
         isPumpTurnedOn,
         setIsPumpTurnedOn,
+        isMagnetReleased,
+        setIsMagnetReleased,
+        leftTime,
+        setLeftTime,
+        rightTime,
+        setRightTime,
         boardsCount,
         setBoardsCount,
         sprites

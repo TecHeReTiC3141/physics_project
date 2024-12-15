@@ -4,7 +4,7 @@ export type SecondTableDto = {
     deviation: number;
 };
 
-export function normalizeGatesForSecondTable(
+export function normalizeGatesForThirdTable(
     leftGate: number,
     rightGate: number
 ): { normalizedLeftGate: number; normalizedRightGate: number } {
@@ -19,9 +19,9 @@ export function normalizeGatesForSecondTable(
     return { normalizedLeftGate: validLeftGate, normalizedRightGate };
 }
 
-export function calculateSecondTableDto(leftGate: number, rightGate: number): SecondTableDto {
+export function calculateThirdTableDto(leftGate: number, rightGate: number): SecondTableDto {
     // Нормализуем gates
-    const { normalizedLeftGate, normalizedRightGate } = normalizeGatesForSecondTable(leftGate, rightGate);
+    const { normalizedLeftGate, normalizedRightGate } = normalizeGatesForThirdTable(leftGate, rightGate);
 
     const randomOffset = () => (-.3 + Math.random() * 0.6);
     const t1New = normalizedLeftGate + randomOffset();  // Значение t1 с добавлением случайного смещения
@@ -31,6 +31,6 @@ export function calculateSecondTableDto(leftGate: number, rightGate: number): Se
     const deviation = (t1New ** 2 - t2New ** 2) / 2;
 
     // Возвращаем объект SecondTableDto
-    return { t1: t1New, t2: t2New, deviation: deviation };
+    return { t1: t1New, t2: t2New, deviation };
 }
 

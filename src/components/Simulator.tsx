@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import clsx from "clsx";
 import { useGameObjects } from "../context";
-import { useCart, useGates, useTablo } from "../objects";
-import { GameObject, GameObjectId } from "../objects/types.ts";
+import { useCart, useGates, useTablo } from "../objectsHooks";
+import { GameObject, GameObjectId } from "../objectsHooks/types.ts";
 import { CANVAS_HEIGHT, CANVAS_WIDTH, RAIL_X_LEFT, RAIL_X_RIGHT } from "../constants.ts";
-import { useBoards } from "../objects/Boards.ts";
+import { useBoards } from "../objectsHooks/Boards.ts";
 import { RAIL_X_LEFT_OFFSET, RAIL_X_RIGHT_OFFSET } from "../constants.ts";
 
 type MouseState = 'idle' | 'grab' | 'grabbing' | 'click'
@@ -31,6 +31,7 @@ function Simulator() {
         setIsDragging,
         updateGameObject,
         isPumpTurnedOn,
+        isMagnetReleased,
         boardsCount,
         sprites
     } = useGameObjects()
@@ -53,8 +54,7 @@ function Simulator() {
         canvas.height = CANVAS_HEIGHT;
 
         const cart = getGameObject(GameObjectId.CART);
-        if (isPumpTurnedOn && cart && cart.x < RAIL_X_RIGHT - cart.width) {
-
+        if (isPumpTurnedOn && cart && cart.x < RAIL_X_RIGHT - cart.width && (isMagnetReleased || cart.x > RAIL_X_LEFT + RAIL_X_LEFT_OFFSET)) {
             const CARD_SPEED_PER_FRAME = 2 * (1 + boardsCount * .3)
             updateGameObject(GameObjectId.CART, { x: cart.x + CARD_SPEED_PER_FRAME });
         }
@@ -99,7 +99,7 @@ function Simulator() {
                 ctx.restore();
             }
         });
-    }, [ gameObjects, sprites, boardsCount, isPumpTurnedOn, draggedObjectId ])
+    }, [ gameObjects, sprites, boardsCount, isPumpTurnedOn, isMagnetReleased, draggedObjectId ])
 
     useEffect(() => {
         let animationFrameId: number;
@@ -145,7 +145,7 @@ function Simulator() {
                 unrotatedMouseY <= obj.y + obj.height
             );
         }
-        // Regular bounds check for non-rotated objects
+        // Regular bounds check for non-rotated objectsHooks
         return (
             mousePos.x >= obj.x &&
             mousePos.x <= obj.x + obj.width &&

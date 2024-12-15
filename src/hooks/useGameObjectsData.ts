@@ -1,18 +1,35 @@
-import { GameObject, GameObjectId } from "../objects/types.ts";
+import { GameObject, GameObjectId } from "../objectsHooks/types.ts";
 import { Dispatch, SetStateAction } from "react";
-import {CANVAS_WIDTH, RAIL_WIDTH, RAIL_X_LEFT, RAIL_X_LEFT_OFFSET} from "../constants";
+import { CANVAS_WIDTH, RAIL_WIDTH, RAIL_X_LEFT, RAIL_X_LEFT_OFFSET } from "../constants";
 
 type Props = {
     setBoardsCount: Dispatch<SetStateAction<number>>
     setIsPumpTurnedOn: Dispatch<SetStateAction<boolean>>
+    setIsMagnetReleased: Dispatch<SetStateAction<boolean>>
 }
 
-export const useGameObjectsData = ({ setBoardsCount, setIsPumpTurnedOn }: Props): GameObject[] => {
+export const useGameObjectsData = ({ setBoardsCount, setIsPumpTurnedOn, setIsMagnetReleased }: Props): GameObject[] => {
     const data =
         [
             { id: GameObjectId.TABLO, x: 880, y: 43, width: 300, height: 360, color: 'blue', isStatic: true },
-            { id: GameObjectId.START_BUTTON, x: 1117, y: 60, width: 45, height: 32, color: 'blue', isStatic: true },
-            { id: GameObjectId.RESET_BUTTON, x: 1117, y: 107, width: 45, height: 30, color: 'blue', isStatic: true },
+            {
+                id: GameObjectId.START_BUTTON, x: 1117, y: 60, width: 45, height: 32, color: 'blue', isStatic: true,
+                onClick() {
+                    setIsMagnetReleased(true)
+                }
+            },
+            {
+                id: GameObjectId.RESET_BUTTON,
+                x: 1117,
+                y: 107,
+                width: 45,
+                height: 30,
+                color: 'blue',
+                isStatic: true,
+                onClick() {
+                    setIsMagnetReleased(false)
+                }
+            },
             { id: GameObjectId.GROUND, x: 0, y: 400, width: CANVAS_WIDTH, height: 25, color: 'blue', isStatic: true },
             {
                 id: GameObjectId.RAIL,

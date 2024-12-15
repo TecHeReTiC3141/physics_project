@@ -1,1 +1,1 @@
-export { useGameObject } from './useGameObject.ts'
+export { useGameObjectsData } from './useGameObjectsData.ts'
