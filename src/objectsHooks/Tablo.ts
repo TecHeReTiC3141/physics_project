@@ -3,7 +3,7 @@ import { GameObjectId } from "./types.ts";
 import { useCallback, useEffect } from "react";
 
 export const useTablo = () => {
-    const { getGameObject, updateGameObject, leftTime, rightTime, sprites } = useGameObjects()
+    const { getGameObject, updateGameObject, isMagnetReleased, leftTime, rightTime, sprites } = useGameObjects()
 
     const drawTablo = useCallback(function (ctx: CanvasRenderingContext2D) {
         if (!sprites[GameObjectId.TABLO]) return
@@ -16,10 +16,14 @@ export const useTablo = () => {
         if (rightTime) {
             ctx.fillText(rightTime.toString(), this.x + 125, this.y + 70)
         }
-    }, [leftTime, rightTime, sprites])
+        ctx.beginPath()
+        ctx.fillStyle = isMagnetReleased ? 'green' : 'red'
+        ctx.arc(this.x + 210, this.y + 20, 4, 0, Math.PI * 2)
+        ctx.fill()
+    }, [leftTime, rightTime, sprites, isMagnetReleased])
 
     useEffect(() => {
         const tableau = getGameObject(GameObjectId.TABLO)
         updateGameObject(GameObjectId.TABLO, { draw: drawTablo.bind(tableau) })
-    }, [leftTime, rightTime, sprites]);
+    }, [leftTime, rightTime, sprites, isMagnetReleased]);
 }

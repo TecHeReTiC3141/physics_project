@@ -1,9 +1,18 @@
 import { GameObjectId } from "./types.ts";
 import { TableNumber, useGameObjects, useTableData } from "../context";
 import { useEffect, useRef } from "react";
-import { RAIL_X_LEFT, RAIL_X_LEFT_OFFSET, RAIL_X_RIGHT } from "../constants.ts";
+import { RAIL_X_LEFT, RAIL_X_LEFT_OFFSET, RAIL_X_RIGHT, RAIL_X_RIGHT_OFFSET } from "../constants.ts";
+import { calculateThirdTableDto } from "../utils/thirdTable.ts";
 
 const TIME_COOLDOWN = 500
+
+const TOTAL_LENGTH = 1.3
+const HALF_CART_WIDTH = 48
+const MEASURE_LENGTH = RAIL_X_RIGHT - RAIL_X_LEFT - RAIL_X_LEFT_OFFSET - RAIL_X_RIGHT_OFFSET - HALF_CART_WIDTH
+
+const calculateGatePosition = (x: number) => {
+    return (x - RAIL_X_LEFT - RAIL_X_LEFT_OFFSET - HALF_CART_WIDTH) / MEASURE_LENGTH * TOTAL_LENGTH
+}
 
 export const useGates = () => {
     const {
@@ -14,7 +23,8 @@ export const useGates = () => {
         isPumpTurnedOn,
         isMagnetReleased,
         setLeftTime,
-        setRightTime
+        setRightTime,
+        boardsCount
     } = useGameObjects()
     const { appendThirdTableEntry, selectedTable } = useTableData()
 
@@ -48,10 +58,13 @@ export const useGates = () => {
             console.log("PASSED RIGHT")
             const currentStamp = Date.now()
             if (selectedTable === TableNumber.THIRD && currentStamp - lastPass.current >= TIME_COOLDOWN) {
-                appendThirdTableEntry({ t1: 11.03, t2: 19.31, deviation: 23.23 })
+                const leftPosition = calculateGatePosition(left.x + left.width / 2)
+                const rightPosition = calculateGatePosition(right.x + right.width / 2)
+                console.log("LEFT", leftPosition, "RIGHT", rightPosition)
+                appendThirdTableEntry( calculateThirdTableDto(leftPosition, rightPosition))
                 lastPass.current = currentStamp
             }
             setRightTime(13.09)
         }
-    }, [ draggedObjectId, bufferedGameObjects, setLeftTime, setRightTime, getGameObject, updateGameObject, isPumpTurnedOn, isMagnetReleased, selectedTable, appendThirdTableEntry ]);
+    }, [ draggedObjectId, bufferedGameObjects, setLeftTime, setRightTime, getGameObject, updateGameObject, isPumpTurnedOn, isMagnetReleased, selectedTable, appendThirdTableEntry, boardsCount ]);
 }
