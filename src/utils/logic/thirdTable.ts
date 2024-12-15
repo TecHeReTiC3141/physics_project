@@ -41,11 +41,11 @@ export function calculateThirdTableDto(leftGate: number, rightGate: number): Thi
         throw new Error(`Unexpected block count for third table`)
     }
 
-    const randomOffset = () => (-.3 + Math.random() * 0.6);
-    const t1New = Number((t1 + randomOffset()).toPrecision(2));
-    const t2New = Number((t2 + randomOffset()).toPrecision(2));
+    const randomOffset = () => Number((-0.2 + Math.random() * 0.4).toFixed(2));
+    const t1New = Number((t1 + randomOffset()).toFixed(2));
+    const t2New = Number((t2 + randomOffset()).toFixed(2));
 
-    const deviation = Number(((t1New ** 2 - t2New ** 2) / 2.).toPrecision(2));
+    const deviation = Number(((t2New ** 2 - t1New ** 2) / 2.).toPrecision(2));
 
     return { t1: t1New, t2: t2New, deviation };
 }

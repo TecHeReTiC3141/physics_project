@@ -2,12 +2,11 @@ export type FourthTableDto = { t1: number; t2: number }
 
 
 export function calculateFourthTableDto(block: number): FourthTableDto {
-    const randomOffset = () => (-.3 + Math.random() * 0.6);
+    const randomOffset = () => Number((-0.2 + Math.random() * 0.4).toFixed(2));
     let t1 = 0
     let t2 = 0
     if (block === 0) {
-        t1 = 0
-        t2 = 0
+        return {t1: -1, t2: -1};
     } else if (block === 1) {
         t1 = 1.3
         t2 = 4.5
@@ -27,8 +26,8 @@ export function calculateFourthTableDto(block: number): FourthTableDto {
         throw new Error(`Unexpected block count for fourth table`)
     }
 
-    const t1New = Number((t1 + randomOffset()).toPrecision(2));
-    const t2New = Number((t2 + randomOffset()).toPrecision(2));
+    const t1New = Number((t1 + randomOffset()).toFixed(2));
+    const t2New = Number((t2 + randomOffset()).toFixed(2));
 
-    return  {t1: t1New, t2: t2New};
+    return {t1: t1New, t2: t2New};
 }

@@ -124,7 +124,7 @@ export const createWordDocument = async (third: ThirdTableEntry[], fourth: Fourt
                     }),
 
                     new Paragraph({
-                        alignment: AlignmentType.CENTER, // Выравнивание по центру
+                        alignment: AlignmentType.CENTER,
                         spacing: {
                             before: 400,
                             after: 200,
@@ -480,9 +480,8 @@ export const createWordDocument = async (third: ThirdTableEntry[], fourth: Fourt
 
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
-        link.download = "SecondTableDocument.docx";
+        link.download = "PhysicsLab2Report.docx";
 
-        // Имитируем клик на ссылку для скачивания
         link.click();
     } catch (error) {
         console.error("Error generating Word document:", error);
