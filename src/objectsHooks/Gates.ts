@@ -2,7 +2,7 @@ import { GameObjectId } from "./types.ts";
 import { TableNumber, useGameObjects, useTableData } from "../context";
 import { useEffect, useRef } from "react";
 import { RAIL_X_LEFT, RAIL_X_LEFT_OFFSET, RAIL_X_RIGHT, RAIL_X_RIGHT_OFFSET } from "../constants.ts";
-import { calculateThirdTableDto } from "../utils/thirdTable.ts";
+import { calculateThirdTableDto } from "../utils/logic/thirdTable.ts";
 
 const TIME_COOLDOWN = 500
 
