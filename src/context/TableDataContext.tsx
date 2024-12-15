@@ -1,5 +1,5 @@
 import { createContext, Dispatch, FC, SetStateAction, useCallback, useContext, useState } from "react";
-import { SecondTableDto } from "../utils/thirdTable.ts";
+import { SecondTableDto } from "../utils/logic/thirdTable.ts";
 
 export enum TableNumber {
     SECOND = 2,
