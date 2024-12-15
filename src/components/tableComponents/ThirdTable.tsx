@@ -61,10 +61,10 @@ function ThirdTable() {
                                     <th className="py-3 border-2 border-accent font-normal">{index + 1}</th>
                                     <th className="py-3 border-2 border-accent font-normal">{entry.x1}</th>
                                     <th className="py-3 border-2 border-accent font-normal">{entry.x2}</th>
-                                    <th className="py-3 border-2 border-accent font-normal">{entry.t1?.toPrecision(2)}</th>
-                                    <th className="py-3 border-2 border-accent font-normal">{entry.t1?.toPrecision(2)}</th>
+                                    <th className="py-3 border-2 border-accent font-normal">{entry.t1}</th>
+                                    <th className="py-3 border-2 border-accent font-normal">{entry.t2}</th>
                                     <th className="py-3 border-2 border-accent font-normal">{entry.dx}</th>
-                                    <th className="py-3 border-2 border-accent font-normal">{entry.deviation?.toPrecision(2)}</th>
+                                    <th className="py-3 border-2 border-accent font-normal">{entry.deviation}</th>
                                 </tr>
                             ))
                         }
