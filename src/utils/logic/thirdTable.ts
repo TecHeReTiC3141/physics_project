@@ -20,6 +20,26 @@ export function normalizeGatesForThirdTable(
 
 export function calculateThirdTableDto(leftGate: number, rightGate: number): SecondTableDto {
     const { normalizedLeftGate, normalizedRightGate } = normalizeGatesForThirdTable(leftGate, rightGate);
+    let t1 = 1.3
+    let t2 = 2.5
+    if (normalizedLeftGate === .4) {
+        t1 = 1.3
+        t2 = 2.5
+    } else if (normalizedLeftGate === .5) {
+        t1 = 1.2
+        t2 = 3.1
+    } else if (normalizedLeftGate === .7) {
+        t1 = 1.3
+        t2 = 3.5
+    } else if (normalizedLeftGate === .9) {
+        t1 = 1.3
+        t2 = 4.1
+    } else if (normalizedLeftGate === 1.1) {
+        t1 = 1.4
+        t2 = 4.6
+    } else {
+        throw new Error(`Unexpected block count for third table`)
+    }
 
     const randomOffset = () => (-.3 + Math.random() * 0.6);
     const t1New = Number((normalizedLeftGate + randomOffset()).toPrecision(2));
