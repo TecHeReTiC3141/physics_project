@@ -6,6 +6,8 @@ import { GameObject, GameObjectId } from "../objectsHooks/types.ts";
 import { CANVAS_HEIGHT, CANVAS_WIDTH, RAIL_X_LEFT, RAIL_X_RIGHT } from "../constants.ts";
 import { useBoards } from "../objectsHooks/Boards.ts";
 import { RAIL_X_LEFT_OFFSET, RAIL_X_RIGHT_OFFSET } from "../constants.ts";
+import { Modal } from "./Modal.tsx";
+import hint from '../assets/hint.png'
 
 type MouseState = 'idle' | 'grab' | 'grabbing' | 'click'
 
@@ -45,7 +47,7 @@ function Simulator() {
         ctx.translate(originX, originY);
         ctx.rotate(angle);
         ctx.translate(-originX, -originY);
-    }, [boardsCount])
+    }, [ boardsCount ])
 
     const render = useCallback(() => {
         const canvas = canvasRef.current as HTMLCanvasElement;
@@ -90,8 +92,8 @@ function Simulator() {
             ctx.fillStyle = obj.color;
             if (obj.draw) {
                 obj.draw(ctx);
-            } else if (sprites[obj.id]) {
-                ctx.drawImage(sprites[obj.id]!, obj.x, obj.y, obj.width, obj.height)
+            } else if (sprites[ obj.id ]) {
+                ctx.drawImage(sprites[ obj.id ]!, obj.x, obj.y, obj.width, obj.height)
             } else {
                 ctx.fillRect(obj.x, obj.y, obj.width, obj.height);
             }
@@ -123,7 +125,7 @@ function Simulator() {
         };
     };
 
-    const checkObjectClicked = (obj: GameObject, mousePos: {x: number, y: number}) => {
+    const checkObjectClicked = (obj: GameObject, mousePos: { x: number, y: number }) => {
         if (obj.isStatic && !obj.onClick) return false
         if (obj.affectedByRotation) {
             const angle = boardsCount / 1 * Math.PI / 180;
@@ -188,7 +190,7 @@ function Simulator() {
 
         if (!newObject.onlyY) {
             newObject.x = Math.min(Math.max(mousePos.x - offset.x, RAIL_X_LEFT + RAIL_X_LEFT_OFFSET),
-                RAIL_X_RIGHT - newObject.width - RAIL_X_RIGHT_OFFSET )
+                RAIL_X_RIGHT - newObject.width - RAIL_X_RIGHT_OFFSET)
         }
         if (!newObject.onlyX) {
             newObject.y = mousePos.y - offset.y
@@ -209,7 +211,13 @@ function Simulator() {
     return (
         <div className={clsx("w-full border-primary border-2 rounded-xl h-[500px] relative",
             mouseStateClassnames[ mouseState ])}>
-            <button className="button-filled absolute top-3 left-3">Подсказка</button>
+            <button className="button-filled absolute top-3 left-3"
+                    onClick={() => (document.getElementById('simulator-hint') as HTMLDialogElement).showModal()}>Подсказка
+            </button>
+            <Modal id="simulator-hint">
+                <h3 className="text-3xl text-center font-bold">Подсказка</h3>
+                <img src={hint as string} alt="Simulator hint" className="w-[1300px] h-[520px] pt-4"/>
+            </Modal>
             <canvas
                 ref={canvasRef}
                 onMouseDown={onMouseDown}

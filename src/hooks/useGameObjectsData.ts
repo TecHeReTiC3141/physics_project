@@ -1,7 +1,6 @@
 import { GameObject, GameObjectId } from "../objectsHooks/types.ts";
 import { Dispatch, SetStateAction } from "react";
 import { CANVAS_WIDTH, RAIL_WIDTH, RAIL_X_LEFT, RAIL_X_LEFT_OFFSET } from "../constants";
-import tableau from "../assets/sprites/tableau.png";
 
 type Props = {
     setBoardsCount: Dispatch<SetStateAction<number>>

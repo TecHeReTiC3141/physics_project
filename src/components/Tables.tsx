@@ -20,6 +20,8 @@ function Tables() {
                     <button role="tab" key={tab} className={clsx("button-outline text-2xl", +tab === selectedTable && "button-filled")}
                             onClick={() => setSelectedTable(+tab as TableNumber)}>{tabName}</button>
                 ))}
+                <div className="flex-1" />
+                <button className="button-filled">Экспорт</button>
             </div>
             <div className="w-full border-2 border-primary rounded-xl px-8 py-6">
                 {tables[selectedTable]}

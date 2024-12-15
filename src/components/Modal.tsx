@@ -6,10 +6,10 @@ type Props = PropsWithChildren & {
 
 function Modal({ id, children }: Props) {
     return (
-        <dialog id={id} className="modal">
-            <div className="modal-box">
+        <dialog id={id} className="modal ">
+            <div className="modal-box w-11/12 max-w-5xl">
                 <form method="dialog">
-                    <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 bg-primary hover:bg-background text-text font-bold">✕</button>
+                    <button className="btn btn-sm btn-circle btn-ghost absolute right-8 top-5 bg-primary hover:bg-background text-text font-bold">✕</button>
                 </form>
                 {children}
             </div>
