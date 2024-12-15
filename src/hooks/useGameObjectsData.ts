@@ -11,8 +11,6 @@ type Props = {
 }
 
 export const useGameObjectsData = ({ setBoardsCount, setIsPumpTurnedOn, setIsMagnetReleased, setLeftTime, setRightTime }: Props): GameObject[] => {
-
-
     const data: GameObject[] =
         [
             { id: GameObjectId.TABLO, x: 880, y: 43, width: 300, height: 360, color: 'blue', isStatic: true, },

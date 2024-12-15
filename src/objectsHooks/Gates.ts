@@ -2,7 +2,7 @@ import { GameObjectId } from "./types.ts";
 import { TableNumber, useGameObjects, useTableData } from "../context";
 import { useEffect, useRef } from "react";
 import { RAIL_X_LEFT, RAIL_X_LEFT_OFFSET, RAIL_X_RIGHT, RAIL_X_RIGHT_OFFSET } from "../constants.ts";
-import { calculateThirdTableDto } from "../utils/logic/thirdTable.ts";
+import { calculateThirdTableDto, calculateFourthTableDto } from "../utils/logic";
 
 const TIME_COOLDOWN = 500
 
@@ -26,7 +26,7 @@ export const useGates = () => {
         setRightTime,
         boardsCount
     } = useGameObjects()
-    const { appendThirdTableEntry, selectedTable } = useTableData()
+    const { appendThirdTableEntry, selectedTable, appendFourthTableEntry } = useTableData()
 
     const lastPass = useRef(Date.now())
 
@@ -50,21 +50,31 @@ export const useGates = () => {
             }
         }
         const RANGE = 2
-        if (cart.x + cart.width / 2 >= left.x - RANGE && cart.x + cart.width / 2 <= left.x + RANGE) {
-            console.log("PASSED LEFT")
-            setLeftTime(11.03)
-        } else if (isPumpTurnedOn && (isMagnetReleased || cart.x > RAIL_X_LEFT + RAIL_X_LEFT_OFFSET) &&
+        if (isPumpTurnedOn && (isMagnetReleased || cart.x > RAIL_X_LEFT + RAIL_X_LEFT_OFFSET) &&
             cart.x + cart.width / 2 >= right.x - RANGE && cart.x + cart.width / 2 <= right.x + RANGE) {
             console.log("PASSED RIGHT")
             const currentStamp = Date.now()
-            if (selectedTable === TableNumber.THIRD && currentStamp - lastPass.current >= TIME_COOLDOWN) {
-                const leftPosition = calculateGatePosition(left.x + left.width / 2)
-                const rightPosition = calculateGatePosition(right.x + right.width / 2)
-                console.log("LEFT", leftPosition, "RIGHT", rightPosition)
-                appendThirdTableEntry( calculateThirdTableDto(leftPosition, rightPosition))
-                lastPass.current = currentStamp
+            let t1 = null, t2 = null
+            if (currentStamp - lastPass.current >= TIME_COOLDOWN) {
+                if (selectedTable === TableNumber.THIRD) {
+                    const leftPosition = calculateGatePosition(left.x + left.width / 2)
+                    const rightPosition = calculateGatePosition(right.x + right.width / 2)
+                    const thirdTableDto =  calculateThirdTableDto(leftPosition, rightPosition)
+                    ;({ t1, t2 } = thirdTableDto)
+                    appendThirdTableEntry(thirdTableDto)
+                    lastPass.current = currentStamp
+                    setLeftTime(t1)
+                    setRightTime(t2)
+                } else if (selectedTable === TableNumber.FOURTH) {
+                    const fourthTableDto =  calculateFourthTableDto(boardsCount)
+                    ;({ t1, t2 } = fourthTableDto)
+                    appendFourthTableEntry(fourthTableDto)
+                    lastPass.current = currentStamp
+                    setLeftTime(t1)
+                    setRightTime(t2)
+                }
             }
-            setRightTime(13.09)
+
         }
-    }, [ draggedObjectId, bufferedGameObjects, setLeftTime, setRightTime, getGameObject, updateGameObject, isPumpTurnedOn, isMagnetReleased, selectedTable, appendThirdTableEntry, boardsCount ]);
+    }, [draggedObjectId, bufferedGameObjects, setLeftTime, setRightTime, getGameObject, updateGameObject, isPumpTurnedOn, isMagnetReleased, selectedTable, appendThirdTableEntry, boardsCount, appendFourthTableEntry]);
 }

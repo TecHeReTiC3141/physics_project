@@ -1,5 +1,5 @@
-import { calculateThirdTableDto, SecondTableDto } from "./thirdTable.ts";
-import { calculateFourthTableDto, ThirdTableDto } from "./fourthTable.ts";
+import { calculateThirdTableDto, ThirdTableDto } from "./thirdTable.ts";
+import { calculateFourthTableDto, FourthTableDto } from "./fourthTable.ts";
 
 enum TableNumber {
     THIRD = 3,
@@ -14,7 +14,7 @@ type LogicProcessing = {
     };
 };
 
-export function processSimulatorState(state: LogicProcessing): SecondTableDto | ThirdTableDto | void {
+export function processSimulatorState(state: LogicProcessing): FourthTableDto | FourthTableDto | void {
     if (state[ TableNumber.THIRD ]) {
         const { leftGate, rightGate, blocks } = state[ 3 ];
         if (blocks === 1) {

@@ -1,5 +1,6 @@
 import { createContext, Dispatch, FC, SetStateAction, useCallback, useContext, useState } from "react";
-import { SecondTableDto } from "../utils/logic/thirdTable.ts";
+import { ThirdTableDto } from "../utils/logic/thirdTable.ts";
+import { FourthTableDto } from "../utils/logic/fourthTable.ts";
 
 export enum TableNumber {
     SECOND = 2,
@@ -229,8 +230,10 @@ type ContextValue = {
     setThirdTablePointer: Dispatch<SetStateAction<number>>,
     fourthTablePointer: number,
     setFourthTablePointer: Dispatch<SetStateAction<number>>,
-    appendThirdTableEntry: (data: SecondTableDto) => void
-    deleteThirdTableEntry: () => void
+    appendThirdTableEntry: (data: ThirdTableDto) => void,
+    deleteThirdTableEntry: () => void,
+    appendFourthTableEntry: (data: FourthTableDto) => void,
+    deleteFourthTableEntry: () => void
 }
 
 const TableDataContext = createContext<ContextValue | null>(null)
@@ -250,16 +253,49 @@ export const TableDataProvider: FC = ({ children }) => {
     const [ thirdTablePointer, setThirdTablePointer ] = useState(0);
     const [ fourthTablePointer, setFourthTablePointer ] = useState(0);
 
-    const appendThirdTableEntry = useCallback(({ t1, t2, deviation }: SecondTableDto) => {
+    const appendThirdTableEntry = useCallback(({ t1, t2, deviation }: ThirdTableDto) => {
         setThirdTableData(prev => prev.map((entry, index) =>
             index === thirdTablePointer ? { ...entry, t1, t2, deviation } : entry))
         setThirdTablePointer(prev => Math.min(thirdTableData.length - 1, prev + 1))
-    }, [thirdTablePointer, thirdTableData])
+    }, [ thirdTablePointer, thirdTableData ])
 
-  const deleteThirdTableEntry = useCallback(() => {
+    const deleteThirdTableEntry = useCallback(() => {
         setThirdTableData(prev => prev.map((entry, index) =>
             index === thirdTablePointer ? { ...entry, t1: null, t2: null, deviation: null } : entry))
-    }, [thirdTablePointer])
+    }, [ thirdTablePointer ])
+
+    const appendFourthTableEntry = useCallback(({ t1, t2 }: FourthTableDto) => {
+        setFourthTableData(prev => prev.map((entry, index) => {
+            if (Math.floor(fourthTablePointer / 5) === index) {
+                return {
+                    ...entry,
+                    measuring: entry.measuring.map((meas, innerIndex) => fourthTablePointer % 5 === innerIndex ? {
+                        t1,
+                        t2,
+                        number: meas.number
+                    } : meas)
+                }
+            }
+            return entry
+        }))
+        setFourthTablePointer(prev => Math.min(fourthTableData.length * 5 - 1, prev + 1))
+    }, [ fourthTablePointer, fourthTableData ])
+
+    const deleteFourthTableEntry = useCallback(() => {
+        setFourthTableData(prev => prev.map((entry, index) => {
+            if (Math.floor(fourthTablePointer / 5) === index) {
+                return {
+                    ...entry,
+                    measuring: entry.measuring.map((meas, innerIndex) => fourthTablePointer % 5 === innerIndex ? {
+                        t1: null,
+                        t2: null,
+                        number: meas.number
+                    } : meas)
+                }
+            }
+            return entry
+        }))
+    }, [ fourthTablePointer ])
 
     const value = {
         selectedTable,
@@ -273,7 +309,9 @@ export const TableDataProvider: FC = ({ children }) => {
         fourthTablePointer,
         setFourthTablePointer,
         appendThirdTableEntry,
-        deleteThirdTableEntry
+        deleteThirdTableEntry,
+        appendFourthTableEntry,
+        deleteFourthTableEntry
     }
 
     return (

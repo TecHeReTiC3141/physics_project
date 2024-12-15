@@ -70,7 +70,7 @@ export const GameObjectsProvider: FC = ({ children }) => {
 
     const [ offset, setOffset ] = useState({ x: 0, y: 0 });
 
-    const getGameObject = useCallback((id: GameObjectId) => gameObjects.find(object => object.id === id), [ gameObjects ])
+    const getGameObject = useCallback((id: GameObjectId) => gameObjects.find(object => object.id === id) as GameObject, [ gameObjects ])
 
     const updateGameObject = useCallback((id: GameObjectId, data: Partial<GameObject>) => {
         setGameObjects(prev => prev.map(obj => obj.id === id ? { ...obj, ...data } : obj))

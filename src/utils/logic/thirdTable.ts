@@ -1,4 +1,4 @@
-export type SecondTableDto = {
+export type ThirdTableDto = {
     t1: number;
     t2: number;
     deviation: number;
@@ -18,23 +18,23 @@ export function normalizeGatesForThirdTable(
     return { normalizedLeftGate: validLeftGate, normalizedRightGate };
 }
 
-export function calculateThirdTableDto(leftGate: number, rightGate: number): SecondTableDto {
-    const { normalizedLeftGate, normalizedRightGate } = normalizeGatesForThirdTable(leftGate, rightGate);
+export function calculateThirdTableDto(leftGate: number, rightGate: number): ThirdTableDto {
+    const { normalizedRightGate } = normalizeGatesForThirdTable(leftGate, rightGate);
     let t1 = 1.3
     let t2 = 2.5
-    if (normalizedLeftGate === .4) {
+    if (normalizedRightGate === .4) {
         t1 = 1.3
         t2 = 2.5
-    } else if (normalizedLeftGate === .5) {
+    } else if (normalizedRightGate === .5) {
         t1 = 1.2
         t2 = 3.1
-    } else if (normalizedLeftGate === .7) {
+    } else if (normalizedRightGate === .7) {
         t1 = 1.3
         t2 = 3.5
-    } else if (normalizedLeftGate === .9) {
+    } else if (normalizedRightGate === .9) {
         t1 = 1.3
         t2 = 4.1
-    } else if (normalizedLeftGate === 1.1) {
+    } else if (normalizedRightGate === 1.1) {
         t1 = 1.4
         t2 = 4.6
     } else {
@@ -42,8 +42,8 @@ export function calculateThirdTableDto(leftGate: number, rightGate: number): Sec
     }
 
     const randomOffset = () => (-.3 + Math.random() * 0.6);
-    const t1New = Number((normalizedLeftGate + randomOffset()).toPrecision(2));
-    const t2New = Number((normalizedRightGate + randomOffset()).toPrecision(2));
+    const t1New = Number((t1 + randomOffset()).toPrecision(2));
+    const t2New = Number((t2 + randomOffset()).toPrecision(2));
 
     const deviation = Number(((t1New ** 2 - t2New ** 2) / 2.).toPrecision(2));
 
