@@ -1,10 +1,24 @@
 import { GameObjectId } from "./types.ts";
-import { useGameObjects } from "../context";
-import { useEffect } from "react";
-import { RAIL_X_RIGHT, RAIL_X_LEFT } from "../constants.ts";
+import { TableNumber, useGameObjects, useTableData } from "../context";
+import { useEffect, useRef } from "react";
+import { RAIL_X_LEFT, RAIL_X_LEFT_OFFSET, RAIL_X_RIGHT } from "../constants.ts";
+
+const TIME_COOLDOWN = 500
 
 export const useGates = () => {
-    const { draggedObjectId, bufferedGameObjects, getGameObject, updateGameObject } = useGameObjects()
+    const {
+        draggedObjectId,
+        bufferedGameObjects,
+        getGameObject,
+        updateGameObject,
+        isPumpTurnedOn,
+        isMagnetReleased,
+        setLeftTime,
+        setRightTime
+    } = useGameObjects()
+    const { appendThirdTableEntry, selectedTable } = useTableData()
+
+    const lastPass = useRef(Date.now())
 
     useEffect(() => {
         const left = getGameObject(GameObjectId.GATE_LEFT)
@@ -28,8 +42,16 @@ export const useGates = () => {
         const RANGE = 2
         if (cart.x + cart.width / 2 >= left.x - RANGE && cart.x + cart.width / 2 <= left.x + RANGE) {
             console.log("PASSED LEFT")
-        } else if (cart.x + cart.width / 2 >= right.x - RANGE && cart.x + cart.width / 2 <= right.x + RANGE) {
+            setLeftTime(11.03)
+        } else if (isPumpTurnedOn && (isMagnetReleased || cart.x > RAIL_X_LEFT + RAIL_X_LEFT_OFFSET) &&
+            cart.x + cart.width / 2 >= right.x - RANGE && cart.x + cart.width / 2 <= right.x + RANGE) {
             console.log("PASSED RIGHT")
+            const currentStamp = Date.now()
+            if (selectedTable === TableNumber.THIRD && currentStamp - lastPass.current >= TIME_COOLDOWN) {
+                appendThirdTableEntry({ t1: 11.03, t2: 19.31, deviation: 23.23 })
+                lastPass.current = currentStamp
+            }
+            setRightTime(13.09)
         }
-    }, [draggedObjectId, bufferedGameObjects, getGameObject, updateGameObject]);
+    }, [ draggedObjectId, bufferedGameObjects, setLeftTime, setRightTime, getGameObject, updateGameObject, isPumpTurnedOn, isMagnetReleased, selectedTable, appendThirdTableEntry ]);
 }

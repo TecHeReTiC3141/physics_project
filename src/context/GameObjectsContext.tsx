@@ -66,7 +66,7 @@ export const GameObjectsProvider: FC = ({ children }) => {
         })
     }, [gameAssets]);
 
-    const [ gameObjects, setGameObjects ] = useState<GameObject[]>(useGameObjectsData({ setBoardsCount, setIsPumpTurnedOn, setIsMagnetReleased }));
+    const [ gameObjects, setGameObjects ] = useState<GameObject[]>(useGameObjectsData({ setBoardsCount, setIsPumpTurnedOn, setIsMagnetReleased, setLeftTime, setRightTime }));
 
     const [ offset, setOffset ] = useState({ x: 0, y: 0 });
 

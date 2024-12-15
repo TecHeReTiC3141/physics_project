@@ -1,17 +1,22 @@
 import { GameObject, GameObjectId } from "../objectsHooks/types.ts";
 import { Dispatch, SetStateAction } from "react";
 import { CANVAS_WIDTH, RAIL_WIDTH, RAIL_X_LEFT, RAIL_X_LEFT_OFFSET } from "../constants";
+import tableau from "../assets/tableau.png";
 
 type Props = {
     setBoardsCount: Dispatch<SetStateAction<number>>
     setIsPumpTurnedOn: Dispatch<SetStateAction<boolean>>
     setIsMagnetReleased: Dispatch<SetStateAction<boolean>>
+    setLeftTime: Dispatch<SetStateAction<number | null>>
+    setRightTime: Dispatch<SetStateAction<number | null>>
 }
 
-export const useGameObjectsData = ({ setBoardsCount, setIsPumpTurnedOn, setIsMagnetReleased }: Props): GameObject[] => {
-    const data =
+export const useGameObjectsData = ({ setBoardsCount, setIsPumpTurnedOn, setIsMagnetReleased, setLeftTime, setRightTime }: Props): GameObject[] => {
+
+
+    const data: GameObject[] =
         [
-            { id: GameObjectId.TABLO, x: 880, y: 43, width: 300, height: 360, color: 'blue', isStatic: true },
+            { id: GameObjectId.TABLO, x: 880, y: 43, width: 300, height: 360, color: 'blue', isStatic: true, },
             {
                 id: GameObjectId.START_BUTTON, x: 1117, y: 60, width: 45, height: 32, color: 'blue', isStatic: true,
                 onClick() {
@@ -28,6 +33,8 @@ export const useGameObjectsData = ({ setBoardsCount, setIsPumpTurnedOn, setIsMag
                 isStatic: true,
                 onClick() {
                     setIsMagnetReleased(false)
+                    setLeftTime(null)
+                    setRightTime(null)
                 }
             },
             { id: GameObjectId.GROUND, x: 0, y: 400, width: CANVAS_WIDTH, height: 25, color: 'blue', isStatic: true },

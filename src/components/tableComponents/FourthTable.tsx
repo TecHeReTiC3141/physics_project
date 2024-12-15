@@ -1,167 +1,11 @@
 import { FaQuestion } from "react-icons/fa6";
 import { Modal } from "../Modal.tsx";
+import { FourthTableEntry, useTableData } from "../../context";
 
-type FourthTableEntry = {
-    np: number
-    h: number
-    hp: number
-    measuring: ({ number: number, t1: number | null, t2: number | null })[]
-}
-
-
-const data: FourthTableEntry[] = [
-    {
-        np: 1,
-        h: 187,
-        hp: 198,
-        measuring: [
-            {
-                number: 1,
-                t1: null,
-                t2: null
-            },
-            {
-                number: 2,
-                t1: null,
-                t2: null
-            },
-            {
-                number: 3,
-                t1: null,
-                t2: null
-            },
-            {
-                number: 4,
-                t1: null,
-                t2: null
-            },
-            {
-                number: 5,
-                t1: null,
-                t2: null
-            },
-        ],
-    }, {
-        np: 2,
-        h: 206,
-        hp: 187,
-        measuring: [
-            {
-                number: 1,
-                t1: null,
-                t2: null
-            },
-            {
-                number: 2,
-                t1: null,
-                t2: null
-            },
-            {
-                number: 3,
-                t1: null,
-                t2: null
-            },
-            {
-                number: 4,
-                t1: null,
-                t2: null
-            },
-            {
-                number: 5,
-                t1: null,
-                t2: null
-            },
-        ],
-    }, {
-        np: 3,
-        h: 214,
-        hp: 188,
-        measuring: [
-            {
-                number: 1,
-                t1: null,
-                t2: null
-            },
-            {
-                number: 2,
-                t1: null,
-                t2: null
-            },
-            {
-                number: 3,
-                t1: null,
-                t2: null
-            },
-            {
-                number: 4,
-                t1: null,
-                t2: null
-            },
-            {
-                number: 5,
-                t1: null,
-                t2: null
-            },
-        ],
-    },
-    {
-        np: 4,
-        h: 223,
-        hp: 188,
-        measuring: [
-            {
-                number: 1,
-                t1: null,
-                t2: null
-            }, {
-                number: 2,
-                t1: null,
-                t2: null
-            }, {
-                number: 3,
-                t1: null,
-                t2: null
-            }, {
-                number: 4,
-                t1: null,
-                t2: null
-            }, {
-                number: 5,
-                t1: null,
-                t2: null
-            },
-        ],
-    }, {
-        np: 5,
-        h: 232,
-        hp: 189,
-        measuring: [
-            {
-                number: 1,
-                t1: null,
-                t2: null
-            }, {
-                number: 2,
-                t1: null,
-                t2: null
-            }, {
-                number: 3,
-                t1: null,
-                t2: null
-            }, {
-                number: 4,
-                t1: null,
-                t2: null
-            }, {
-                number: 5,
-                t1: null,
-                t2: null
-            },
-        ],
-    },
-]
 
 function FourthTable() {
+
+    const { fourthTableData } = useTableData()
     return (
         <div className="w-full flex flex-col gap-y-3 items-center">
             <div className="w-full flex justify-between items-center">
@@ -200,21 +44,20 @@ function FourthTable() {
                     </thead>
                     <tbody>
                     {
-                        data.map((entry) => (
+                        fourthTableData.map((entry) => (
                             <>
-                            <tr className="text-center border-2 border-accent rounded-xl">
-                                <th className="py-3 border-2 border-accent font-normal" rowSpan={6}>{entry.np}</th>
-                                <th className="py-3 border-2 border-accent font-normal" rowSpan={6}>{entry.h}</th>
-                                <th className="py-3 border-2 border-accent font-normal" rowSpan={6}>{entry.hp}</th>
-                            </tr>
-                            {entry.measuring.map((measure) => (
-                                <tr>
-                                    <th className="py-3 border-2 border-accent font-normal">{measure.number}</th>
-                                    <th className="py-3 border-2 border-accent font-normal">{measure.t1}</th>
-                                    <th className="py-3 border-2 border-accent font-normal">{measure.t2}</th>
+                                <tr className="text-center border-2 border-accent rounded-xl">
+                                    <th className="py-3 border-2 border-accent font-normal" rowSpan={6}>{entry.np}</th>
+                                    <th className="py-3 border-2 border-accent font-normal" rowSpan={6}>{entry.h}</th>
+                                    <th className="py-3 border-2 border-accent font-normal" rowSpan={6}>{entry.hp}</th>
                                 </tr>
-                            ))}
-
+                                {entry.measuring.map((measure) => (
+                                    <tr>
+                                        <th className="py-3 border-2 border-accent font-normal">{measure.number}</th>
+                                        <th className="py-3 border-2 border-accent font-normal">{measure.t1}</th>
+                                        <th className="py-3 border-2 border-accent font-normal">{measure.t2}</th>
+                                    </tr>
+                                ))}
                             </>
                         ))
                     }

@@ -1,7 +1,10 @@
-import {calculateThirdTableDto, SecondTableDto} from "./secondTable";
-import {calculateFourthTableDto, ThirdTableDto} from "./fourthTable.ts";
+import { calculateThirdTableDto, SecondTableDto } from "./thirdTable.ts";
+import { calculateFourthTableDto, ThirdTableDto } from "./fourthTable.ts";
 
-type TableNumber = 3 | 4;
+enum TableNumber {
+    THIRD = 3,
+    FOURTH = 4
+}
 
 type LogicProcessing = {
     [key in TableNumber]: {
@@ -12,19 +15,19 @@ type LogicProcessing = {
 };
 
 export function processSimulatorState(state: LogicProcessing): SecondTableDto | ThirdTableDto | void {
-    if (state[3]) {
-        const {leftGate, rightGate, blocks} = state[3];
+    if (state[ TableNumber.THIRD ]) {
+        const { leftGate, rightGate, blocks } = state[ 3 ];
         if (blocks === 1) {
             return calculateThirdTableDto(leftGate, rightGate)
         } else {
-            throw new Error(`Unexpected block count ${blocks} second table`)
+            throw new Error(`Unexpected block count ${blocks} third table`)
         }
-    } else if (state[4]) {
-        const {leftGate, rightGate, blocks} = state[4];
+    } else if (state[ TableNumber.FOURTH ]) {
+        const { blocks } = state[ 4 ];
         if (blocks > 0 && blocks < 6) {
             return calculateFourthTableDto(blocks)
         } else {
-            throw new Error(`Unexpected block count ${blocks} second table`)
+            throw new Error(`Unexpected block count ${blocks} fourth table`)
         }
     }
 }

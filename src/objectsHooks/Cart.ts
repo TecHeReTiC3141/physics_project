@@ -18,5 +18,8 @@ export const useCart = () => {
         if (isPumpTurnedOn !== cart.isStatic) {
             updateGameObject(GameObjectId.CART, { isStatic: isPumpTurnedOn })
         }
+        if (cart.x + cart.width === RAIL_X_RIGHT - RAIL_X_RIGHT_OFFSET) {
+
+        }
     }, [draggedObjectId, gameObjects, getGameObject, updateGameObject, isPumpTurnedOn]);
 }

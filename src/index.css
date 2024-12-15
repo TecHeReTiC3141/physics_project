@@ -2,8 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: "MOSCOW2024";
+    src: url("/public/fonts/MOSCOW2024.otf");
+    font-weight: normal;
+}
+
 .button {
-    @apply btn h-12 w-40  border-accent text-accent hover:shadow-xl focus:outline-none;
+    @apply btn h-12  border-accent text-accent hover:shadow-xl focus:outline-none;
 }
 
 .button-outline {
