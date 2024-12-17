@@ -317,7 +317,7 @@ export const TableDataProvider: FC = ({ children }) => {
 
     useEffect(() => {
         const tableData = JSON.parse(localStorage.getItem("tableData")) as StoredTableData
-        console.log(tableData)
+        if (!tableData) return
         setFourthTableData(tableData.fourthTableData)
         setThirdTableData(tableData.thirdTableData)
         setSelectedTable(tableData.selectedTable)
