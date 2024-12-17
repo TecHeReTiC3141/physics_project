@@ -2,6 +2,7 @@ import clsx from "clsx";
 import { FourthTable, SecondTable, ThirdTable } from "./tableComponents";
 import { TableNumber, useTableData } from "../context";
 import { createWordDocument } from "../utils/export";
+import { useEffect } from "react";
 
 const tabs = { [TableNumber.SECOND]: 'Таблица 2', [TableNumber.THIRD]: 'Таблица 3', [TableNumber.FOURTH]: 'Таблица 4' }
 
@@ -12,7 +13,10 @@ function Tables() {
         [TableNumber.FOURTH]: <FourthTable />
     }
 
-    const { selectedTable, setSelectedTable, thirdTableData, fourthTableData } = useTableData()
+    const { selectedTable, setSelectedTable, thirdTableData, fourthTableData, setFourthTableData, setThirdTableData } = useTableData()
+
+
+
     return (
         <div className="w-full text-center flex flex-col gap-y-3">
             <h3 className="text-2xl select-none">Получение измерений</h3>

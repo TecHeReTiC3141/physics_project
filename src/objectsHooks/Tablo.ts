@@ -10,11 +10,12 @@ export const useTablo = () => {
         ctx.drawImage(sprites[GameObjectId.TABLO]!, this.x, this.y, this.width, this.height)
         ctx.font = '32px MOSCOW2024'
         ctx.fillStyle = 'black'
+
         if (leftTime) {
-            ctx.fillText(leftTime.toString(), this.x + 16, this.y + 70)
+            ctx.fillText(leftTime.toString(), this.x + 35, this.y + 70)
         }
         if (rightTime) {
-            ctx.fillText(rightTime.toString(), this.x + 125, this.y + 70)
+            ctx.fillText(rightTime.toString(), this.x + 135, this.y + 70)
         }
         ctx.beginPath()
         ctx.fillStyle = isMagnetReleased ? 'green' : 'red'

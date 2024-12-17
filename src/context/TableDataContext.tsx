@@ -1,4 +1,4 @@
-import { createContext, Dispatch, FC, SetStateAction, useCallback, useContext, useState } from "react";
+import { createContext, Dispatch, FC, SetStateAction, useCallback, useContext, useEffect, useState } from "react";
 import { ThirdTableDto } from "../utils/logic/thirdTable.ts";
 import { FourthTableDto } from "../utils/logic/fourthTable.ts";
 
@@ -6,6 +6,12 @@ export enum TableNumber {
     SECOND = 2,
     THIRD = 3,
     FOURTH = 4
+}
+
+type StoredTableData = {
+    thirdTableData: ThirdTableEntry[],
+    fourthTableData: FourthTableEntry[],
+    selectedTable: TableNumber
 }
 
 export type ThirdTableEntry = {
@@ -253,16 +259,26 @@ export const TableDataProvider: FC = ({ children }) => {
     const [ thirdTablePointer, setThirdTablePointer ] = useState(0);
     const [ fourthTablePointer, setFourthTablePointer ] = useState(0);
 
+    const updateStoredTableData = useCallback(() => {
+        localStorage.setItem("tableData", JSON.stringify({
+            thirdTableData,
+            fourthTableData,
+            selectedTable
+        }))
+    }, [fourthTableData, selectedTable, thirdTableData])
+
     const appendThirdTableEntry = useCallback(({ t1, t2, deviation }: ThirdTableDto) => {
         setThirdTableData(prev => prev.map((entry, index) =>
             index === thirdTablePointer ? { ...entry, t1, t2, deviation } : entry))
         setThirdTablePointer(prev => Math.min(thirdTableData.length - 1, prev + 1))
-    }, [ thirdTablePointer, thirdTableData ])
+        updateStoredTableData()
+    }, [ thirdTablePointer, thirdTableData, updateStoredTableData ])
 
     const deleteThirdTableEntry = useCallback(() => {
         setThirdTableData(prev => prev.map((entry, index) =>
             index === thirdTablePointer ? { ...entry, t1: null, t2: null, deviation: null } : entry))
-    }, [ thirdTablePointer ])
+        updateStoredTableData()
+    }, [ thirdTablePointer, updateStoredTableData ])
 
     const appendFourthTableEntry = useCallback(({ t1, t2 }: FourthTableDto) => {
         setFourthTableData(prev => prev.map((entry, index) => {
@@ -279,7 +295,8 @@ export const TableDataProvider: FC = ({ children }) => {
             return entry
         }))
         setFourthTablePointer(prev => Math.min(fourthTableData.length * 5 - 1, prev + 1))
-    }, [ fourthTablePointer, fourthTableData ])
+        updateStoredTableData()
+    }, [ fourthTablePointer, fourthTableData, updateStoredTableData ])
 
     const deleteFourthTableEntry = useCallback(() => {
         setFourthTableData(prev => prev.map((entry, index) => {
@@ -295,7 +312,24 @@ export const TableDataProvider: FC = ({ children }) => {
             }
             return entry
         }))
-    }, [ fourthTablePointer ])
+        updateStoredTableData()
+    }, [ fourthTablePointer, updateStoredTableData ])
+
+    useEffect(() => {
+        const tableData = JSON.parse(localStorage.getItem("tableData")) as StoredTableData
+        console.log(tableData)
+        setFourthTableData(tableData.fourthTableData)
+        setThirdTableData(tableData.thirdTableData)
+        setSelectedTable(tableData.selectedTable)
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem("tableData", JSON.stringify({
+            thirdTableData,
+            fourthTableData,
+            selectedTable
+        }))
+    }, [fourthTableData, selectedTable, thirdTableData])
 
     const value = {
         selectedTable,

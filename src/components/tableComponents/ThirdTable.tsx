@@ -10,8 +10,23 @@ function ThirdTable() {
     return (
         <>
             <Modal id="second-table-instruction-modal">
-                <h3 className="font-bold text-lg">Какая-то инструкция!</h3>
-                <p className="py-4">Press ESC key or click outside to close</p>
+                <div className="text-start">
+                    <h3 className="text-3xl font-bold text-center">Инструкция к таблице 3</h3>
+                    <ul className="list-decimal pl-4 pt-4">
+                        <li>Подложите брусок под левую опору, нажав один раз на иконку “вверх”.</li>
+                        <li>Установить первые оптические ворота в точке с координатой 𝑥1 = 0,15 м, а вторые - 𝑥2 = 0,40
+                            м.
+                        </li>
+                        <li>Включить блок питания воздушного насоса ВС 4-15, нажав на кнопку включения.</li>
+                        <li>Тележку перетащить в крайнее левое положение и прижать к электромагниту.</li>
+                        <li>На табло нажать кнопку пуск (иконка треугольника).</li>
+                        <li>Выключить блок питания воздушного насоса ВС 4-15.</li>
+                        <li>Установить вторые оптические ворота последовательно в точках 𝑥2 = 0,50; 0,70; 0,90; 1,10 м и
+                            для
+                            каждого положения оптических ворот выполнить пункты 2–6.
+                        </li>
+                    </ul>
+                </div>
             </Modal>
             <div className="w-full flex flex-col gap-y-3 items-center">
                 <div className="w-full flex justify-between items-center">
@@ -24,10 +39,13 @@ function ThirdTable() {
                             <FaQuestion/>
                         </button>
                     </div>
-                    <div />
+                    <div/>
                 </div>
                 <div className="w-full flex justify-end">
-                    <button className="button-outline w-[360px] text-nowrap" onClick={deleteThirdTableEntry}>Очистить выделенную строку</button>
+                    <button className="button-outline w-[360px] text-nowrap" onClick={deleteThirdTableEntry}>Очистить
+                        выделенную
+                        строку
+                    </button>
                 </div>
                 <div className="w-full overflow-x-auto">
                     <table className="max-lg:text-sm text-nowrap mx-auto overflow-hidden">
@@ -42,7 +60,7 @@ function ThirdTable() {
                             <th className="py-2 border-2 border-accent" colSpan={4}>Измеренные величины</th>
                             <th className="py-2 border-2 border-accent" colSpan={2}>Рассчитанные величины</th>
                         </tr>
-                        <tr className="text-center border-2 border-accent rounded-xl ">
+                        <tr className="text-center border-2 border-accent rounded-xl text-lg">
                             <th className="py-2 border-2 border-accent">x1, м</th>
                             <th className="py-2 border-2 border-accent">x2, м</th>
                             <th className="py-2 border-2 border-accent">t1, с</th>
@@ -59,11 +77,11 @@ function ThirdTable() {
                                     className={clsx("text-center border-2 border-accent rounded-xl cursor-pointer",
                                         index === thirdTablePointer && 'bg-primary/50')}>
                                     <th className="py-2 border-2 border-accent font-normal">{index + 1}</th>
-                                    <th className="py-2 border-2 border-accent font-normal">{entry.x1}</th>
-                                    <th className="py-2 border-2 border-accent font-normal">{entry.x2}</th>
+                                    <th className="py-2 border-2 border-accent font-bold">{entry.x1}</th>
+                                    <th className="py-2 border-2 border-accent font-bold">{entry.x2}</th>
                                     <th className="py-2 border-2 border-accent font-normal">{entry.t1}</th>
                                     <th className="py-2 border-2 border-accent font-normal">{entry.t2}</th>
-                                    <th className="py-2 border-2 border-accent font-normal">{entry.dx}</th>
+                                    <th className="py-2 border-2 border-accent font-bold">{entry.dx}</th>
                                     <th className="py-2 border-2 border-accent font-normal">{entry.deviation}</th>
                                 </tr>
                             ))
