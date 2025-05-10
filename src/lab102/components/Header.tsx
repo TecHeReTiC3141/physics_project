@@ -1,12 +1,9 @@
-import logo from '../../public/favicon/logo.png'
 import { Modal } from "./Modal.tsx";
 
 function Header() {
     return (
         <header className="w-full flex justify-between items-center pt-9 select-none">
-            <button className="btn btn-circle btn-lg">
-                <img alt="logo" src={logo as string}/>
-            </button>
+            <div/>
             <h2 className="text-3xl fond-bolder text-center">
                 Симулятор лабораторной работы 1.02<br/>
                 “Движение на наклонной плоскости”

@@ -1,19 +1,16 @@
-import { Header, Simulator, Tables, Footer } from "./components";
-import { GameObjectsProvider, TableDataProvider } from "./context";
+import { Layout } from "./components";
+import { Route, Routes } from "react-router";
+import { HomePage } from "./HomePage.tsx";
+import { Lab102Page } from "./lab102";
 
-function App() {
+export function App() {
     return (
-        <GameObjectsProvider>
-            <TableDataProvider>
-                <div className="container mx-auto flex flex-col gap-y-6">
-                    <Header/>
-                    <Simulator/>
-                    <Tables/>
-                    <Footer/>
-                </div>
-            </TableDataProvider>
-        </GameObjectsProvider>
+        <Routes>
+            <Route path="/" element={<Layout />}>
+                <Route index element={<HomePage />}/>
+                <Route path="/lab102" element={<Lab102Page />}/>
+                <Route path="/lab307" element={<HomePage />}/>
+            </Route>
+        </Routes>
     )
 }
-
-export { App }
