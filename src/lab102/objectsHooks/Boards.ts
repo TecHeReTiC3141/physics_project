@@ -1,6 +1,6 @@
 import { useGameObjects } from "../context";
 import { useCallback, useEffect } from "react";
-import { GameObjectId } from "./types.ts";
+import { GameObjectId } from "../types.ts";
 
 export const useBoards = () => {
     const { updateGameObject, getGameObject, sprites, boardsCount} = useGameObjects()

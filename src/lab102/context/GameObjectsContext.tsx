@@ -1,4 +1,4 @@
-import { GameObject, GameObjectId } from "../objectsHooks/types.ts";
+import { Lab102GameObject, GameObjectId } from "../types.ts";
 import {
     createContext,
     useCallback,
@@ -9,13 +9,12 @@ import {
     FC,
     useEffect,
 } from "react";
-import { useGameObjectsData } from "../hooks";
-import { useGameAssets } from "../hooks/useGameAssets.ts";
+import { useGameObjectsData, useGameAssets } from "../hooks";
 
 type ContextValue = {
-    gameObjects: GameObject[]
-    updateGameObject: (id: GameObjectId, data: Partial<GameObject>) => void
-    getGameObject: (id: GameObjectId) => GameObject
+    gameObjects: Lab102GameObject[]
+    updateGameObject: (id: GameObjectId, data: Partial<Lab102GameObject>) => void
+    getGameObject: (id: GameObjectId) => Lab102GameObject
     isDragging: boolean
     setIsDragging: Dispatch<SetStateAction<boolean>>
     draggedObjectId: GameObjectId | null
@@ -66,13 +65,13 @@ export const GameObjectsProvider: FC = ({ children }) => {
         })
     }, [gameAssets]);
 
-    const [ gameObjects, setGameObjects ] = useState<GameObject[]>(useGameObjectsData({ setBoardsCount, setIsPumpTurnedOn, setIsMagnetReleased, setLeftTime, setRightTime }));
+    const [ gameObjects, setGameObjects ] = useState<Lab102GameObject[]>(useGameObjectsData({ setBoardsCount, setIsPumpTurnedOn, setIsMagnetReleased, setLeftTime, setRightTime }));
 
     const [ offset, setOffset ] = useState({ x: 0, y: 0 });
 
-    const getGameObject = useCallback((id: GameObjectId) => gameObjects.find(object => object.id === id) as GameObject, [ gameObjects ])
+    const getGameObject = useCallback((id: GameObjectId) => gameObjects.find(object => object.id === id) as Lab102GameObject, [ gameObjects ])
 
-    const updateGameObject = useCallback((id: GameObjectId, data: Partial<GameObject>) => {
+    const updateGameObject = useCallback((id: GameObjectId, data: Partial<Lab102GameObject>) => {
         setGameObjects(prev => prev.map(obj => obj.id === id ? { ...obj, ...data } : obj))
     }, [])
 
@@ -100,8 +99,8 @@ export const GameObjectsProvider: FC = ({ children }) => {
     }
 
     return (
-        <GameObjectsContext.Provider value={value}>
-            {children}
-        </GameObjectsContext.Provider>
+      <GameObjectsContext.Provider value={value}>
+          {children}
+      </GameObjectsContext.Provider>
     )
 }

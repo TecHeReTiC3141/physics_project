@@ -1,10 +1,9 @@
 import { FaQuestion } from "react-icons/fa6";
-import { Modal } from "../Modal.tsx";
+import { Modal } from "../../../components";
 import { useTableData } from "../../context";
 import clsx from "clsx";
 
 function ThirdTable() {
-
     const { thirdTableData, thirdTablePointer, setThirdTablePointer, deleteThirdTableEntry } = useTableData()
 
     return (

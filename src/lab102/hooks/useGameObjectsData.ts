@@ -1,4 +1,4 @@
-import { GameObject, GameObjectId } from "../objectsHooks/types.ts";
+import { Lab102GameObject, GameObjectId } from "../types.ts";
 import { Dispatch, SetStateAction } from "react";
 import { CANVAS_WIDTH, RAIL_WIDTH, RAIL_X_LEFT, RAIL_X_LEFT_OFFSET } from "../constants";
 
@@ -10,8 +10,8 @@ type Props = {
     setRightTime: Dispatch<SetStateAction<number | null>>
 }
 
-export const useGameObjectsData = ({ setBoardsCount, setIsPumpTurnedOn, setIsMagnetReleased, setLeftTime, setRightTime }: Props): GameObject[] => {
-    const data: GameObject[] =
+export const useGameObjectsData = ({ setBoardsCount, setIsPumpTurnedOn, setIsMagnetReleased, setLeftTime, setRightTime }: Props): Lab102GameObject[] => {
+    const data: Lab102GameObject[] =
         [
             { id: GameObjectId.TABLO, x: 880, y: 43, width: 300, height: 360, color: 'blue', isStatic: true, },
             {

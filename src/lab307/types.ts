@@ -1,0 +1,20 @@
+import { GameObject } from "../types.ts";
+
+export enum GameObjectId {
+  BASE = 'BASE',
+  GENERATOR_POWER = 'GENERATOR_POWER',
+  FREQUENCY_MODE = 'FREQUENCY_MODE',
+  VPP_MODE = 'VPP_MODE',
+  SINE_MODE = 'SINE_MODE',
+  OUTPUT_BTN = 'OUTPUT_BTN',
+  OSCILOGRAPG_POWER = 'OSCILOGRAPG_POWER',
+  ACQUIRE_BTN = 'ACQUIRE_BTN',
+  POSITION_CONTROL_LEFT = 'POSITION_CONTROL_LEFT',
+  POSITION_CONTROL_RIGHT = 'POSITION_CONTROL_RIGHT',
+  SCALE_CONTROL_LEFT = 'SCALE_CONTROL_LEFT',
+  SCALE_CONTROL_RIGHT = 'SCALE_CONTROL_RIGHT',
+}
+
+export type Lab307GameObject = GameObject<GameObjectId>
+
+export type GeneratorInputMode = 'frequency' | 'vpp'

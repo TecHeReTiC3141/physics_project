@@ -1,6 +1,6 @@
 import { useGameObjects } from "../context";
 import { useCallback, useEffect } from "react";
-import { GameObjectId } from "./types.ts";
+import { GameObjectId } from "../types.ts";
 
 export const usePump = () => {
     const { updateGameObject, getGameObject, isPumpTurnedOn} = useGameObjects()

@@ -5,11 +5,11 @@ function Header() {
         <header className="w-full flex justify-between items-center pt-9 select-none">
             <div/>
             <h2 className="text-3xl fond-bolder text-center">
-                Симулятор лабораторной работы 1.02<br/>
-                “Движение на наклонной плоскости”
+                Симулятор лабораторной работы 3.07<br/>
+                “Изучение свойств ферромагнетика”
             </h2>
             <div className="flex flex-col gap-y-3 ">
-                <a href="https://study.physics.itmo.ru/course/format/tiles/mod_view.php?cmid=2666" target="_blank"
+                <a href="https://study.physics.itmo.ru/course/format/tiles/mod_view.php?cmid=8572" target="_blank"
                    className="button-outline">Методичка</a>
                 <button className="button-outline"
                         onClick={() => (document.getElementById('instruction-modal') as HTMLDialogElement).showModal()}>Инструкция

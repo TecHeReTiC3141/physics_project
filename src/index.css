@@ -21,3 +21,8 @@
     @apply button;
     @apply bg-accent text-background hover:bg-background hover:text-accent hover:border-accent;
 }
+
+html, body, #root {
+    min-height: 100vh;
+    height: fit-content;
+}

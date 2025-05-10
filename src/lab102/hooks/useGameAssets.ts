@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { GameObjectId } from "../objectsHooks/types.ts";
+import { GameObjectId } from "../types.ts";
 import rel from "../assets/sprites/rel.svg";
 import trolley from "../assets/sprites/trolley.png";
 import opticalGate from "../assets/sprites/optical_door.png";

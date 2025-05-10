@@ -1,5 +1,5 @@
 import { useGameObjects } from "../context";
-import { GameObjectId } from "./types.ts";
+import { GameObjectId } from "../types.ts";
 import { useCallback, useEffect } from "react";
 
 export const useTablo = () => {

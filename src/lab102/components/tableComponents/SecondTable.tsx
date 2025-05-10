@@ -1,5 +1,5 @@
 import { FaQuestion } from "react-icons/fa6";
-import { Modal } from "../Modal.tsx";
+import { Modal } from "../../../components";
 
 function SecondTable() {
 
