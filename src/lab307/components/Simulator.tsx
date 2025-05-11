@@ -4,7 +4,7 @@ import { useGameObjects } from "../context";
 import { Lab307GameObject } from "../types.ts";
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "../constants.ts";
 import { Modal } from "../../components";
-import { RAIL_X_LEFT, RAIL_X_LEFT_OFFSET, RAIL_X_RIGHT, RAIL_X_RIGHT_OFFSET } from "../../lab102/constants.ts";
+import { useGeneratorObjects } from "../objectHooks";
 
 type MouseState = 'idle' | 'grab' | 'grabbing' | 'click'
 
@@ -21,16 +21,6 @@ export function Simulator() {
 
   const {
     gameObjects,
-    getGameObject,
-    updateGameObject,
-    isOscilographTurnedOn,
-    setIsOscilographTurnedOn,
-    isGeneratorTurnedOn,
-    setIsGeneratorTurnedOn,
-    generatorFrequency,
-    setGeneratorVoltage,
-    generatorVpp,
-    setGeneratorVpp,
     sprites
   } = useGameObjects()
 
@@ -97,6 +87,8 @@ export function Simulator() {
     const object = gameObjects.find((obj) => checkObjectClicked(obj, mousePos));
     setMouseState(object?.onClick ? 'click' : 'idle');
   };
+
+  useGeneratorObjects()
 
   return (
     <div className={clsx("w-full border-primary border-2 rounded-xl h-[650px] relative py-3",

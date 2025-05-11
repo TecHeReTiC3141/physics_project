@@ -12,4 +12,5 @@ export type GameObject<ID> = {
   onClick?: () => void
   active?: boolean
   draw?: (ctx: CanvasRenderingContext2D) => void
+  text?: string
 }

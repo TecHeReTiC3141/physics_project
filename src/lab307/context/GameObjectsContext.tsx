@@ -1,4 +1,4 @@
-import { GameObjectId, Lab307GameObject } from "../types.ts";
+import { GameObjectId, GeneratorOutputMode, Lab307GameObject } from "../types.ts";
 import {
   createContext,
   useCallback,
@@ -20,12 +20,16 @@ type ContextValue = {
   setIsOscilographTurnedOn: Dispatch<SetStateAction<boolean>>
   isGeneratorTurnedOn: boolean
   setIsGeneratorTurnedOn: Dispatch<SetStateAction<boolean>>
-  generatorFrequency: number
-  setGeneratorFrequency: Dispatch<SetStateAction<number>>
-  generatorVpp: number
-  setGeneratorVpp: Dispatch<SetStateAction<number>>
+  isOutputTurnedOn: boolean
+  setIsOutputTurnedOn: Dispatch<SetStateAction<boolean>>
+  generatorFrequency: string
+  setGeneratorFrequency: Dispatch<SetStateAction<string>>
+  generatorVpp: string
+  setGeneratorVpp: Dispatch<SetStateAction<string>>
   generatorInputMode: GeneratorInputMode
   setGeneratorInputMode: Dispatch<SetStateAction<GeneratorInputMode>>
+  generatorOutputMode: GeneratorOutputMode
+  setGeneratorOutputMode: Dispatch<SetStateAction<GeneratorOutputMode>>
   sprites: Record<GameObjectId, (HTMLImageElement | null)>
 }
 
@@ -44,9 +48,11 @@ export const GameObjectsProvider: FC = ({ children }) => {
 
   const [ isOscilographTurnedOn, setIsOscilographTurnedOn ] = useState(false);
   const [ isGeneratorTurnedOn, setIsGeneratorTurnedOn ] = useState(false);
-  const [ generatorFrequency, setGeneratorFrequency ] = useState<number>(0);
-  const [ generatorVpp, setGeneratorVpp ] = useState<number>(0);
-  const [ generatorInputMode, setGeneratorInputMode ] = useState<GeneratorInputMode>('frequency');
+  const [ generatorFrequency, setGeneratorFrequency ] = useState('');
+  const [ isOutputTurnedOn, setIsOutputTurnedOn ] = useState(false);
+  const [ generatorVpp, setGeneratorVpp ] = useState('');
+  const [ generatorInputMode, setGeneratorInputMode ] = useState<GeneratorInputMode>(null);
+  const [ generatorOutputMode, setGeneratorOutputMode ] = useState<GeneratorOutputMode>(null);
 
   const gameAssets = useGameAssets({ isOscilographTurnedOn, isGeneratorTurnedOn, generatorInputMode })
 
@@ -58,12 +64,14 @@ export const GameObjectsProvider: FC = ({ children }) => {
     })
   }, [ gameAssets ]);
 
-  const [ gameObjects, setGameObjects ] = useState<Lab307GameObject[]>(useGameObjectsData({
+  const [ gameObjects, setGameObjects ] = useState(useGameObjectsData({
     setGeneratorFrequency,
     setGeneratorVpp,
     setIsGeneratorTurnedOn,
     setIsOscilographTurnedOn,
-    setGeneratorInputMode
+    setGeneratorInputMode,
+    setIsOutputTurnedOn,
+    setGeneratorOutputMode
   }));
 
   const getGameObject = useCallback((id: GameObjectId) => gameObjects.find(object => object.id === id) as Lab307GameObject, [ gameObjects ])
@@ -86,6 +94,10 @@ export const GameObjectsProvider: FC = ({ children }) => {
     setGeneratorVpp,
     generatorInputMode,
     setGeneratorInputMode,
+    isOutputTurnedOn,
+    setIsOutputTurnedOn,
+    generatorOutputMode,
+    setGeneratorOutputMode,
     sprites
   }
 
