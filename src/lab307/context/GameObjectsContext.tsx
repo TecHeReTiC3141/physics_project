@@ -22,10 +22,20 @@ type ContextValue = {
   setIsGeneratorTurnedOn: Dispatch<SetStateAction<boolean>>
   isOutputTurnedOn: boolean
   setIsOutputTurnedOn: Dispatch<SetStateAction<boolean>>
+  isAcquireModeTurnedOn: boolean
+  setIsAcquireModeTurnedOn: Dispatch<SetStateAction<boolean>>
   generatorFrequency: string
   setGeneratorFrequency: Dispatch<SetStateAction<string>>
   generatorVpp: string
   setGeneratorVpp: Dispatch<SetStateAction<string>>
+  positionX: number
+  setPositionX: Dispatch<SetStateAction<number>>
+  positionY: number
+  setPositionY: Dispatch<SetStateAction<number>>
+  scaleX: number
+  setScaleX: Dispatch<SetStateAction<number>>
+  scaleY: number
+  setScaleY: Dispatch<SetStateAction<number>>
   generatorInputMode: GeneratorInputMode
   setGeneratorInputMode: Dispatch<SetStateAction<GeneratorInputMode>>
   generatorOutputMode: GeneratorOutputMode
@@ -53,6 +63,11 @@ export const GameObjectsProvider: FC = ({ children }) => {
   const [ generatorVpp, setGeneratorVpp ] = useState('');
   const [ generatorInputMode, setGeneratorInputMode ] = useState<GeneratorInputMode>(null);
   const [ generatorOutputMode, setGeneratorOutputMode ] = useState<GeneratorOutputMode>(null);
+  const [ isAcquireModeTurnedOn, setIsAcquireModeTurnedOn ] = useState(false);
+  const [ positionX, setPositionX ] = useState(0);
+  const [ positionY, setPositionY ] = useState(0);
+  const [ scaleX, setScaleX ] = useState(.9);
+  const [ scaleY, setScaleY ] = useState(1);
 
   const gameAssets = useGameAssets({ isOscilographTurnedOn, isGeneratorTurnedOn, generatorInputMode })
 
@@ -71,7 +86,8 @@ export const GameObjectsProvider: FC = ({ children }) => {
     setIsOscilographTurnedOn,
     setGeneratorInputMode,
     setIsOutputTurnedOn,
-    setGeneratorOutputMode
+    setGeneratorOutputMode,
+    setIsAcquireModeTurnedOn,
   }));
 
   const getGameObject = useCallback((id: GameObjectId) => gameObjects.find(object => object.id === id) as Lab307GameObject, [ gameObjects ])
@@ -90,6 +106,8 @@ export const GameObjectsProvider: FC = ({ children }) => {
     setIsGeneratorTurnedOn,
     generatorFrequency,
     setGeneratorFrequency,
+    isAcquireModeTurnedOn,
+    setIsAcquireModeTurnedOn,
     generatorVpp,
     setGeneratorVpp,
     generatorInputMode,
@@ -98,6 +116,14 @@ export const GameObjectsProvider: FC = ({ children }) => {
     setIsOutputTurnedOn,
     generatorOutputMode,
     setGeneratorOutputMode,
+    positionX,
+    setPositionX,
+    positionY,
+    setPositionY,
+    scaleX,
+    setScaleX,
+    scaleY,
+    setScaleY,
     sprites
   }
 

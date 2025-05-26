@@ -1,18 +1,17 @@
 import clsx from "clsx";
-import { FourthTable, SecondTable, ThirdTable } from "./tableComponents";
+import { FirstTable, SecondTable, ThirdTable } from "./tableComponents";
 import { TableNumber, useTableData } from "../context";
-import { createWordDocument } from "../utils/export";
 
-const tabs = { [TableNumber.SECOND]: 'Таблица 2', [TableNumber.THIRD]: 'Таблица 3', [TableNumber.FOURTH]: 'Таблица 4' }
+const tabs = {  [TableNumber.FIRST]: 'Таблица 1', [TableNumber.SECOND]: 'Таблица 2', [TableNumber.THIRD]: 'Таблица 3' }
 
-function Tables() {
+export function Tables() {
     const tables = {
+        [TableNumber.FIRST]: <FirstTable />,
         [TableNumber.SECOND]: <SecondTable />,
         [TableNumber.THIRD]: <ThirdTable />,
-        [TableNumber.FOURTH]: <FourthTable />
     }
 
-    const { selectedTable, setSelectedTable, thirdTableData, fourthTableData, setFourthTableData, setThirdTableData } = useTableData()
+    const { selectedTable, setSelectedTable, firstTableData, secondTableData, thirdTableData,  } = useTableData()
 
     return (
         <div className="w-full text-center flex flex-col gap-y-3">
@@ -23,7 +22,7 @@ function Tables() {
                             onClick={() => setSelectedTable(+tab as TableNumber)}>{tabName}</button>
                 ))}
                 <div className="flex-1" />
-                <button className="button-filled" onClick={() => createWordDocument(thirdTableData, fourthTableData)}>Экспорт</button>
+                <button className="button-filled" onClick={() => console.log(firstTableData, secondTableData, thirdTableData)}>Экспорт</button>
             </div>
             <div className="w-full border-2 border-primary rounded-xl px-8 py-6">
                 {tables[selectedTable]}
@@ -31,5 +30,3 @@ function Tables() {
         </div>
     )
 }
-
-export { Tables }

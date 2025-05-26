@@ -1,3 +1,5 @@
 export * from './Header.tsx'
 export * from './Simulator.tsx'
-// export * from './Tables.tsx'
+export * from './Regulator'
+export * from './Tables.tsx'
+export * from './HysteresisLoop.tsx'

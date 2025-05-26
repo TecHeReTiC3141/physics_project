@@ -20,13 +20,13 @@ export const useGeneratorObjects = () => {
     const { x, y } = getGameObject(GameObjectId.GENERATOR_DATA);
     ctx.beginPath()
     ctx.fillStyle = 'black';
-    ctx.font = `10px Arial`;
+    ctx.font = `20px Arial`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
 
-    ctx.fillText(generatorFrequency || '-----', x, y);
+    ctx.fillText(generatorFrequency || '------', x, y);
 
-    ctx.fillText(generatorVpp || '-----', x, y + 60);
+    ctx.fillText(generatorVpp || '------', x, y + 130);
   }, [generatorFrequency, generatorVpp])
 
   useEffect(() => {
@@ -61,7 +61,7 @@ export const useGeneratorObjects = () => {
         }
       }
     })
-    updateGameObject(GameObjectId['GENERATOR_NUMPAD_BACKSPACE'], {
+    updateGameObject(GameObjectId.GENERATOR_NUMPAD_BACKSPACE, {
       isStatic: !isGeneratorTurnedOn,
       onClick: () => {
         if (generatorInputMode === 'frequency') {
@@ -70,6 +70,16 @@ export const useGeneratorObjects = () => {
           setGeneratorVpp(prev => prev.slice(0, -1))
         }
       }
+    })
+    updateGameObject(GameObjectId.GENERATOR_NUMPAD_DOT, {
+      isStatic: !isGeneratorTurnedOn,
+      onClick: () => {
+      if (generatorInputMode === 'frequency') {
+        setGeneratorFrequency(prev => prev + '.')
+      } else if (generatorInputMode === 'vpp') {
+        setGeneratorVpp(prev => prev + '.')
+      }
+    },
     })
   }, [generatorInputMode, isGeneratorTurnedOn, setGeneratorFrequency, setGeneratorVpp])
 

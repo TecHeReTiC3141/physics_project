@@ -2,6 +2,8 @@ import base from '../assets/base.png';
 import regulator from '../assets/regulator.png';
 import generatorPowerOn from '../assets/voltageGenerator/powerOn.png';
 import generatorPowerOff from '../assets/voltageGenerator/powerOff.png';
+import oscilographPowerOn from '../assets/oscilograph/powerOn.png';
+import oscilographPowerOff from '../assets/oscilograph/powerOff.png';
 import inputModeOn from '../assets/voltageGenerator/inputModeOn.png'
 import inputModeOff from '../assets/voltageGenerator/inputModeOff.png'
 import { GameObjectId, GeneratorInputMode } from "../types.ts";
@@ -28,6 +30,10 @@ export const useGameAssets = ({ isOscilographTurnedOn, isGeneratorTurnedOn, gene
     {
       id: GameObjectId.VPP_MODE,
       src: generatorInputMode === 'vpp' ? inputModeOn : inputModeOff
+    },
+    {
+      id: GameObjectId.OSCILOGRAPG_POWER,
+      src: isOscilographTurnedOn ? oscilographPowerOn: oscilographPowerOff
     },
   ]
 

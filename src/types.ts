@@ -13,4 +13,5 @@ export type GameObject<ID> = {
   active?: boolean
   draw?: (ctx: CanvasRenderingContext2D) => void
   text?: string
+  borderRadius?: number
 }

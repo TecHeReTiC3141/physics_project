@@ -1,16 +1,16 @@
-import { GameObjectsProvider } from "./context";
-import { Header, Simulator } from "./components";
+import { GameObjectsProvider, TableDataProvider } from "./context";
+import { Header, Simulator, Tables } from "./components";
 
 export function Lab307Page() {
   return (
     <GameObjectsProvider>
-      {/*<TableDataProvider>*/}
+      <TableDataProvider>
         <div className="container mx-auto flex flex-col gap-y-6">
           <Header/>
           <Simulator/>
-          {/*<Tables/>*/}
+          <Tables/>
         </div>
-      {/*</TableDataProvider>*/}
+      </TableDataProvider>
     </GameObjectsProvider>
   )
 }
