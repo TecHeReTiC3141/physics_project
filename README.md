@@ -1,50 +1,44 @@
-# React + TypeScript + Vite
+# Симулятор лабораторных работ по физике
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Назначение проекта
 
-Currently, two official plugins are available:
+Этот проект создан для студентов и преподавателей, чтобы упростить и сделать доступным освоение лабораторных работ по физике. Он позволяет:
+- Выполнять лабораторные работы дистанционно или самостоятельно, если нет доступа к реальному оборудованию.
+- Тренироваться перед реальными занятиями, повторять эксперименты и анализировать результаты.
+- Экономить время на подготовку и оформление отчётов благодаря автоматизации расчётов и экспорту данных.
+- Повышать вовлечённость и понимание физических процессов за счёт интерактивности и визуализации.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Особенности реализации
 
-## Expanding the ESLint configuration
+- **Технологии:**
+  - Frontend: React + TypeScript + TailwindCSS
+  - Сборка: Vite
+  - Экспорт данных: docx (через библиотеку `docx`)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **Структура кода:**
+  - Все симуляции и страницы лежат в папке `src/`.
+  - Для каждой лабораторной работы (`lab102`, `lab307`) выделена отдельная папка с компонентами, хуками, утилитами и контекстами.
+  - Общие компоненты (модальные окна, лейаут, футер) вынесены в `src/components`.
 
-- Configure the top-level `parserOptions` property like this:
+- **Архитектура:**
+  - Используется контекст для хранения состояния объектов симуляции и таблиц данных.
+  - Вся логика взаимодействия с виртуальными объектами (например, генератор, осциллограф, тележка) реализована через хуки и отдельные модули.
+  - Для каждой таблицы реализованы собственные компоненты, поддерживающие ввод, редактирование и экспорт данных.
+  - Экспорт результатов в Word реализован через генерацию docx-файлов с помощью библиотеки `docx`.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- **Особенности симуляций:**
+  - Виртуальные лабораторные установки максимально приближены к реальным: можно управлять параметрами, наблюдать за изменениями в реальном времени, снимать и анализировать данные.
+  - Все расчёты (например, вычисление физических величин, построение графиков) автоматизированы и соответствуют методикам реальных лабораторных работ.
+  - Интерфейс адаптирован под студентов: есть инструкции, подсказки, автоматическая проверка корректности данных.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+- **Хранение данных:**
+  - Все промежуточные данные и результаты сохраняются в localStorage, что позволяет не терять прогресс при перезагрузке страницы.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+## Почему это важно
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+- Проект помогает студентам не пропускать лабораторные работы и осваивать материал в удобном темпе.
+- Позволяет преподавателям использовать симулятор для демонстраций и контроля знаний.
+- Снижает нагрузку на лабораторные классы и оборудование.
+- Делает физику более доступной и интересной за счёт интерактивности и визуализации.
+
+React + TypeScript + Vite
