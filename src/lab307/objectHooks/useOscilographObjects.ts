@@ -17,6 +17,7 @@ export const useOscilographObjects = () => {
   }, [isAcquireModeTurnedOn, isOscilographTurnedOn, updateGameObject])
 
   const drawOscilographData = useCallback((ctx) => {
+    if (!isOscilographTurnedOn) return
     const { x, y } = getGameObject(GameObjectId.OSCILOGRAPH_DATA);
     ctx.beginPath()
     ctx.fillStyle = 'black';
@@ -27,7 +28,7 @@ export const useOscilographObjects = () => {
     ctx.fillText(scaleX.toFixed(4) || '------', x, y);
 
     ctx.fillText(scaleY.toFixed(4) || '------', x, y + 40);
-  }, [scaleX, scaleY])
+  }, [scaleX, scaleY, isOscilographTurnedOn])
 
   useEffect(() => {
     updateGameObject(GameObjectId.OSCILOGRAPH_DATA, { draw: drawOscilographData })

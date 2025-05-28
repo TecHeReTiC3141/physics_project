@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useGameObjects } from "../context";
 
 type HysteresisLoopProps = {
     kx: number;
@@ -37,26 +38,48 @@ const CanvasSignalGraph: React.FC<CanvasSignalProps> = ({
                                                             dy,
                                                             pointsCount = 1000,
                                                         }) => {
+
+    const { generatorFrequency, generatorVpp } = useGameObjects()
+
+
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    const width = 170
-    const height = 40
+    // Проверка корректности данных
+    const animationRef = useRef<number>();
+    const [noiseEnabled, setNoiseEnabled] = useState(false);
 
-    const signalData = useMemo(() => {
+    const width = 170
+    const height = 35
+
+    // Проверка корректности данных
+    const isCorrectGeneratorData =
+        20 <= +generatorFrequency &&
+        +generatorFrequency < 40 &&
+        Math.abs(+generatorVpp - 20) <= 1;
+
+    const generateSignalData = (addNoise = false) => {
         const data = [];
         const step = (xMax - xMin) / pointsCount;
 
         for (let i = 0; i <= pointsCount; i++) {
             const x = xMin + i * step;
-            const xValue = a * Math.pow(Math.cos(x + w), m) + kx * Math.pow(Math.sin(x + w), n) + dx;
-            const yValue = ky * Math.sin(x) + dy;
+            let xValue = a * Math.pow(Math.cos(x + w), m) + kx * Math.pow(Math.sin(x + w), n) + dx;
+            let yValue = ky * Math.sin(x) + dy;
+
+            // Добавляем шум если данные некорректны и включен шум
+            if (!isCorrectGeneratorData && addNoise) {
+                const noiseX = (Math.random() - 0.5) * 0.1;
+                const noiseY = (Math.random() - 0.5) * 0.1;
+                xValue += noiseX;
+                yValue += noiseY;
+            }
 
             data.push({ x, xValue, yValue });
         }
         return data;
-    }, [kx, ky, dx, dy, pointsCount]);
+    };
 
-    useEffect(() => {
+    const drawCanvas = () => {
         const canvas = canvasRef.current;
         if (!canvas) return;
 
@@ -97,13 +120,16 @@ const CanvasSignalGraph: React.FC<CanvasSignalProps> = ({
         ctx.lineTo(zeroX, height);
         ctx.stroke();
 
+        // Генерируем данные с учетом шума
+        const currentData = generateSignalData(noiseEnabled);
+
         // Рисуем график X(t)
         ctx.beginPath();
         ctx.strokeStyle = '#8884d8';
         ctx.lineWidth = 2;
 
         let firstPointX = true;
-        for (const point of signalData) {
+        for (const point of currentData) {
             const canvasX = toCanvasX(point.x);
             const canvasY = toCanvasY(point.xValue);
 
@@ -128,7 +154,7 @@ const CanvasSignalGraph: React.FC<CanvasSignalProps> = ({
         ctx.lineWidth = 2;
 
         let firstPointY = true;
-        for (const point of signalData) {
+        for (const point of currentData) {
             const canvasX = toCanvasX(point.x);
             const canvasY = toCanvasY(point.yValue);
 
@@ -146,8 +172,35 @@ const CanvasSignalGraph: React.FC<CanvasSignalProps> = ({
             }
         }
         ctx.stroke();
+    };
 
-    }, [signalData, width, height]);
+    useEffect(() => {
+        // Включаем/выключаем шум в зависимости от корректности данных
+        setNoiseEnabled(!isCorrectGeneratorData);
+    }, [isCorrectGeneratorData]);
+
+    useEffect(() => {
+        if (!noiseEnabled) {
+            // Если шум выключен, рисуем один раз
+            drawCanvas();
+            return;
+        }
+
+        // Если шум включен, запускаем анимацию 60 FPS
+        const animate = () => {
+            drawCanvas();
+            animationRef.current = requestAnimationFrame(animate);
+        };
+
+        animationRef.current = requestAnimationFrame(animate);
+
+        return () => {
+            if (animationRef.current) {
+                cancelAnimationFrame(animationRef.current!);
+            }
+        };
+    }, [noiseEnabled, width, height, kx, ky, dx, dy, pointsCount]);
+
 
     return (
         <div>
@@ -169,12 +222,21 @@ export const HysteresisLoop = ({
                                                            pointsCount = 500,
                                                        }: HysteresisLoopProps) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const animationRef = useRef<number>();
+    const [noiseEnabled, setNoiseEnabled] = useState(false);
     const scale = 50;
 
     const width = 168
     const height = 124
 
-    useEffect(() => {
+    const { generatorFrequency, generatorVpp } = useGameObjects()
+
+    const isCorrectGeneratorData =
+        20 <= +generatorFrequency &&
+        +generatorFrequency < 40 &&
+        Math.abs(+generatorVpp - 20) <= 1;
+
+    const drawHysteresisLoop = (addNoise = false) => {
         const canvas = canvasRef.current;
         if (!canvas) return;
 
@@ -192,8 +254,6 @@ export const HysteresisLoop = ({
         ctx.beginPath();
         ctx.strokeStyle = '#888';
         ctx.lineWidth = 1;
-
-        // Устанавливаем пунктирный стиль (5px линия, 5px пробел)
         ctx.setLineDash([5, 5]);
 
         // Ось X (горизонтальная)
@@ -205,34 +265,36 @@ export const HysteresisLoop = ({
         ctx.lineTo(centerX, height);
 
         ctx.stroke();
-
-        // Возвращаем сплошную линию для основной графики
         ctx.setLineDash([]);
 
-        // Генерируем точки для петли гистерезиса
+        // Генерируем точки с шумом
         const points = [];
         for (let i = 0; i <= pointsCount; i++) {
             const t = (2 * Math.PI * i) / pointsCount;
 
-            // Вычисляем X и Y по формулам
-            const x = a * Math.pow(Math.cos(t + w), m) + kx * Math.pow(Math.sin(t + w), n) + dx;
-            const y = ky * Math.sin(t) + dy;
+            // Базовые значения
+            let x = a * Math.pow(Math.cos(t + w), m) + kx * Math.pow(Math.sin(t + w), n) + dx;
+            let y = ky * Math.sin(t) + dy;
 
-            // Преобразуем в полярные координаты (r, θ)
+            // Добавляем шум если нужно
+            if (addNoise) {
+                x += (Math.random() - 0.5) * 0.1; // Шум ±0.1
+                y += (Math.random() - 0.5) * 0.1;
+            }
+
+            // Преобразуем в полярные координаты
             const r = Math.sqrt(x * x + y * y);
             const theta = Math.atan2(y, x);
 
             points.push({ r, theta });
         }
 
-        // Рисуем петлю гистерезиса
+        // Рисуем петлю
         ctx.beginPath();
-        // ctx.strokeStyle = '#cede30';
         ctx.strokeStyle = '#000';
         ctx.lineWidth = 2;
 
         points.forEach((point, index) => {
-            // Преобразуем полярные координаты в декартовы для canvas
             const x = centerX + point.r * scale * Math.cos(point.theta);
             const y = centerY + point.r * scale * Math.sin(point.theta);
 
@@ -245,11 +307,34 @@ export const HysteresisLoop = ({
 
         ctx.closePath();
         ctx.stroke();
+    };
 
-    }, [kx, ky, dx, dy, pointsCount, width, height]);
+    useEffect(() => {
+        setNoiseEnabled(!isCorrectGeneratorData);
+    }, [isCorrectGeneratorData]);
+
+    useEffect(() => {
+        if (!noiseEnabled) {
+            drawHysteresisLoop(false);
+            return;
+        }
+
+        const animate = () => {
+            drawHysteresisLoop(true);
+            animationRef.current = requestAnimationFrame(animate);
+        };
+
+        animationRef.current = requestAnimationFrame(animate);
+
+        return () => {
+            if (animationRef.current) {
+                cancelAnimationFrame(animationRef.current!);
+            }
+        };
+    }, [noiseEnabled, kx, ky, dx, dy, pointsCount]);
 
     return (
-        <div className="absolute top-7 left-[705px]">
+        <div className="absolute top-7 2xl:left-[46%] left-[45.2%]">
             <CanvasSignalGraph kx={kx} ky={ky} dx={dx} dy={dy} />
             <canvas
                 className="absolute left-5 top-[55px] border-t border-gray-400"

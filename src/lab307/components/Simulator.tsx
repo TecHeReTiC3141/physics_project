@@ -38,6 +38,8 @@ export function Simulator() {
         setPositionY,
         setScaleX,
         setScaleY,
+        generatorFrequency,
+        generatorVpp,
         isOscilographTurnedOn,
         isOutputTurnedOn,
         isGeneratorTurnedOn,
@@ -46,7 +48,9 @@ export function Simulator() {
     } = useGameObjects()
 
     const shouldShowHisteresis = useMemo(() => {
-        const shouldShow = isOscilographTurnedOn && isGeneratorTurnedOn && generatorOutputMode === 'sine' && isAcquireModeTurnedOn && isOutputTurnedOn
+        console.log(+generatorFrequency, +generatorVpp)
+        const shouldShow = isOscilographTurnedOn && isGeneratorTurnedOn && generatorOutputMode === 'sine'
+            && isAcquireModeTurnedOn && isOutputTurnedOn
         if (shouldShow) {
             setPositionX(Math.random() * 2 - 1)
             setPositionY(Math.random() * 2 - 1)
@@ -58,7 +62,8 @@ export function Simulator() {
         isOutputTurnedOn,
         isGeneratorTurnedOn,
         generatorOutputMode,
-        isAcquireModeTurnedOn ])
+        isAcquireModeTurnedOn
+    ])
 
     const render = useCallback(() => {
         const canvas = canvasRef.current as HTMLCanvasElement;
@@ -128,22 +133,26 @@ export function Simulator() {
     useGeneratorObjects()
     useOscilographObjects()
 
+    const SCREEN_WIDTH_THRESHOLD = 1536;
+    const shouldAdjustPosition = window.innerWidth < SCREEN_WIDTH_THRESHOLD;
+    const positionAdjustment = shouldAdjustPosition ? 3.8 : 0;
+
     return (
         <div className={clsx("w-full border-primary border-2 rounded-xl h-[650px] relative py-3",
             mouseStateClassnames[ mouseState ])}>
             <button className="button-filled absolute top-3 left-3"
                     onClick={() => (document.getElementById('simulator-hint') as HTMLDialogElement).showModal()}>Подсказка
             </button>
-            <RotatingRegulator x={1740 * SCALE_COEFF / 2} y={290 * SCALE_COEFF / 2} size={36 * SCALE_COEFF / 2} min={-1}
+            <RotatingRegulator x={68.3 + positionAdjustment} y={26.5} size={36 * SCALE_COEFF / 2} min={-1}
                                max={1} initialValue={positionX}
                                knobColor={isOscilographTurnedOn ? '#70EC70' : '#fff'} onChange={setPositionX}/>
-            <RotatingRegulator x={1810 * SCALE_COEFF / 2} y={290 * SCALE_COEFF / 2} size={36 * SCALE_COEFF / 2} min={-1}
+            <RotatingRegulator x={71 + positionAdjustment} y={26.5} size={36 * SCALE_COEFF / 2} min={-1}
                                max={1} initialValue={positionY}
                                knobColor={isOscilographTurnedOn ? '#70EC70' : '#fff'} onChange={setPositionY}/>
-            <RotatingRegulator x={1735 * SCALE_COEFF / 2} y={360 * SCALE_COEFF / 2} size={50 * SCALE_COEFF / 2} min={-1}
+            <RotatingRegulator x={67.9 + positionAdjustment} y={33} size={50 * SCALE_COEFF / 2} min={-1}
                                max={1} initialValue={scaleX}
                                knobColor={isOscilographTurnedOn ? '#70EC70' : '#fff'} onChange={setScaleX}/>
-            <RotatingRegulator x={1805 * SCALE_COEFF / 2} y={360 * SCALE_COEFF / 2} size={50 * SCALE_COEFF / 2} min={-1}
+            <RotatingRegulator x={70.8 + positionAdjustment} y={33} size={50 * SCALE_COEFF / 2} min={-1}
                                max={1} initialValue={scaleY}
                                knobColor={isOscilographTurnedOn ? '#70EC70' : '#fff'} onChange={setScaleY}/>
             <Modal id="simulator-hint">
@@ -162,7 +171,7 @@ export function Simulator() {
                     height: `${displayHeight}px`,
                 }}
             />
-            {shouldShowHisteresis
+            {shouldShowHisteresis && generatorVpp && generatorFrequency
                 &&
                 <HysteresisLoop
                     kx={scaleX}
