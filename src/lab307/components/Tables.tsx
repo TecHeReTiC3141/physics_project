@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { FirstTable, SecondTable, ThirdTable } from "./tableComponents";
 import { TableNumber, useTableData } from "../context";
+import { createWordDocument } from "../utils/export";
 
 const tabs = {  [TableNumber.FIRST]: 'Таблица 1', [TableNumber.SECOND]: 'Таблица 2', [TableNumber.THIRD]: 'Таблица 3' }
 
@@ -22,7 +23,7 @@ export function Tables() {
                             onClick={() => setSelectedTable(+tab as TableNumber)}>{tabName}</button>
                 ))}
                 <div className="flex-1" />
-                <button className="button-filled" onClick={() => console.log(firstTableData, secondTableData, thirdTableData)}>Экспорт</button>
+                <button className="button-filled" onClick={() => createWordDocument(firstTableData, secondTableData, thirdTableData)}>Экспорт</button>
             </div>
             <div className="w-full border-2 border-primary rounded-xl px-8 py-6">
                 {tables[selectedTable]}
