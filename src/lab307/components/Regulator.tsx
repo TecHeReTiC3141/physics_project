@@ -98,8 +98,8 @@ export const RotatingRegulator: FC<RotatingRegulatorProps> = ({
       ref={knobRef}
       style={{
         position: 'absolute',
-        left: `${x}px`,
-        top: `${y}px`,
+        left: `${x}%`,
+        top: `${y}%`,
         width: `${size}px`,
         height: `${size}px`,
         borderRadius: '50%',
