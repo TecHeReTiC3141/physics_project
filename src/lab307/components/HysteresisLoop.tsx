@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGameObjects } from "../context";
+import { usePointsContext } from "../context/PointsContext.tsx";
 
 type HysteresisLoopProps = {
     kx: number;
@@ -46,7 +47,7 @@ const CanvasSignalGraph: React.FC<CanvasSignalProps> = ({
 
     // Проверка корректности данных
     const animationRef = useRef<number>();
-    const [noiseEnabled, setNoiseEnabled] = useState(false);
+    const [ noiseEnabled, setNoiseEnabled ] = useState(false);
 
     const width = 170
     const height = 35
@@ -54,7 +55,7 @@ const CanvasSignalGraph: React.FC<CanvasSignalProps> = ({
     // Проверка корректности данных
     const isCorrectGeneratorData =
         20 <= +generatorFrequency &&
-        +generatorFrequency < 40 &&
+        +generatorFrequency <= 40 &&
         Math.abs(+generatorVpp - 20) <= 1;
 
     const generateSignalData = (addNoise = false) => {
@@ -177,7 +178,7 @@ const CanvasSignalGraph: React.FC<CanvasSignalProps> = ({
     useEffect(() => {
         // Включаем/выключаем шум в зависимости от корректности данных
         setNoiseEnabled(!isCorrectGeneratorData);
-    }, [isCorrectGeneratorData]);
+    }, [ isCorrectGeneratorData ]);
 
     useEffect(() => {
         if (!noiseEnabled) {
@@ -199,7 +200,7 @@ const CanvasSignalGraph: React.FC<CanvasSignalProps> = ({
                 cancelAnimationFrame(animationRef.current!);
             }
         };
-    }, [noiseEnabled, width, height, kx, ky, dx, dy, pointsCount]);
+    }, [ noiseEnabled, width, height, kx, ky, dx, dy, pointsCount ]);
 
 
     return (
@@ -215,26 +216,30 @@ const CanvasSignalGraph: React.FC<CanvasSignalProps> = ({
 };
 
 export const HysteresisLoop = ({
-                                                           kx,
-                                                           ky,
-                                                           dx,
-                                                           dy,
-                                                           pointsCount = 500,
-                                                       }: HysteresisLoopProps) => {
+                                   kx,
+                                   ky,
+                                   dx,
+                                   dy,
+                                   pointsCount = 500,
+                               }: HysteresisLoopProps) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const animationRef = useRef<number>();
-    const [noiseEnabled, setNoiseEnabled] = useState(false);
+    const [ noiseEnabled, setNoiseEnabled ] = useState(false);
     const scale = 50;
 
-    const width = 168
-    const height = 124
+    const width = 170
+    const height = 125
 
     const { generatorFrequency, generatorVpp } = useGameObjects()
 
+    const { setXc, setYr, setXm, setYm } = usePointsContext()
+
     const isCorrectGeneratorData =
         20 <= +generatorFrequency &&
-        +generatorFrequency < 40 &&
+        +generatorFrequency <= 40 &&
         Math.abs(+generatorVpp - 20) <= 1;
+
+    const SHIFT_X = 4, SHIFT_Y = 2, LINE_GAP = 10;
 
     const drawHysteresisLoop = (addNoise = false) => {
         const canvas = canvasRef.current;
@@ -250,19 +255,38 @@ export const HysteresisLoop = ({
         const centerX = width / 2;
         const centerY = height / 2;
 
+        // Настройки стиля для сетки
+        ctx.fillStyle = '#bbb';  // Светло-серый цвет для сетки
+
+        // Рисуем горизонтальные линии сетки (параллельные оси X)
+        for (let x = SHIFT_X; x < width; x += LINE_GAP) {
+            for (let y = SHIFT_Y; y < height; y += LINE_GAP) {
+                ctx.fillRect(x, y, 1, 1)
+            }
+        }
+
         // Рисуем перекрестье (оси X и Y пунктиром)
         ctx.beginPath();
         ctx.strokeStyle = '#888';
         ctx.lineWidth = 1;
-        ctx.setLineDash([5, 5]);
+        ctx.setLineDash([ 2, 3 ]);
 
         // Ось X (горизонтальная)
-        ctx.moveTo(0, centerY);
+        ctx.moveTo(-1, centerY);
         ctx.lineTo(width, centerY);
 
         // Ось Y (вертикальная)
-        ctx.moveTo(centerX, 0);
+        ctx.moveTo(centerX, -4);
         ctx.lineTo(centerX, height);
+
+        ctx.fillStyle = '#888';  // Светло-серый цвет для сетки
+        for (let x = SHIFT_X; x < width; x += LINE_GAP) {
+            ctx.fillRect(x, centerY - 2, 1, 4)
+        }
+
+        for (let y = SHIFT_Y; y < width; y += LINE_GAP) {
+            ctx.fillRect(centerX - 2, y, 4, 1)
+        }
 
         ctx.stroke();
         ctx.setLineDash([]);
@@ -303,6 +327,26 @@ export const HysteresisLoop = ({
             } else {
                 ctx.lineTo(x, y);
             }
+            if (index === Math.floor(points.length * 3 / 4)) {
+                const xm = Math.abs(x - centerX) / LINE_GAP
+                const ym = Math.abs(y - centerY) / LINE_GAP
+                setXm(xm)
+                setYm(ym)
+
+                ctx.fillStyle = 'red'
+                ctx.fillRect(x, y, 3, 3);
+            } else if (Math.abs(y - centerY) <= 1) {
+                const xc =  Math.abs(x - centerX) / LINE_GAP
+                setXc(xc)
+                ctx.fillStyle = 'green'
+                ctx.fillRect(x, y, 3, 3);
+            } else if (Math.abs(x - centerX) <= 1) {
+                const yr = Math.abs(y - centerY) / LINE_GAP
+                setYr(yr)
+
+                ctx.fillStyle = 'yellow'
+                ctx.fillRect(x, y, 3, 3);
+            }
         });
 
         ctx.closePath();
@@ -311,7 +355,7 @@ export const HysteresisLoop = ({
 
     useEffect(() => {
         setNoiseEnabled(!isCorrectGeneratorData);
-    }, [isCorrectGeneratorData]);
+    }, [ isCorrectGeneratorData ]);
 
     useEffect(() => {
         if (!noiseEnabled) {
@@ -331,11 +375,11 @@ export const HysteresisLoop = ({
                 cancelAnimationFrame(animationRef.current!);
             }
         };
-    }, [noiseEnabled, kx, ky, dx, dy, pointsCount]);
+    }, [ noiseEnabled, kx, ky, dx, dy, pointsCount ]);
 
     return (
         <div className="absolute top-7 2xl:left-[46%] left-[45.2%]">
-            <CanvasSignalGraph kx={kx} ky={ky} dx={dx} dy={dy} />
+            <CanvasSignalGraph kx={kx} ky={ky} dx={dx} dy={dy}/>
             <canvas
                 className="absolute left-5 top-[55px] border-t border-gray-400"
                 ref={canvasRef}

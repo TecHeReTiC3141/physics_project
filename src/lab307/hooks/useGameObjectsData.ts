@@ -43,7 +43,7 @@ export const useGameObjectsData = ({
       y: 420 * SCALE_COEFF,
       width: 30 * SCALE_COEFF,
       height: 64 * SCALE_COEFF,
-      color: 'green',
+      color: 'gray',
       onClick: () => setIsGeneratorTurnedOn(prev => {
         if (prev) {
           setIsOutputTurnedOn(false)
@@ -59,7 +59,7 @@ export const useGameObjectsData = ({
       y: 280 * SCALE_COEFF,
       width: 61 * SCALE_COEFF,
       height: 21 * SCALE_COEFF,
-      color: 'green',
+      color: 'gray',
       onClick: () => setGeneratorInputMode('frequency')
     },
     {
@@ -68,7 +68,7 @@ export const useGameObjectsData = ({
       y: 365 * SCALE_COEFF,
       width: 61 * SCALE_COEFF,
       height: 21 * SCALE_COEFF,
-      color: 'green',
+      color: 'gray',
       onClick: () => setGeneratorInputMode('vpp')
     },
     {
@@ -166,7 +166,7 @@ export const useGameObjectsData = ({
       y: 435 * SCALE_COEFF,
       width: 46 * SCALE_COEFF,
       height: 42 * SCALE_COEFF,
-      color: 'green',
+      color: 'gray',
       onClick: () => setIsOscilographTurnedOn(prev => {
         if (prev) {
           setIsAcquireModeTurnedOn(false)
@@ -191,7 +191,7 @@ export const useGameObjectsData = ({
     },
     {
       id: GameObjectId.OSCILOGRAPH_DATA,
-      x: 1250 * SCALE_COEFF,
+      x: 1270 * SCALE_COEFF,
       y: 88 * SCALE_COEFF,
       width: 68 * SCALE_COEFF,
       height: 17 * SCALE_COEFF,

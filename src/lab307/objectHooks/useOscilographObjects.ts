@@ -2,6 +2,9 @@ import { useGameObjects } from "../context";
 import { useCallback, useEffect } from "react";
 import { GameObjectId } from "../types.ts";
 
+const kyMax = 50
+const kxMax = 100
+
 export const useOscilographObjects = () => {
   const {
     getGameObject,
@@ -22,12 +25,12 @@ export const useOscilographObjects = () => {
     ctx.beginPath()
     ctx.fillStyle = 'black';
     ctx.font = `20px Arial`;
-    ctx.textAlign = 'start';
+    ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
 
-    ctx.fillText(scaleX.toFixed(4) || '------', x, y);
+    ctx.fillText(Math.round((scaleX + 1) / 2 * kxMax).toString() || '------', x, y);
 
-    ctx.fillText(scaleY.toFixed(4) || '------', x, y + 40);
+    ctx.fillText(Math.round((scaleY + 1) / 2 * kyMax).toString() || '------', x, y + 40);
   }, [scaleX, scaleY, isOscilographTurnedOn])
 
   useEffect(() => {

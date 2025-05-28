@@ -42,10 +42,10 @@ export const createWordDocument = async (
               ...first.map((entry) =>
                 new TableRow({
                   children: [
-                    dataCell(entry.xc?.toString() ?? "", w1),
-                    dataCell(entry.yr?.toString() ?? "", w2),
-                    dataCell(entry.hc?.toString() ?? "", w3),
-                    dataCell(entry.rc?.toString() ?? "", w4),
+                    dataCell(entry.xc?.toFixed(1) ?? "", w1),
+                    dataCell(entry.yr?.toFixed(1) ?? "", w2),
+                    dataCell("", w3),
+                    dataCell("", w4),
                   ],
                 })
               ),
@@ -73,11 +73,11 @@ export const createWordDocument = async (
               ...second.map((entry) =>
                 new TableRow({
                   children: [
-                    dataCell(entry.xm?.toString() ?? "", w1),
-                    dataCell(entry.ym?.toString() ?? "", w2),
-                    dataCell(entry.hm?.toString() ?? "", w3),
-                    dataCell(entry.rm?.toString() ?? "", w4),
-                    dataCell(entry.um?.toString() ?? "", w5),
+                    dataCell(entry.xm?.toFixed(1) ?? "", w1),
+                    dataCell(entry.ym?.toFixed(1) ?? "", w2),
+                    dataCell("", w3),
+                    dataCell("", w4),
+                    dataCell("", w5),
                   ],
                 })
               ),
@@ -108,14 +108,14 @@ export const createWordDocument = async (
               ...third.map((entry) =>
                 new TableRow({
                   children: [
-                    dataCell(entry.u?.toString() ?? "", w1),
-                    dataCell(entry.x?.toString() ?? "", w2),
-                    dataCell(entry.kx?.toString() ?? "", w3),
-                    dataCell(entry.h?.toString() ?? "", w4),
-                    dataCell(entry.y?.toString() ?? "", w5),
-                    dataCell(entry.ky?.toString() ?? "", w6),
-                    dataCell(entry.b?.toString() ?? "", w7),
-                    dataCell(entry.um?.toString() ?? "", w8),
+                    dataCell(entry.u?.toFixed(1) ?? "", w1),
+                    dataCell(entry.x?.toFixed(1) ?? "", w2),
+                    dataCell(entry.kx?.toFixed(1) ?? "", w3),
+                    dataCell("", w4),
+                    dataCell(entry.y?.toFixed(1) ?? "", w5),
+                    dataCell(entry.ky?.toFixed(1) ?? "", w6),
+                    dataCell("", w7),
+                    dataCell("", w8),
                   ],
                 })
               ),

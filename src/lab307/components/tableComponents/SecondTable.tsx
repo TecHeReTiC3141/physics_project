@@ -2,10 +2,17 @@ import { FaQuestion } from "react-icons/fa6";
 import { Modal } from "../../../components";
 import clsx from "clsx";
 import { useTableData } from "../../context";
+import { usePointsContext } from "../../context/PointsContext.tsx";
 
 function SecondTable() {
-
-    const { secondTableData, deleteSecondTableEntry, secondTablePointer, setSecondTablePointer } = useTableData()
+    const { xm, ym } = usePointsContext()
+    const {
+        secondTableData,
+        deleteSecondTableEntry,
+        secondTablePointer,
+        setSecondTablePointer,
+        appendSecondTableEntry
+    } = useTableData()
 
     return (
         <>
@@ -14,14 +21,18 @@ function SecondTable() {
                     <h3 className="text-3xl font-bold text-center mb-2 text-accent">Инструкция к таблице 2</h3>
                     <ol className="list-decimal pl-4 pt-4 text-gray-800">
                         <li>Измерьте координаты <b>𝑋𝑚</b> и <b>𝑌𝑚</b> вершины петли гистерезиса.</li>
-                        <li>Найдите соответствующие <b>𝐻𝑚</b> и <b>𝐵𝑚</b> и по формуле (2) определите значение магнитной проницаемости <b>𝜇</b>, соответствующее состоянию насыщения.</li>
+                        <li>Найдите соответствующие <b>𝐻𝑚</b> и <b>𝐵𝑚</b> и по формуле (2) определите значение магнитной
+                            проницаемости <b>𝜇</b>, соответствующее состоянию насыщения.
+                        </li>
                     </ol>
                 </div>
             </Modal>
             <div className="w-full flex flex-col gap-y-3 items-center">
                 <div className="w-full flex justify-between items-center">
                     <div className="w-full flex justify-between">
-                        <button className="button-outline px-4 text-nowrap">
+                        <button className="button-outline px-4 text-nowrap"
+                                onClick={() => appendSecondTableEntry({ xm, ym })}
+                                disabled={secondTableData.length >= 1 && Number.isNaN(xm) || Number.isNaN(ym)}>
                             Снять измерения
                         </button>
                         <div/>
@@ -64,15 +75,15 @@ function SecondTable() {
                                     className={clsx("text-center border-2 border-accent rounded-xl", index === secondTablePointer && 'bg-primary/50')}
                                     onClick={() => setSecondTablePointer(index)}>
                                     <td className="py-2 border-2 border-accent font-bold  h-11"
-                                        rowSpan={6}>{entry?.xm || ''}</td>
+                                        rowSpan={6}>{entry.xm?.toFixed(1) || ''}</td>
                                     <td className="py-2 border-2 border-accent font-bold  h-11"
-                                        rowSpan={6}>{entry?.ym || ''}</td>
+                                        rowSpan={6}>{entry.ym?.toFixed(1) || ''}</td>
                                     <td className="py-2 border-2 border-accent font-bold  h-11"
-                                        rowSpan={6}>{entry?.hm || ''}</td>
+                                        rowSpan={6} />
                                     <td className="py-2 border-2 border-accent font-bold  h-11"
-                                        rowSpan={6}>{entry?.bm || ''}</td>
+                                        rowSpan={6} />
                                     <td className="py-2 border-2 border-accent font-bold h-11"
-                                        rowSpan={6}>{entry?.um || ''}</td>
+                                        rowSpan={6} />
 
                                 </tr>
                             ))

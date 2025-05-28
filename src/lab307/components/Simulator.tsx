@@ -8,6 +8,7 @@ import { useGeneratorObjects, useOscilographObjects } from "../objectHooks";
 import { RotatingRegulator } from "./Regulator.tsx";
 import { SCALE_COEFF } from "../hooks";
 import { HysteresisLoop } from "./HysteresisLoop.tsx";
+import { usePointsContext } from "../context/PointsContext.tsx";
 
 type MouseState = 'idle' | 'grab' | 'grabbing' | 'click'
 
@@ -47,10 +48,16 @@ export function Simulator() {
         isAcquireModeTurnedOn
     } = useGameObjects()
 
+    const { setXc, setXm, setYr, setYm } = usePointsContext()
+
     const shouldShowHisteresis = useMemo(() => {
         console.log(+generatorFrequency, +generatorVpp)
         const shouldShow = isOscilographTurnedOn && isGeneratorTurnedOn && generatorOutputMode === 'sine'
             && isAcquireModeTurnedOn && isOutputTurnedOn
+        setXc(undefined)
+        setXm(undefined)
+        setYr(undefined)
+        setYm(undefined)
         if (shouldShow) {
             setPositionX(Math.random() * 2 - 1)
             setPositionY(Math.random() * 2 - 1)

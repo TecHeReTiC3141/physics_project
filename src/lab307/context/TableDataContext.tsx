@@ -16,16 +16,11 @@ type StoredTableData = {
 export type FirstTableEntry = Partial<{
   xc: number
   yr: number
-  hc: number
-  rc: number
 }>
 
 export type SecondTableEntry = Partial<{
   xm: number
   ym: number
-  hm: number
-  rm: number
-  um: number
 }>
 
 export type ThirdTableEntry = Partial<{
