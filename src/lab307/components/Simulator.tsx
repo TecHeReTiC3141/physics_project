@@ -8,6 +8,7 @@ import { useGeneratorObjects, useOscilographObjects } from "../objectHooks";
 import { RotatingRegulator } from "./Regulator.tsx";
 import { SCALE_COEFF } from "../hooks";
 import { HysteresisLoop } from "./HysteresisLoop.tsx";
+import hintImg from "../assets/hing.png";
 
 type MouseState = 'idle' | 'grab' | 'grabbing' | 'click'
 
@@ -66,6 +67,7 @@ export function Simulator() {
         canvas.width = CANVAS_WIDTH * scale;
         canvas.height = CANVAS_HEIGHT * scale;
 
+        if (!ctx) return;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         gameObjects.forEach((obj) => {
@@ -94,7 +96,7 @@ export function Simulator() {
         return () => cancelAnimationFrame(animationFrameId);
     }, [ render ]);
 
-    const getMousePosition = (event) => {
+    const getMousePosition = (event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
         const canvas = canvasRef.current as HTMLCanvasElement;
         const rect = canvas.getBoundingClientRect();
         return {
@@ -111,7 +113,7 @@ export function Simulator() {
         mousePos.y <= obj.y + obj.height
     );
 
-    const onMouseDown = (event) => {
+    const onMouseDown = (event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
         const mousePos = getMousePosition(event);
         console.log("MOUSE", mousePos)
         const object = gameObjects.find((obj) => checkObjectClicked(obj, mousePos))
@@ -119,7 +121,7 @@ export function Simulator() {
         object.onClick?.()
     };
 
-    const onMouseMove = (event) => {
+    const onMouseMove = (event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
         const mousePos = getMousePosition(event);
         const object = gameObjects.find((obj) => checkObjectClicked(obj, mousePos));
         setMouseState(object?.onClick ? 'click' : 'idle');
@@ -147,8 +149,10 @@ export function Simulator() {
                                max={1} initialValue={scaleY}
                                knobColor={isOscilographTurnedOn ? '#70EC70' : '#fff'} onChange={setScaleY}/>
             <Modal id="simulator-hint">
-                <h3 className="text-3xl text-center font-bold">Подсказка</h3>
-                {/*<img src={hint as string} alt="Simulator hint" className="w-[1300px] h-[520px] pt-4"/>*/}
+                <div className="max-w-5xl w-full p-2">
+                    <h3 className="text-3xl text-center font-bold">Подсказка</h3>
+                    <img src={hintImg} alt="Simulator hint" className="max-w-full h-auto pt-4 rounded-xl shadow-lg border border-accent"/>
+                </div>
             </Modal>
             <canvas
                 ref={canvasRef}
