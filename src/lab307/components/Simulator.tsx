@@ -9,6 +9,7 @@ import { RotatingRegulator } from "./Regulator.tsx";
 import { SCALE_COEFF } from "../hooks";
 import { HysteresisLoop } from "./HysteresisLoop.tsx";
 import hintImg from "../assets/hing.png";
+import { usePointsContext } from "../context/PointsContext.tsx";
 
 type MouseState = 'idle' | 'grab' | 'grabbing' | 'click'
 
