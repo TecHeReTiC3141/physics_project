@@ -88,7 +88,7 @@ export function HomePage() {
       </section>
       <section>
         <h2 className="text-2xl font-semibold text-accent mb-2">{t('home.contactsTitle')}</h2>
-        <p className="text-gray-700 mb-2" dangerouslySetInnerHTML={{ __html: t('home.contactsText') }} />
+        <p className="mb-2" dangerouslySetInnerHTML={{ __html: t('home.contactsText') }} />
       </section>
       <div className="text-center text-xs text-gray-400 mt-4">ITMO University</div>
     </div>
