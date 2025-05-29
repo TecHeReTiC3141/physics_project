@@ -121,6 +121,6 @@
     "demoGithub": "<a href='#' class='text-blue-600 underline'>Project repository on GitHub</a>.",
     "demoScreenshots": "Screenshots can be found in the screenshots section of the repository.",
     "contactsTitle": "Contacts",
-    "contactsText": "If you have any questions or suggestions, please contact us <a href='https://t.me/arekalov' style='color:#2563eb;text-decoration:underline'>via Telegram</a>. We believe our project will improve the learning process and help students better understand physical principles."
+    "contactsText": "If you have any questions or suggestions, please contact us <a href='https://t.me/arekalov' class='text-blue-600 underline'>via Telegram</a>. We believe our project will improve the learning process and help students better understand physical principles."
   }
 } 

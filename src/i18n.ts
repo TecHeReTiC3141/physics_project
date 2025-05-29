@@ -16,7 +16,7 @@ i18n
       escapeValue: false,
     },
     backend: {
-      loadPath: '/src/locales/{{lng}}/{{ns}}.json',
+      loadPath: '/locales/{{lng}}/{{ns}}.json',
     },
     ns: ['lab307', 'lab102'],
     defaultNS: 'lab307',
