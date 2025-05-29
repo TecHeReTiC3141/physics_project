@@ -13,14 +13,19 @@ function Header() {
                 {t('header.title')}
             </h2>
             <div className="flex flex-col gap-y-3 ">
-                <a href="https://study.physics.itmo.ru/course/format/tiles/mod_view.php?cmid=8572" target="_blank"
-                   className="button-outline">{t('header.manual')}</a>
+                <div className="flex items-start gap-2">
+                    <a href="https://study.physics.itmo.ru/course/format/tiles/mod_view.php?cmid=8572" target="_blank"
+                       className="button-outline">{t('header.manual')}</a>
+                    <button
+                        className="button-outline px-2 py-1 text-xs self-start"
+                        style={{ marginLeft: 8 }}
+                        onClick={() => changeLanguage(i18n.language === 'ru' ? 'en' : 'ru')}
+                    >
+                        {i18n.language === 'ru' ? 'EN' : 'RU'}
+                    </button>
+                </div>
                 <button className="button-outline"
                         onClick={() => (document.getElementById('instruction-modal') as HTMLDialogElement).showModal()}>{t('header.instruction')}</button>
-                <div className="flex gap-2 mt-2">
-                    <button className={"button-outline px-2 py-1 text-xs" + (i18n.language === 'ru' ? ' button-filled' : '')} onClick={() => changeLanguage('ru')}>RU</button>
-                    <button className={"button-outline px-2 py-1 text-xs" + (i18n.language === 'en' ? ' button-filled' : '')} onClick={() => changeLanguage('en')}>EN</button>
-                </div>
                 <Modal id="instruction-modal">
                   <div className="max-w-lg p-2">
                     <h3 className="text-2xl font-bold text-accent mb-2">{t('header.modalTitle')}</h3>
