@@ -31,7 +31,7 @@ function SecondTable() {
                 <div className="w-full flex justify-between">
                     <button className="button-outline px-4 text-nowrap disabled:opacity-60"
                             onClick={() => appendSecondTableEntry({ xm, ym })}
-                            disabled={xm !== undefined || ym !== undefined}>
+                            disabled={xm === undefined || ym === undefined}>
                         {t('secondTable.takeMeasurement')}
                     </button>
                     <div/>

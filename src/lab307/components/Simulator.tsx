@@ -168,7 +168,7 @@ export function Simulator() {
                                knobColor={isOscilographTurnedOn ? '#70EC70' : '#fff'} onChange={setScaleY}/>
             <Modal id="simulator-hint">
                 <div className="max-w-5xl w-full p-2">
-                    <h3 className="text-3xl text-center font-bold">t('simulator.hint')</h3>
+                    <h3 className="text-3xl text-center font-bold mb-4">{t('simulator.hint')}</h3>
                     <img src={hintImg} alt="Simulator hint" className="max-w-full h-auto pt-4 rounded-xl shadow-lg border border-accent"/>
                 </div>
             </Modal>

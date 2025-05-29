@@ -17,7 +17,7 @@ function Header() {
                         onClick={() => (document.getElementById('instruction-modal') as HTMLDialogElement).showModal()}>{t('header.instruction')}</button>
             </div>
             <Modal id="instruction-modal">
-              <div className="max-w-lg p-2">
+              <div className="max-w-lg p-2 mx-auto">
                 <h3 className="text-2xl font-bold text-accent mb-2">{t('header.modalTitle')}</h3>
                 <p className="mb-2 text-gray-700">{t('header.modalText1')}</p>
                 <p className="mb-4 text-gray-700">{t('header.modalText2')}</p>
