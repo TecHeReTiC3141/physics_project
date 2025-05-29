@@ -2,35 +2,26 @@ import { FaQuestion } from "react-icons/fa6";
 import { Modal } from "../../../components";
 import { useTableData } from "../../context";
 import clsx from "clsx";
-
+import { useTranslation } from 'react-i18next';
 
 function FourthTable() {
-
     const { fourthTableData, fourthTablePointer, setFourthTablePointer, deleteFourthTableEntry } = useTableData()
+    const { t } = useTranslation('lab102');
     return (
         <>
             <Modal id="second-table-instruction-modal">
                 <div className="text-start">
-                    <h3 className="text-3xl font-bold text-center">Инструкция к таблице 4</h3>
+                    <h3 className="text-3xl font-bold text-center">{t('fourthTable.instructionTitle')}</h3>
                     <ul className="list-decimal pl-4 pt-4">
-                         <li>Установить первые оптические ворота в точке с координатой 𝑥1 = 0,15 м, а вторые – 𝑥2 = 1,10 м.</li>
-                         <li>Подложите брусок под левую опору, нажав один раз на иконку “вверх”.</li>
-                         <li>Включить блок питания воздушного насоса ВС 4-15.</li>
-                         <li>Тележку установить в крайнем левом положении и прижать к электромагниту.</li>
-                         <li>Нажать кнопку “пуск” на табло.</li>
-                         <li>На дисплее прибора ПКЦ-3 отразятся промежутки времени 𝑡1 и 𝑡2 от начала движения до прохождения ворот. Величины автоматически впишутся в таблицу.</li>
-                         <li>Выключите блок питания воздушного насоса ВС 4-15.</li>
-                         <li>Последовательно увеличивая число пластин под ножками левой опоры до пяти, для каждого набора пластин выполнить пункты 3-7, результаты будут записываться в таблицу.</li>
-                         <li>После окончания всех измерений выключить прибор ПКЦ-3 тумблером на правой боковой панели.</li>
+                        {(t('fourthTable.instructionList', { returnObjects: true }) as string[]).map((item, idx) => <li key={idx}>{item}</li>)}
                     </ul>
                 </div>
             </Modal>
             <div className="w-full flex flex-col gap-y-3 items-center">
                 <div className="w-full flex justify-between items-center">
-                    <h3 className="text-2xl">Задание 2</h3>
+                    <h3 className="text-2xl">{t('fourthTable.taskTitle')}</h3>
                     <div className="flex items-center gap-x-3 -translate-x-1/2">
-                        <h4 className="text-xl text-center">Таблица 4</h4>
-
+                        <h4 className="text-xl text-center">{t('fourthTable.tableTitle')}</h4>
                         <button className="btn btn-sm cursor-pointer bg-background hover:bg-background border-accent hover:border-accent
                     text-accent font-bold btn-circle p-1.5 text-xl flex items-center justify-center"
                                 onClick={() => (document.getElementById('second-table-instruction-modal') as HTMLDialogElement).showModal()}>
@@ -40,9 +31,7 @@ function FourthTable() {
                     <div/>
                 </div>
                 <div className="w-full flex justify-end">
-                    <button className="button-outline w-[360px] text-nowrap" onClick={deleteFourthTableEntry}>Очистить
-                        выделенную строку
-                    </button>
+                    <button className="button-outline w-[360px] text-nowrap" onClick={deleteFourthTableEntry}>{t('fourthTable.clearRow')}</button>
                 </div>
                 <div className="w-full overflow-x-auto">
                     <table className="max-lg:text-sm text-nowrap mx-auto overflow-hidden">
@@ -56,12 +45,12 @@ function FourthTable() {
                         </colgroup>
                         <thead className="bg-background py-2 ">
                         <tr className="text-center border-2 text-lg border-accent rounded-xl ">
-                            <th className="py-2 border-2 border-accent">np</th>
-                            <th className="py-2 border-2 border-accent">h, mm</th>
-                            <th className="py-2 border-2 border-accent">h', mm</th>
-                            <th className="py-2 border-2 border-accent">№</th>
-                            <th className="py-2 border-2 border-accent">t1, c</th>
-                            <th className="py-2 border-2 border-accent">t2, c</th>
+                            <th className="py-2 border-2 border-accent">{t('fourthTable.np')}</th>
+                            <th className="py-2 border-2 border-accent">{t('fourthTable.h')}</th>
+                            <th className="py-2 border-2 border-accent">{t('fourthTable.hp')}</th>
+                            <th className="py-2 border-2 border-accent">{t('fourthTable.n')}</th>
+                            <th className="py-2 border-2 border-accent">{t('fourthTable.t1')}</th>
+                            <th className="py-2 border-2 border-accent">{t('fourthTable.t2')}</th>
                         </tr>
 
                         </thead>

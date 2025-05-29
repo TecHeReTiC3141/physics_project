@@ -1,100 +1,94 @@
+import { useTranslation } from 'react-i18next';
+
 export function HomePage() {
+  const { t, i18n } = useTranslation();
   return (
     <div className="relative max-w-3xl mx-auto mt-16 p-8 bg-white rounded-xl shadow-lg flex flex-col gap-8 before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-8 before:rounded-t-xl before:shadow-[0_-20px_40px_-20px_rgba(33,162,220,0.15)] before:pointer-events-none">
-      <h1 className="text-4xl font-bold text-center text-accent mb-2">Симулятор установок для выполнения лабораторных работ по физике</h1>
+      <h1 className="text-4xl font-bold text-center text-accent mb-2">{t('home.title')}</h1>
       <section>
-        <h2 className="text-2xl font-semibold text-accent mb-2">Описание проекта</h2>
+        <h2 className="text-2xl font-semibold text-accent mb-2">{t('home.projectTitle')}</h2>
         <p className="text-lg text-gray-700">
-          Данный проект представляет собой веб-приложение, разработанное для симуляции лабораторных работ по физике, предполагающее выполнение лабораторных работ в интерактивной и безопасной цифровой среде. Приложение включает две основные симуляции:
+          {t('home.projectDescription')}
         </p>
         <ol className="list-decimal pl-6 mt-2 text-gray-800">
-          <li><b>Симулятор лабораторной работы 1.02</b> — изучение скольжения тележки по наклонной плоскости.</li>
-          <li><b>Симулятор лабораторной работы 3.07</b> — изучение свойств ферромагнетика.</li>
+          <li>{t('home.sim102')}</li>
+          <li>{t('home.sim307')}</li>
         </ol>
         <p className="text-gray-700 mt-2">
-          В каждой симуляции пользователи могут взаимодействовать с виртуальными лабораторными установками, регулировать параметры, наблюдать результаты в реальном времени, строить графики и автоматически получать расчёты ключевых физических величин.
+          {t('home.simulationFeatures')}
         </p>
       </section>
       <section>
-        <h2 className="text-2xl font-semibold text-accent mb-2">Аннотация</h2>
+        <h2 className="text-2xl font-semibold text-accent mb-2">{t('home.annotationTitle')}</h2>
         <p className="text-gray-700">
-          Студенты часто сталкиваются с проблемой пропуска лабораторных занятий из-за различных препятствий, что может негативно влиять на их успеваемость. Наше приложение решает эту проблему, позволяя студентам проходить лабораторные работы онлайн. Приложение полезно для:
+          {t('home.annotationText')}
         </p>
         <ul className="list-disc pl-6 mt-2 text-gray-800">
-          <li>Студентов, пропустивших лабораторные работы.</li>
-          <li>Студентов, желающих предварительно ознакомиться с материалом.</li>
-          <li>Иностранных студентов.</li>
-          <li>Тех, кто не успел закончить измерения в классе.</li>
+          <li>{t('home.annotation1')}</li>
+          <li>{t('home.annotation2')}</li>
+          <li>{t('home.annotation3')}</li>
+          <li>{t('home.annotation4')}</li>
         </ul>
       </section>
       <section>
-        <h2 className="text-2xl font-semibold text-accent mb-2">Детали реализации</h2>
+        <h2 className="text-2xl font-semibold text-accent mb-2">{t('home.implementationTitle')}</h2>
         <div className="mb-4">
-          <h3 className="text-xl font-bold text-accent">Симулятор лабораторной работы 1.02</h3>
+          <h3 className="text-xl font-bold text-accent">{t('home.sim102Title')}</h3>
           <ul className="list-disc pl-6 mt-1 text-gray-800">
-            <li><b>Тема:</b> Изучение скольжения тележки по наклонной плоскости.</li>
-            <li><b>Основные законы физики:</b> второй закон Ньютона, динамика наклонной плоскости, расчёт коэффициента трения.</li>
-            <li><b>Экспериментальные возможности:</b>
+            <li><b>{t('home.topic')}:</b> {t('home.sim102Topic')}</li>
+            <li><b>{t('home.physicsLaws')}:</b> {t('home.sim102Laws')}</li>
+            <li><b>{t('home.experimentalFeatures')}:</b>
               <ul className="list-disc pl-6 mt-1">
-                <li>Изменение угла наклона плоскости.</li>
-                <li>Регулировка оптических ворот.</li>
-                <li>Измерение ускорения и времени прохождения тележки.</li>
-                <li>Вывод данных с возможностью экспорта в formato docx.</li>
+                <li>{t('home.sim102Exp1')}</li>
+                <li>{t('home.sim102Exp2')}</li>
+                <li>{t('home.sim102Exp3')}</li>
+                <li>{t('home.sim102Exp4')}</li>
               </ul>
             </li>
-            <li><b>Автоматизация расчётов:</b> генерация данных на основе физических формул, добавление случайных вариаций и погрешностей.</li>
+            <li><b>{t('home.automation')}:</b> {t('home.sim102Automation')}</li>
           </ul>
         </div>
         <div>
-          <h3 className="text-xl font-bold text-accent">Симулятор лабораторной работы 3.07</h3>
+          <h3 className="text-xl font-bold text-accent">{t('home.sim307Title')}</h3>
           <ul className="list-disc pl-6 mt-1 text-gray-800">
-            <li><b>Тема:</b> Изучение магнитных свойств ферромагнетика.</li>
-            <li><b>Экспериментальные возможности:</b>
+            <li><b>{t('home.topic')}:</b> {t('home.sim307Topic')}</li>
+            <li><b>{t('home.experimentalFeatures')}:</b>
               <ul className="list-disc pl-6 mt-1">
-                <li>Виртуальное управление генератором и выбор параметров ферромагнитного образца.</li>
-                <li>Наблюдение петли гистерезиса, построение графиков B(H) и μ(H).</li>
-                <li>Автоматический расчёт таких параметров, как проницаемость и коэрцитивная сила.</li>
-                <li>Получение значений мощности потерь при перемагничивании.</li>
+                <li>{t('home.sim307Exp1')}</li>
+                <li>{t('home.sim307Exp2')}</li>
+                <li>{t('home.sim307Exp3')}</li>
+                <li>{t('home.sim307Exp4')}</li>
               </ul>
             </li>
-            <li><b>Интерфейс:</b> интерактивная схема лабораторной установки с осциллографом и органами управления.</li>
+            <li><b>{t('home.interface')}:</b> {t('home.sim307Interface')}</li>
           </ul>
         </div>
       </section>
       <section>
-        <h2 className="text-2xl font-semibold text-accent mb-2">Функциональные требования</h2>
+        <h2 className="text-2xl font-semibold text-accent mb-2">{t('home.requirementsTitle')}</h2>
         <ol className="list-decimal pl-6 text-gray-800">
           <li>
-            <b>Основные возможности:</b>
+            <b>{t('home.mainFeatures')}:</b>
             <ul className="list-disc pl-6 mt-1">
-              <li>Симуляция физической установки для выполнения лабораторных работ.</li>
-              <li>Генерация реалистичных данных с учётом физических формул и погрешностей.</li>
-              <li>Интерактивные элементы для экспериментов.</li>
-              <li>Проверка корректности пользовательских параметров.</li>
-              <li>Экспорт данных в удобном формате.</li>
+              <li>{t('home.req1')}</li>
+              <li>{t('home.req2')}</li>
+              <li>{t('home.req3')}</li>
+              <li>{t('home.req4')}</li>
+              <li>{t('home.req5')}</li>
             </ul>
           </li>
           <li>
-            <b>Пользовательский интерфейс:</b>
+            <b>{t('home.ui')}:</b>
             <ul className="list-disc pl-6 mt-1">
-              <li>Удобство и интуитивность интерфейса.</li>
-              <li>Интерактивные графики и таблицы.</li>
+              <li>{t('home.req6')}</li>
+              <li>{t('home.req7')}</li>
             </ul>
           </li>
         </ol>
       </section>
       <section>
-        <h2 className="text-2xl font-semibold text-accent mb-2">Демонстрация готового программного продукта</h2>
-        <ol className="list-decimal pl-6 text-gray-800">
-          <li>Ссылка на <a href="#" className="text-blue-600 underline">опубликованное приложение</a>.</li>
-          <li><a href="#" className="text-blue-600 underline">Макет приложения в Figma</a>.</li>
-          <li><a href="#" className="text-blue-600 underline">Репозиторий проекта на GitHub</a>.</li>
-          <li>Скриншоты приложений можно найти в разделе со скриншотами репозитория.</li>
-        </ol>
-      </section>
-      <section>
-        <h2 className="text-2xl font-semibold text-accent mb-2">Контакты</h2>
-        <p className="text-gray-700 mb-2">При возникновении вопросов и предложений, пожалуйста, обращайтесь <a href="https://t.me/arekalov" className="text-blue-600 underline">в телеграм</a>. Мы верим, что наш проект улучшит процесс обучения и позволит студентам глубже понимать физические принципы.</p>
+        <h2 className="text-2xl font-semibold text-accent mb-2">{t('home.contactsTitle')}</h2>
+        <p className="text-gray-700 mb-2" dangerouslySetInnerHTML={{ __html: t('home.contactsText') }} />
       </section>
       <div className="text-center text-xs text-gray-400 mt-4">ITMO University</div>
     </div>
