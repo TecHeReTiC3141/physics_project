@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 function GlobalHeader() {
   const { i18n } = useTranslation();
   return (
-    <div className="w-full flex justify-end items-start pt-4 pr-4 absolute top-[19px] right-8">
+    <div className="flex justify-end items-start pt-4 pr-4 absolute top-[19px] right-8">
       <button
         className="button-outline px-2 py-1 text-xs"
         onClick={() => i18n.changeLanguage(i18n.language === 'ru' ? 'en' : 'ru')}

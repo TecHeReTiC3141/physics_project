@@ -10,7 +10,6 @@ const kxMax = 100
 
 function ThirdTable() {
     const { xm, ym } = usePointsContext()
-    console.log("XM", xm, ym, xm === undefined, ym === undefined)
     const { generatorVpp, scaleX, scaleY } = useGameObjects()
     const {
         thirdTableData,

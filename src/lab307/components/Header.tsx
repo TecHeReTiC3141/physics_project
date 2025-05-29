@@ -2,10 +2,8 @@ import { Modal } from "../../components";
 import { useTranslation } from "react-i18next";
 
 function Header() {
-    const { t, i18n } = useTranslation();
-    const changeLanguage = (lng: string) => {
-        i18n.changeLanguage(lng);
-    };
+    const { t } = useTranslation();
+
     return (
         <header className="w-full flex justify-between items-center pt-9 select-none">
             <div/>
@@ -13,8 +11,8 @@ function Header() {
                 {t('header.title')}
             </h2>
             <div className="flex flex-col gap-y-2 w-48">
-                <a href="https://study.physics.itmo.ru/course/format/tiles/mod_view.php?cmid=8572" target="_blank"
-                   className="button-outline w-full py-2">{t('header.manual')}</a>
+                <button href="https://study.physics.itmo.ru/course/format/tiles/mod_view.php?cmid=8572" target="_blank"
+                   className="button-outline w-full py-2">dsfsdfa</button>
                 <button className="button-outline w-full py-2"
                         onClick={() => (document.getElementById('instruction-modal') as HTMLDialogElement).showModal()}>{t('header.instruction')}</button>
             </div>
