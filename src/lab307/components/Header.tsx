@@ -11,8 +11,8 @@ function Header() {
                 {t('header.title')}
             </h2>
             <div className="flex flex-col gap-y-2 w-48">
-                <button href="https://study.physics.itmo.ru/course/format/tiles/mod_view.php?cmid=8572" target="_blank"
-                   className="button-outline w-full py-2">{t('header.manual')}</button>
+                <a href="https://study.physics.itmo.ru/course/format/tiles/mod_view.php?cmid=8572" target="_blank"
+                   className="button-outline w-full py-2">{t('header.manual')}</a>
                 <button className="button-outline w-full py-2"
                         onClick={() => (document.getElementById('instruction-modal') as HTMLDialogElement).showModal()}>{t('header.instruction')}</button>
             </div>
