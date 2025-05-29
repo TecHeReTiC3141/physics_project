@@ -1,0 +1,74 @@
+{
+  "header": {
+    "title": "Lab 3.07 Simulator\n\"Study of Ferromagnetic Properties\"",
+    "manual": "Manual",
+    "instruction": "General Instruction",
+    "modalTitle": "General Setup Instruction",
+    "modalText1": "The site simulates the setup for performing physics lab 3.07 — Study of Ferromagnetic Properties.",
+    "modalText2": "The site contains tables with some pre-filled data. You need to collect the remaining data using the setup and enter it into the tables.",
+    "modalOrderTitle": "General procedure:",
+    "generatorTitle": "Generator:",
+    "generatorList": [
+      "Turn on the voltage generator (indicator — generator is on)",
+      "Select the frequency input field using the button to the left of the 'Hz' symbol",
+      "Enter the frequency value using the numeric keypad",
+      "Select the voltage input field using the button to the left of the 'V' symbol",
+      "Enter the voltage value using the numeric keypad",
+      "Select sine mode using the sine button",
+      "Enable voltage output to channel 2 using the output button above CH1"
+    ],
+    "oscilographTitle": "Oscilloscope:",
+    "oscilographList": [
+      "Turn on the oscilloscope with the power button (the indicators of active elements will light up)",
+      "Set the position and scale values for each channel using the regulators",
+      "If everything is done correctly, a hysteresis loop will appear on the oscilloscope"
+    ],
+    "dataTitle": "Data acquisition:",
+    "dataList": [
+      "Check the current active row in the table — the measured data will be recorded there (the row is highlighted in blue)",
+      "If the wrong row is selected, click to select the correct one",
+      "To take measurements, click the Take Measurements button",
+      "To clear a row, use the delete button and re-enter the data",
+      "When finished, click the export button to get the completed tables in Word format"
+    ]
+  },
+  "simulator": {
+    "hint": "Hint"
+  },
+  "tables": {
+    "getMeasurements": "Get Measurements",
+    "export": "Export",
+    "tab1": "Table 1",
+    "tab2": "Table 2",
+    "tab3": "Table 3"
+  },
+  "firstTable": {
+    "instructionTitle": "Table 1 Instruction",
+    "instruction1": "Select such gain coefficients Kx, Ky with the VOLT/DIV regulators so that the signals in each channel occupy a significant part of the screen vertically (if necessary, slightly reduce the generator output amplitude).",
+    "instruction2": "Use the channel signal offset knobs to position the loop so that its center coincides with the origin on the screen. With the correct axis scales, the loop should be as large as possible but not go beyond the screen.",
+    "instruction3": "Record the coordinates X_c and Y_r of the hysteresis loop intersection with the axes using the Take Measurements button.",
+    "instruction4": "Calculate the coefficients α and β. Determine the coercive force H_c and residual induction B_r for the sample.",
+    "takeMeasurement": "Take Measurements",
+    "clearRow": "Clear Selected Row"
+  },
+  "secondTable": {
+    "instructionTitle": "Table 2 Instruction",
+    "instruction1": "Measure the coordinates X_m and Y_m of the hysteresis loop vertex.",
+    "instruction2": "Find the corresponding H_m and B_m and use formula (2) to determine the magnetic permeability μ at saturation.",
+    "takeMeasurement": "Take Measurements",
+    "clearRow": "Clear Selected Row"
+  },
+  "thirdTable": {
+    "instructionTitle": "Table 3 Instruction",
+    "instruction1": "Sequentially set lower generator voltage amplitudes (10–15 values) in steps of 0.5–1.0 V, obtain the corresponding hysteresis loops, and for each partial loop, measure the amplitude values of field strength and magnetic induction.",
+    "instruction2": "At each step, select Kx, Ky coefficients so that the loop occupies the maximum screen area.",
+    "instruction3": "Record the values in the protocol using the Take button.",
+    "takeMeasurement": "Take Measurements",
+    "clearRow": "Clear Selected Row"
+  },
+  "tableHeaders": {
+    "first": ["X_c, div", "Y_r, div", "H_c, A/m", "B_r, T"],
+    "second": ["X_m, div", "Y_m, div", "H_m, A/m", "B_m, T", "μ"],
+    "third": ["U, V", "X, div", "K_x, V/div", "H, A/m", "Y, div", "K_y, V/div", "B, T", "μ_m"]
+  }
+} 

@@ -10,6 +10,7 @@ import { SCALE_COEFF } from "../hooks";
 import { HysteresisLoop } from "./HysteresisLoop.tsx";
 import hintImg from "../assets/hing.png";
 import { usePointsContext } from "../context/PointsContext.tsx";
+import { useTranslation } from 'react-i18next';
 
 type MouseState = 'idle' | 'grab' | 'grabbing' | 'click'
 
@@ -28,6 +29,7 @@ const scale = 1.2 / 0.6
 export function Simulator() {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const [ mouseState, setMouseState ] = useState<MouseState>('idle');
+    const { t } = useTranslation();
 
     const {
         gameObjects,
@@ -150,7 +152,7 @@ export function Simulator() {
         <div className={clsx("w-full border-primary border-2 rounded-xl h-[650px] relative py-3",
             mouseStateClassnames[ mouseState ])}>
             <button className="button-filled absolute top-3 left-3"
-                    onClick={() => (document.getElementById('simulator-hint') as HTMLDialogElement).showModal()}>Подсказка
+                    onClick={() => (document.getElementById('simulator-hint') as HTMLDialogElement).showModal()}>{t('simulator.hint')}
             </button>
             <RotatingRegulator x={68.3 + positionAdjustment} y={26.5} size={36 * SCALE_COEFF / 2} min={-1}
                                max={1} initialValue={positionX}
@@ -166,7 +168,7 @@ export function Simulator() {
                                knobColor={isOscilographTurnedOn ? '#70EC70' : '#fff'} onChange={setScaleY}/>
             <Modal id="simulator-hint">
                 <div className="max-w-5xl w-full p-2">
-                    <h3 className="text-3xl text-center font-bold">Подсказка</h3>
+                    <h3 className="text-3xl text-center font-bold">{t('simulator.hint')}</h3>
                     <img src={hintImg} alt="Simulator hint" className="max-w-full h-auto pt-4 rounded-xl shadow-lg border border-accent"/>
                 </div>
             </Modal>
