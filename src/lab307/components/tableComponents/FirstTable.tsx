@@ -34,7 +34,7 @@ export function FirstTable() {
                 <div className="w-full flex justify-between">
                     <button className="button-outline px-4 text-nowrap disabled:opacity-60"
                             onClick={() => appendFirstTableEntry({ xc, yr })}
-                            disabled={xc !== undefined || yr !== undefined}>
+                            disabled={xc === undefined || yr === undefined}>
                         {t('firstTable.takeMeasurement')}
                     </button>
                     <div/>
