@@ -32,9 +32,9 @@ export function FirstTable() {
             </Modal>
             <div className="w-full flex flex-col gap-y-3 items-center">
                 <div className="w-full flex justify-between">
-                    <button className="button-outline px-4 text-nowrap"
+                    <button className="button-outline px-4 text-nowrap disabled:opacity-60"
                             onClick={() => appendFirstTableEntry({ xc, yr })}
-                            disabled={firstTableData.length >= 1 && Number.isNaN(xc) || Number.isNaN(yr)}>
+                            disabled={xc !== undefined || yr !== undefined}>
                         {t('firstTable.takeMeasurement')}
                     </button>
                     <div/>

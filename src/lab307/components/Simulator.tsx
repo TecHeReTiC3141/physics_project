@@ -8,9 +8,10 @@ import { useGeneratorObjects, useOscilographObjects } from "../objectHooks";
 import { RotatingRegulator } from "./Regulator.tsx";
 import { SCALE_COEFF } from "../hooks";
 import { HysteresisLoop } from "./HysteresisLoop.tsx";
+
 import hintImg from "../assets/hing.png";
 import { usePointsContext } from "../context/PointsContext.tsx";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 type MouseState = 'idle' | 'grab' | 'grabbing' | 'click'
 
@@ -129,7 +130,6 @@ export function Simulator() {
 
     const onMouseDown = (event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
         const mousePos = getMousePosition(event);
-        console.log("MOUSE", mousePos)
         const object = gameObjects.find((obj) => checkObjectClicked(obj, mousePos))
         if (!object) return
         object.onClick?.()
@@ -168,7 +168,7 @@ export function Simulator() {
                                knobColor={isOscilographTurnedOn ? '#70EC70' : '#fff'} onChange={setScaleY}/>
             <Modal id="simulator-hint">
                 <div className="max-w-5xl w-full p-2">
-                    <h3 className="text-3xl text-center font-bold">{t('simulator.hint')}</h3>
+                    <h3 className="text-3xl text-center font-bold">t('simulator.hint')</h3>
                     <img src={hintImg} alt="Simulator hint" className="max-w-full h-auto pt-4 rounded-xl shadow-lg border border-accent"/>
                 </div>
             </Modal>

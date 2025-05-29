@@ -27,11 +27,8 @@ export type ThirdTableEntry = Partial<{
   u: number
   x: number
   kx: number
-  h: number
   y: number
   ky: number
-  b: number
-  um: number
 }>
 
 type ContextValue = {
@@ -82,7 +79,7 @@ export const TableDataProvider: FC = ({ children }) => {
   const [ selectedTable, setSelectedTable ] = useState(TableNumber.FIRST)
   const [ firstTableData, setFirstTableData ] = useState<FirstTableEntry[]>([ {} ]);
   const [ secondTableData, setSecondTableData ] = useState<SecondTableEntry[]>([ {} ]);
-  const [ thirdTableData, setThirdTableData ] = useState<ThirdTableEntry[]>(Array.from({ length: 10 }).map(() => ({})));
+  const [ thirdTableData, setThirdTableData ] = useState<ThirdTableEntry[]>(Array.from({ length: 15 }).map(() => ({})));
   const [ secondTablePointer, setSecondTablePointer ] = useState(0);
   const [ thirdTablePointer, setThirdTablePointer ] = useState(0);
   const [ firstTablePointer, setFirstTablePointer ] = useState(0);

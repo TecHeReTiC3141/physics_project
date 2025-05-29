@@ -29,9 +29,9 @@ function SecondTable() {
             </Modal>
             <div className="w-full flex flex-col gap-y-3 items-center">
                 <div className="w-full flex justify-between">
-                    <button className="button-outline px-4 text-nowrap"
+                    <button className="button-outline px-4 text-nowrap disabled:opacity-60"
                             onClick={() => appendSecondTableEntry({ xm, ym })}
-                            disabled={secondTableData.length >= 1 && Number.isNaN(xm) || Number.isNaN(ym)}>
+                            disabled={xm !== undefined || ym !== undefined}>
                         {t('secondTable.takeMeasurement')}
                     </button>
                     <div/>

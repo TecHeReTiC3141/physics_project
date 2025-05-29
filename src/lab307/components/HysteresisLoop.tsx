@@ -22,6 +22,16 @@ const xMax = 2 * Math.PI;
 const yMin = -1;
 const yMax = 1;
 
+function getCompressionFactor(voltage: number): number {
+    // Можно использовать линейную аппроксимацию
+    // return 0.1 + 0.9 * (voltage / 20);
+
+    // Или нелинейную (например, квадратичную)
+    if (voltage % 10 === 0) return 1
+    return Math.pow(voltage % 10 / 10, 0.3);
+}
+
+
 interface CanvasSignalProps {
     kx: number;
     ky: number;
@@ -52,11 +62,13 @@ const CanvasSignalGraph: React.FC<CanvasSignalProps> = ({
     const width = 170
     const height = 35
 
+    const voltage = +generatorVpp
+
     // Проверка корректности данных
     const isCorrectGeneratorData =
         20 <= +generatorFrequency &&
         +generatorFrequency <= 40 &&
-        Math.abs(+generatorVpp - 20) <= 1;
+        voltage <= 20;
 
     const generateSignalData = (addNoise = false) => {
         const data = [];
@@ -64,8 +76,12 @@ const CanvasSignalGraph: React.FC<CanvasSignalProps> = ({
 
         for (let i = 0; i <= pointsCount; i++) {
             const x = xMin + i * step;
-            let xValue = a * Math.pow(Math.cos(x + w), m) + kx * Math.pow(Math.sin(x + w), n) + dx;
-            let yValue = ky * Math.sin(x) + dy;
+
+            const kxFinal = voltage > 10 ? kx :  1 - Math.abs(kx)
+            const kyFinal = voltage > 10 ? ky :  1 - Math.abs(ky)
+
+            let xValue =  a * Math.pow(Math.cos(x + w), m) - getCompressionFactor(voltage) * kxFinal * Math.pow(Math.sin(x + w), n) + dx;
+            let yValue = getCompressionFactor(voltage) * kyFinal * Math.sin(x) + dy;
 
             // Добавляем шум если данные некорректны и включен шум
             if (!isCorrectGeneratorData && addNoise) {
@@ -200,7 +216,7 @@ const CanvasSignalGraph: React.FC<CanvasSignalProps> = ({
                 cancelAnimationFrame(animationRef.current!);
             }
         };
-    }, [ noiseEnabled, width, height, kx, ky, dx, dy, pointsCount ]);
+    }, [ noiseEnabled, width, height, kx, ky, dx, dy, pointsCount, generatorVpp ]);
 
 
     return (
@@ -232,12 +248,14 @@ export const HysteresisLoop = ({
 
     const { generatorFrequency, generatorVpp } = useGameObjects()
 
+    const voltage = +generatorVpp
+
     const { setXc, setYr, setXm, setYm } = usePointsContext()
 
     const isCorrectGeneratorData =
         20 <= +generatorFrequency &&
         +generatorFrequency <= 40 &&
-        Math.abs(+generatorVpp - 20) <= 1;
+        voltage <= 20;
 
     const SHIFT_X = 4, SHIFT_Y = 2, LINE_GAP = 10;
 
@@ -296,9 +314,12 @@ export const HysteresisLoop = ({
         for (let i = 0; i <= pointsCount; i++) {
             const t = (2 * Math.PI * i) / pointsCount;
 
+            const kxFinal = voltage > 10 ? kx :  -(1 - Math.abs(kx))
+            const kyFinal = voltage > 10 ? ky :  1 - Math.abs(ky)
+
             // Базовые значения
-            let x = a * Math.pow(Math.cos(t + w), m) + kx * Math.pow(Math.sin(t + w), n) + dx;
-            let y = ky * Math.sin(t) + dy;
+            let x =  a * Math.pow(Math.cos(t + w), m) - getCompressionFactor(voltage) * kxFinal * Math.pow(Math.sin(t + w), n) + dx;
+            let y = getCompressionFactor(voltage) * kyFinal * Math.sin(t) + dy;
 
             // Добавляем шум если нужно
             if (addNoise) {
@@ -336,7 +357,7 @@ export const HysteresisLoop = ({
                 ctx.fillStyle = 'red'
                 ctx.fillRect(x, y, 3, 3);
             } else if (Math.abs(y - centerY) <= 1) {
-                const xc =  Math.abs(x - centerX) / LINE_GAP
+                const xc = Math.abs(x - centerX) / LINE_GAP
                 setXc(xc)
                 ctx.fillStyle = 'green'
                 ctx.fillRect(x, y, 3, 3);
@@ -375,7 +396,7 @@ export const HysteresisLoop = ({
                 cancelAnimationFrame(animationRef.current!);
             }
         };
-    }, [ noiseEnabled, kx, ky, dx, dy, pointsCount ]);
+    }, [ noiseEnabled, kx, ky, dx, dy, pointsCount, voltage ]);
 
     return (
         <div className="absolute top-7 2xl:left-[46%] left-[45.2%]">
