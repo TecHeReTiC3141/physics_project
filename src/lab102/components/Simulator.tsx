@@ -8,6 +8,7 @@ import { useBoards } from "../objectsHooks/Boards.ts";
 import { RAIL_X_LEFT_OFFSET, RAIL_X_RIGHT_OFFSET } from "../constants.ts";
 import { Modal } from "../../components";
 import hint from '../assets/hint.png'
+import { useTranslation } from 'react-i18next';
 
 type MouseState = 'idle' | 'grab' | 'grabbing' | 'click'
 
@@ -19,6 +20,7 @@ const mouseStateClassnames = {
 }
 
 function Simulator() {
+  const { t } = useTranslation('lab102');
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [ mouseState, setMouseState ] = useState<MouseState>('idle');
 
@@ -212,10 +214,10 @@ function Simulator() {
     <div className={clsx("w-full border-primary border-2 rounded-xl h-[500px] relative",
       mouseStateClassnames[ mouseState ])}>
       <button className="button-filled absolute top-3 left-3"
-              onClick={() => (document.getElementById('simulator-hint') as HTMLDialogElement).showModal()}>Подсказка
+              onClick={() => (document.getElementById('simulator-hint') as HTMLDialogElement).showModal()}>{t('simulator.hint')}
       </button>
       <Modal id="simulator-hint">
-        <h3 className="text-3xl text-center font-bold">Подсказка</h3>
+        <h3 className="text-3xl text-center font-bold">{t('simulator.hint')}</h3>
         <img src={hint as string} alt="Simulator hint" className="w-[1300px] h-[520px] pt-4"/>
       </Modal>
       <canvas

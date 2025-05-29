@@ -1,31 +1,26 @@
 import { FaQuestion } from "react-icons/fa6";
 import { Modal } from "../../../components";
+import { useTranslation } from 'react-i18next';
 
 function SecondTable() {
-
+    const { t } = useTranslation('lab102');
     return (
         <>
             <Modal id="second-table-instruction-modal">
                 <div className="text-start">
-                    <h3 className="text-3xl font-bold text-center">Инструкция к таблице 2</h3>
-                    <p className="py-4">В таблицу УЖЕ внесены корректные данные, вносить новые данные не нужно!</p>
-                    <p className="py-4">Внесенные данные:</p>
+                    <h3 className="text-3xl font-bold text-center">{t('secondTable.instructionTitle')}</h3>
+                    <p className="py-4">{t('secondTable.instruction1')}</p>
+                    <p className="py-4">{t('secondTable.instruction2')}</p>
                     <ul className="list-decimal pl-4">
-                        <li>Точки: 𝑥 = 0,22 м и 𝑥′ = 1,0 м, с учетом приборной
-                            погрешности
-                        </li>
-                        <li>Вертикальные координаты ℎ0 и ℎ′ (расстояние от края линейки на
-                            рельсе до опорной поверхности), с учетом приборной погрешности.
-                        </li>
+                        {(t('secondTable.instructionList', { returnObjects: true }) as string[]).map((item, idx) => <li key={idx}>{item}</li>)}
                     </ul>
                 </div>
             </Modal>
             <div className="w-full flex flex-col gap-y-3 items-center">
                 <div className="w-full flex justify-between items-center">
-
-                    <h3 className="text-2xl select-none">Задание 1</h3>
+                    <h3 className="text-2xl select-none">{t('secondTable.taskTitle')}</h3>
                     <div className="flex items-center gap-x-3 -translate-x-1/2">
-                        <h4 className="text-xl text-cent8er">Таблица 2</h4>
+                        <h4 className="text-xl text-cent8er">{t('secondTable.tableTitle')}</h4>
                         <button className="btn btn-sm bg-background hover:bg-background border-accent hover:border-accent
                         text-accent font-bold btn-circle p-1.5 text-xl flex items-center justify-center"
                                 onClick={() => (document.getElementById('second-table-instruction-modal') as HTMLDialogElement).showModal()}>
@@ -44,10 +39,10 @@ function SecondTable() {
                         </colgroup>
                         <thead className="bg-background py-2 ">
                         <tr className="text-center border-2 border-accent rounded-xl ">
-                            <th className="py-2 border-2 border-accent">x, м</th>
-                            <th className="py-2 border-2 border-accent">𝑥′, м</th>
-                            <th className="py-2 border-2 border-accent">ℎ0, мм</th>
-                            <th className="py-2 border-2 border-accent">ℎ′0, мм</th>
+                            <th className="py-2 border-2 border-accent">{t('secondTable.x')}</th>
+                            <th className="py-2 border-2 border-accent">{t('secondTable.xp')}</th>
+                            <th className="py-2 border-2 border-accent">{t('secondTable.h0')}</th>
+                            <th className="py-2 border-2 border-accent">{t('secondTable.hp0')}</th>
                         </tr>
                         </thead>
                         <tbody>
