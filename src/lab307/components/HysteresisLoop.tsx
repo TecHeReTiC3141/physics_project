@@ -403,6 +403,7 @@ export const HysteresisLoop = ({
             <CanvasSignalGraph kx={kx} ky={ky} dx={dx} dy={dy}/>
             <canvas
                 className="absolute left-5 top-[55px] border-t border-gray-400"
+                id="hysteresis-loop-canvas"
                 ref={canvasRef}
                 width={width}
                 height={height}
