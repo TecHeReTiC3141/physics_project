@@ -143,10 +143,14 @@ export function Simulator() {
 
     useGeneratorObjects()
     useOscilographObjects()
+    const SM_WIDTH_THRESHOLD = 1024;
+    const LG_WIDTH_THRESHOLD = 1280;
+    const XL_WIDTH_THRESHOLD = 1536;
 
-    const SCREEN_WIDTH_THRESHOLD = 1536;
-    const shouldAdjustPosition = window.innerWidth < SCREEN_WIDTH_THRESHOLD;
-    const positionAdjustment = shouldAdjustPosition ? 3.8 : 0;
+    const isSmScreen = window.innerWidth < SM_WIDTH_THRESHOLD
+    const isLgScreen = window.innerWidth <= LG_WIDTH_THRESHOLD
+    const isXlScreen = window.innerWidth < XL_WIDTH_THRESHOLD;
+    const positionAdjustment = isSmScreen ?  47: isLgScreen ? 18.5 : isXlScreen ? 3.8 : 0;
 
     return (
         <div className={clsx("w-full border-primary border-2 rounded-xl h-[650px] relative py-3",
@@ -157,13 +161,13 @@ export function Simulator() {
             <RotatingRegulator x={68.3 + positionAdjustment} y={26.5} size={36 * SCALE_COEFF / 2} min={-1}
                                max={1} initialValue={positionX}
                                knobColor={isOscilographTurnedOn ? '#70EC70' : '#fff'} onChange={setPositionX}/>
-            <RotatingRegulator x={71 + positionAdjustment} y={26.5} size={36 * SCALE_COEFF / 2} min={-1}
+            <RotatingRegulator x={71 + positionAdjustment + isLgScreen + isSmScreen} y={26.5} size={36 * SCALE_COEFF / 2} min={-1}
                                max={1} initialValue={positionY}
                                knobColor={isOscilographTurnedOn ? '#70EC70' : '#fff'} onChange={setPositionY}/>
             <RotatingRegulator x={67.9 + positionAdjustment} y={33} size={50 * SCALE_COEFF / 2} min={-1}
                                max={1} initialValue={scaleX}
                                knobColor={isOscilographTurnedOn ? '#70EC70' : '#fff'} onChange={setScaleX}/>
-            <RotatingRegulator x={70.8 + positionAdjustment} y={33} size={50 * SCALE_COEFF / 2} min={-1}
+            <RotatingRegulator x={70.8 + positionAdjustment + isLgScreen + isSmScreen} y={33} size={50 * SCALE_COEFF / 2} min={-1}
                                max={1} initialValue={scaleY}
                                knobColor={isOscilographTurnedOn ? '#70EC70' : '#fff'} onChange={setScaleY}/>
             <Modal id="simulator-hint">

@@ -399,7 +399,7 @@ export const HysteresisLoop = ({
     }, [ noiseEnabled, kx, ky, dx, dy, pointsCount, voltage ]);
 
     return (
-        <div className="absolute top-7 2xl:left-[46%] left-[45.2%]">
+        <div className="absolute top-7 2xl:left-[46%] xl:left-[45.2%] lg:left-[52.7%] left-[70.5%]">
             <CanvasSignalGraph kx={kx} ky={ky} dx={dx} dy={dy}/>
             <canvas
                 className="absolute left-5 top-[55px] border-t border-gray-400"
