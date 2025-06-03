@@ -160,15 +160,19 @@ export function Simulator() {
             </button>
             <RotatingRegulator x={68.3 + positionAdjustment} y={26.5} size={36 * SCALE_COEFF / 2} min={-1}
                                max={1} initialValue={positionX}
+                               className={"2xl:left-[68.3%] min-[1440px]:left-[72%] min-[1340px]:left-[73.5%] xl:left-[72%] lg:left-[86.3%] md:left-[115%] left-[138%]"}
                                knobColor={isOscilographTurnedOn ? '#70EC70' : '#fff'} onChange={setPositionX}/>
             <RotatingRegulator x={71 + positionAdjustment + isLgScreen + isSmScreen} y={26.5} size={36 * SCALE_COEFF / 2} min={-1}
                                max={1} initialValue={positionY}
+                               className={"2xl:left-[71%] min-[1440px]:left-[75%] min-[1340px]:left-[76.5%] xl:left-[74.7%] lg:left-[90%] md:left-[120%] left-[145%]"}
                                knobColor={isOscilographTurnedOn ? '#70EC70' : '#fff'} onChange={setPositionY}/>
             <RotatingRegulator x={67.9 + positionAdjustment} y={33} size={50 * SCALE_COEFF / 2} min={-1}
                                max={1} initialValue={scaleX}
+                               className={"2xl:left-[67.9%] min-[1440px]:left-[71.8%] min-[1340px]:left-[73.2%] xl:left-[71.6%] lg:left-[86%] md:left-[114.5%] left-[137.5%]"}
                                knobColor={isOscilographTurnedOn ? '#70EC70' : '#fff'} onChange={setScaleX}/>
             <RotatingRegulator x={70.8 + positionAdjustment + isLgScreen + isSmScreen} y={33} size={50 * SCALE_COEFF / 2} min={-1}
                                max={1} initialValue={scaleY}
+                               className={"2xl:left-[70.8%] min-[1440px]:left-[74.8%] min-[1340px]:left-[76.5%] xl:left-[74.5%] lg:left-[90%] md:left-[120%] left-[144.5%]"}
                                knobColor={isOscilographTurnedOn ? '#70EC70' : '#fff'} onChange={setScaleY}/>
             <Modal id="simulator-hint">
                 <div className="max-w-5xl w-full p-2">

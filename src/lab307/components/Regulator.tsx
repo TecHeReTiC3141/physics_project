@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, FC } from 'react';
+import clsx from "clsx";
 
 interface RotatingRegulatorProps {
-  x: number;
   y: number;
   min?: number;
   max?: number;
@@ -10,10 +10,11 @@ interface RotatingRegulatorProps {
   size?: number;
   knobColor?: string;
   indicatorColor?: string;
+  className?: string
 }
 
 export const RotatingRegulator: FC<RotatingRegulatorProps> = ({
-                                                                x, y,
+                                                                 y,
                                                                 min = 0,
                                                                 max = 100,
                                                                 initialValue = 0,
@@ -21,6 +22,7 @@ export const RotatingRegulator: FC<RotatingRegulatorProps> = ({
                                                                 size = 100,
                                                                 knobColor = '#333',
                                                                 indicatorColor = '#000',
+                                                              className
                                                               }) => {
   const [ angle, setAngle ] = useState<number>(0);
   const [ isDragging, setIsDragging ] = useState<boolean>(false);
@@ -98,7 +100,6 @@ export const RotatingRegulator: FC<RotatingRegulatorProps> = ({
       ref={knobRef}
       style={{
         position: 'absolute',
-        left: `${x}%`,
         top: `${y}%`,
         width: `${size}px`,
         height: `${size}px`,
@@ -110,7 +111,7 @@ export const RotatingRegulator: FC<RotatingRegulatorProps> = ({
         userSelect: 'none',
         touchAction: 'none',
       }}
-      className="border border-gray-800"
+      className={clsx("border border-gray-800", className)}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
