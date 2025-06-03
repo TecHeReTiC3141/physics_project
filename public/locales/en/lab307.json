@@ -38,6 +38,7 @@
   "tables": {
     "getMeasurements": "Get Measurements",
     "export": "Export",
+    "exportGraph": "Download graph",
     "tab1": "Table 1",
     "tab2": "Table 2",
     "tab3": "Table 3"

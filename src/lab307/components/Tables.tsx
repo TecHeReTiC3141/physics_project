@@ -15,6 +15,18 @@ export function Tables() {
 
     const { selectedTable, setSelectedTable, firstTableData, secondTableData, thirdTableData,  } = useTableData()
 
+
+
+    const exportToPNG = () => {
+        const canvas = document.querySelector('#hysteresis-loop-canvas') as HTMLCanvasElement
+        if (!canvas) return;
+        const dataUrl = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.download = 'hysteresis-loop.png';
+        link.href = dataUrl;
+        link.click();
+    };
+
     return (
         <div className="w-full text-center flex flex-col gap-y-3">
             <h3 className="text-2xl select-none">{t('tables.getMeasurements')}</h3>
@@ -25,6 +37,7 @@ export function Tables() {
                 ))}
                 <div className="flex-1" />
                 <button className="button-filled" onClick={() => createWordDocument(firstTableData, secondTableData, thirdTableData)}>{t('tables.export')}</button>
+                <button className="button-filled" onClick={exportToPNG}>{t('tables.exportGraph')}</button>
             </div>
             <div className="w-full border-2 border-primary rounded-xl px-8 py-6">
                 {tables[selectedTable]}

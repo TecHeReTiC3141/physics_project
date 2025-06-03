@@ -26,18 +26,6 @@ export const createWordDocument = async (
     second: SecondTableEntry[],
     third: ThirdTableEntry[],
 ) => {
-    const canvas = document.querySelector('#hysteresis-loop-canvas')
-    const dataUrl = canvas.toDataURL('image/png');
-    const base64Data = dataUrl.split(',')[ 1 ];
-
-    const image = new ImageRun({
-        type: 'png',
-        data: base64Data,
-        transformation: {
-            width: 300,
-            height: 200,
-        }
-    });
 
     // Пример ширины: 2200 twips (DXA) ≈ 3.9 см, 1800 ≈ 3.2 см
     const w1 = 2200, w2 = 2200, w3 = 2200, w4 = 2200, w5 = 2200, w6 = 2200, w7 = 2200, w8 = 2200;
@@ -144,17 +132,7 @@ export const createWordDocument = async (
                                 })
                             ),
                         ],
-                    }),
-                    new Paragraph(({
-                        alignment: AlignmentType.CENTER,
-                        spacing: { before: 200, after: 200 },
-                        children: [
-                            new TextRun({ text: "График петли гистерезиса", size: 24 }),
-                        ],
-                    })),
-                    new Paragraph({
-                        children: [ image ],
-                    }),
+                    })
                 ],
             },
         ],
